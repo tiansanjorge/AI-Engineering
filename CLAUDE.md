@@ -24,6 +24,8 @@ Consigna extraída de `Material Modulo 1/Consignas y Guia proyecto integrador.do
 
 **Contexto de negocio:** soy ingeniero en un equipo que construye un asistente para agentes de soporte al cliente. El asistente recibe una pregunta y devuelve un JSON con: una respuesta, una estimación de confianza y acciones recomendadas. También hay que loggear métricas por consulta.
 
+**Framing preferido (decisión 2026-09-11):** la consigna es genérica y no exige un negocio específico, pero cuando haya libertad de elección (ejemplos few-shot, tipo de acciones recomendadas, vocabulario del dominio) inclinarse hacia un dominio de **Help Desk / soporte al cliente vía tickets**, en línea con una propuesta de proyecto Full Stack más grande que estoy evaluando por fuera de este módulo (notas privadas en `HelpDesk - Proyecto Full Stack.txt`, gitignoreado, no es un entregable de este módulo). **Prioridad: cumplir la consigna tal cual está siempre por encima de este framing** — si en algún punto entran en conflicto, gana la consigna.
+
 ### Objetivos obligatorios
 1. Script ejecutable o endpoint mínimo que reciba una pregunta y devuelva **JSON válido** con campos nombrados (ej: `answer`, `confidence`, `actions`).
 2. Registrar métricas por ejecución: `tokens_prompt`, `tokens_completion`, `total_tokens`, `latency_ms`, `estimated_cost_usd`, `timestamp`.
