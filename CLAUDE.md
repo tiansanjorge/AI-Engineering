@@ -1,4 +1,14 @@
-# Contexto — Proyecto Integrador, Módulo 1 (AI Engineering, Henry)
+# Contexto — Proyectos Integradores, carrera AI Engineering (Henry)
+
+Este repo (`AI-Engineering`) es el destino de **todas** las entregas de la carrera, módulo a módulo (Módulo 1, 2, 3, 4...), no solo la actual. Las secciones de "Reglas transversales" abajo aplican a todos los módulos; el resto del documento hoy describe el Módulo 1 en curso y se irá actualizando/ampliando por módulo a medida que avancen.
+
+## Reglas transversales (todos los módulos)
+
+**Framing de negocio preferido (decisión 2026-09-11, aplica a toda la carrera):** cuando la consigna de un módulo deja espacio de elección (ejemplos, dominio de datos, vocabulario, tipo de acciones/casos de uso), inclinarse por defecto hacia un dominio de **Help Desk / soporte al cliente vía tickets**, en línea con una propuesta de proyecto Full Stack más grande que estoy evaluando por fuera de esta carrera (notas privadas en `HelpDesk - Proyecto Full Stack.txt`, gitignoreado, no es un entregable). **La consigna de cada módulo manda siempre por encima de este framing** — si en algún punto entran en conflicto, gana la consigna.
+
+**Branching (decisión 2026-09-11, aplica a toda la carrera):** `develop` + feature branches cortas, siguiendo la skill `git-workflow-and-versioning`. Nunca commitear directo a `main`.
+1. Cada objetivo/módulo va en su propia rama corta (`feature/...`) que mergea a `develop`.
+2. `main` se actualiza solo con un merge deliberado y explícitamente pedido desde `develop`.
 
 ## Qué es este workspace
 
@@ -22,9 +32,7 @@ El workspace tiene tres carpetas **hermanas, sin jerarquía real en el filesyste
 
 Consigna extraída de `Material Modulo 1/Consignas y Guia proyecto integrador.docx`.
 
-**Contexto de negocio:** soy ingeniero en un equipo que construye un asistente para agentes de soporte al cliente. El asistente recibe una pregunta y devuelve un JSON con: una respuesta, una estimación de confianza y acciones recomendadas. También hay que loggear métricas por consulta.
-
-**Framing preferido (decisión 2026-09-11):** la consigna es genérica y no exige un negocio específico, pero cuando haya libertad de elección (ejemplos few-shot, tipo de acciones recomendadas, vocabulario del dominio) inclinarse hacia un dominio de **Help Desk / soporte al cliente vía tickets**, en línea con una propuesta de proyecto Full Stack más grande que estoy evaluando por fuera de este módulo (notas privadas en `HelpDesk - Proyecto Full Stack.txt`, gitignoreado, no es un entregable de este módulo). **Prioridad: cumplir la consigna tal cual está siempre por encima de este framing** — si en algún punto entran en conflicto, gana la consigna.
+**Contexto de negocio:** soy ingeniero en un equipo que construye un asistente para agentes de soporte al cliente. El asistente recibe una pregunta y devuelve un JSON con: una respuesta, una estimación de confianza y acciones recomendadas. También hay que loggear métricas por consulta. (Ya de por sí alineado con el framing Help Desk de las reglas transversales.)
 
 ### Objetivos obligatorios
 1. Script ejecutable o endpoint mínimo que reciba una pregunta y devuelva **JSON válido** con campos nombrados (ej: `answer`, `confidence`, `actions`).
@@ -67,7 +75,7 @@ AI-Engineering/
 
 ## Estado actual del proyecto (al 2026-09-11)
 
-- **Ya es un repo git**, con remote `origin` apuntando a `git@github.com:tiansanjorge/AI-Engineering.git`, pero todavía sin commits ("No commits yet").
+- Repo git con remote `origin` en `git@github.com:tiansanjorge/AI-Engineering.git`. Ramas `main` y `develop` ya creadas y pusheadas, con el flujo de branching transversal activo (ver arriba).
 - Hay un MVP mínimo exploratorio, no la estructura final:
   - [index.py](index.py) — llamada básica a `openai` con `dotenv`, sin JSON estructurado ni métricas todavía.
   - [testing.py](testing.py) — notas/output de ejemplo de `completion.usage`, no es un test real (no usa pytest/unittest).
@@ -77,10 +85,5 @@ AI-Engineering/
 
 ## Cómo trabajar conmigo en este proyecto
 
-- Todavía no hay que codear: hoy solo se está fijando este contexto. El desarrollo arranca en una sesión futura.
-- Cuando arranque el desarrollo: priorizar el flujo principal (una llamada que devuelva JSON útil) antes de pulir, iterar el prompt como si fuera código, y armar la estructura de carpetas esperada desde el principio para no migrar después.
-- Seguir las reglas globales de `~/.claude/CLAUDE.md` (conventional commits, castellano rioplatense, no hacer build sin pedirlo, plan antes de tocar +2 archivos, etc.) y la guía de `git-workflow-and-versioning`.
-- **Decisión de branching confirmada (2026-09-11):** `develop` + feature branches cortas, tal como indica la skill. Nunca commitear directo a `main`. Flujo:
-  1. Crear `develop` desde `main` (todavía no existe, el repo no tiene commits).
-  2. Cada objetivo del proyecto integrador (endpoint JSON, métricas, prompting, tests, bonus de safety) va en su propia rama corta (`feature/...`) que mergea a `develop`.
-  3. `main` se actualiza solo con un merge deliberado y explícitamente pedido desde `develop`, pensado como el punto de entrega final.
+- Priorizar el flujo principal (una llamada que devuelva JSON útil) antes de pulir, iterar el prompt como si fuera código, y armar la estructura de carpetas esperada desde el principio para no migrar después.
+- Seguir las reglas globales de `~/.claude/CLAUDE.md` (conventional commits, castellano rioplatense, no hacer build sin pedirlo, plan antes de tocar +2 archivos, etc.) y las reglas transversales de este archivo (branching y framing, ver arriba).
