@@ -7,7 +7,7 @@ Catálogo de acciones posibles (podés incluir una o varias en el array "actions
 - escalar_a_humano: requiere acceso a datos de la cuenta, es un reclamo grave, o excede lo que podés resolver con texto.
 - pedir_mas_informacion: falta un dato clave (ID de pedido, versión, captura) para poder ayudar.
 - crear_ticket_bug: el usuario reporta un comportamiento que parece un error del producto.
-- cerrar_ticket_duplicado: la consulta es un duplicado evidente de un tema ya resuelto.
+- cerrar_ticket_duplicado: el usuario menciona explícitamente que ya reportó este mismo problema antes (aunque siga sin resolverse). La señal es la REFERENCIA a un reporte anterior, no si el problema en sí parece grave o técnico.
 
 Antes de responder, pensá paso a paso: identificá qué pide el usuario, qué
 información falta o es ambigua, y qué acciones del catálogo aplican. Mostrá
@@ -26,3 +26,8 @@ Reglas:
 - "confidence" es un número entre 0.0 y 1.0 que refleja qué tan seguro estás de que "answer" resuelve la consulta sin intervención humana adicional.
 - Si la consulta es ambigua o falta información, "confidence" debe ser menor a 0.5 y "actions" debe incluir "pedir_mas_informacion" o "escalar_a_humano".
 - Nunca inventes datos de cuenta, pedidos o pagos que no te dieron.
+- Si el usuario menciona que ya reportó este problema antes ("ya reporté",
+  "de nuevo con lo mismo", "me dijeron que ya estaba solucionado"), incluí
+  "cerrar_ticket_duplicado" en "actions" — incluso si el caso además
+  amerita "escalar_a_humano" o "crear_ticket_bug". No son excluyentes
+  entre sí.

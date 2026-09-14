@@ -12,13 +12,6 @@ import os
 
 from dotenv import load_dotenv
 
-# Se intenta primero el import "de paquete" (from src.xxx import ...), que es
-# el que necesita alguien que haga `from src.compare_prompt_techniques import
-# run_comparison` (por ejemplo, un test futuro) con la raíz del repo en su
-# sys.path. Si eso falla, se cae al import "plano" (from xxx import ...),
-# que es el que funciona cuando corrés este archivo directo con
-# `python src/compare_prompt_techniques.py` (ahí Python solo pone src/ en el
-# path, no la raíz del repo, y "src.xxx" no se puede resolver).
 try:
     from src.llm_client import ask
     from src.metrics import estimate_cost_usd, log_comparison_row, now_iso
@@ -32,14 +25,6 @@ COMPARISON_CSV_PATH = os.path.join(
     os.path.dirname(__file__), "..", "metrics", "prompt_comparison.csv"
 )
 
-# Las tres variantes "puras" a comparar. zero_shot y few_shot viven en
-# prompts/variants/. chain_of_thought NO tiene un archivo propio ahí —
-# apunta directo a prompts/main_prompt.txt, porque esa técnica es la que
-# ganó la comparación y quedó como el prompt de producción (ver
-# reports/PI_report_en.md). Mantener un archivo separado sería una copia
-# duplicada que se podría desincronizar del real sin que nada avise; así,
-# el experimento siempre mide el prompt de producción TAL COMO ESTÁ hoy,
-# no una foto vieja.
 VARIANTS = {
     "zero_shot": os.path.join(
         os.path.dirname(__file__), "..", "prompts", "variants", "zero_shot.txt"
@@ -52,10 +37,15 @@ VARIANTS = {
     ),
 }
 
-# Set de preguntas de prueba, una por cada acción del catálogo (ver schema.py)
+# Set de preguntas de prueba: DOS por cada acción del catálogo (ver
+# schema.py)
 TEST_QUESTIONS = [
     {
         "question": "¿Cómo cambio la contraseña de mi cuenta?",
+        "expected_action": "responder_directamente",
+    },
+    {
+        "question": "¿Dónde puedo descargar mi factura del mes pasado?",
         "expected_action": "responder_directamente",
     },
     {
@@ -63,7 +53,15 @@ TEST_QUESTIONS = [
         "expected_action": "pedir_mas_informacion",
     },
     {
+        "question": "Tengo un problema con mi pedido",
+        "expected_action": "pedir_mas_informacion",
+    },
+    {
         "question": "La app se cierra sola cada vez que abro la sección de facturación, versión 4.2.1 en Android",
+        "expected_action": "crear_ticket_bug",
+    },
+    {
+        "question": "El botón de 'Guardar cambios' en mi perfil no responde, lo probé en Chrome y Firefox y pasa siempre",
         "expected_action": "crear_ticket_bug",
     },
     {
@@ -71,7 +69,15 @@ TEST_QUESTIONS = [
         "expected_action": "escalar_a_humano",
     },
     {
+        "question": "Me cobraron dos veces el mismo mes y necesito que alguien revise mi cuenta",
+        "expected_action": "escalar_a_humano",
+    },
+    {
         "question": "Esto ya lo pregunté ayer y me dijeron que lo iban a resolver, es el mismo problema de facturación de siempre",
+        "expected_action": "cerrar_ticket_duplicado",
+    },
+    {
+        "question": "Este es el mismo problema de inicio de sesión que reporté hace dos semanas, en su momento me dijeron que ya estaba solucionado",
         "expected_action": "cerrar_ticket_duplicado",
     },
 ]
