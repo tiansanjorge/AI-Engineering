@@ -18,12 +18,14 @@ from dotenv import load_dotenv
 # con `python src/run_query.py` (ahí Python solo agrega src/ al path, no la
 # raíz del repo, así que "src.xxx" no se puede resolver).
 try:
-    from src.llm_client import ask
+    from src.llm_client import ask, load_system_prompt
     from src.metrics import estimate_cost_usd, log_execution, now_iso
+    from src.safety import detect_adversarial_input, detect_unsafe_output
     from src.schema import fallback_response, validate_response
 except ImportError:
-    from llm_client import ask
+    from llm_client import ask, load_system_prompt
     from metrics import estimate_cost_usd, log_execution, now_iso
+    from safety import detect_adversarial_input, detect_unsafe_output
     from schema import fallback_response, validate_response
 
 METRICS_PATH = os.path.join(os.path.dirname(__file__), "..", "metrics", "metrics.csv")
@@ -44,9 +46,33 @@ def parse_args(argv=None):
 
 
 def run(question: str, model: str) -> dict:
-    """Orquesta un ciclo completo: pregunta -> modelo -> validación ->
-    métricas -> respuesta final.
+    """Orquesta un ciclo completo: seguridad de entrada -> modelo ->
+    validación de contrato -> seguridad de salida -> métricas -> respuesta.
     """
+    # Capa 1 de seguridad: se revisa la pregunta ANTES de gastar una
+    # llamada a la API. Si parece un intento de prompt injection, se corta
+    # acá — ni se llama al modelo.
+    input_safety_errors = detect_adversarial_input(question)
+    if input_safety_errors:
+        output = fallback_response("entrada bloqueada por seguridad: " + "; ".join(input_safety_errors))
+        log_execution(
+            METRICS_PATH,
+            {
+                "timestamp": now_iso(),
+                "question": question,
+                "model": model,
+                "tokens_prompt": 0,
+                "tokens_completion": 0,
+                "total_tokens": 0,
+                "latency_ms": 0.0,
+                "estimated_cost_usd": 0.0,
+                "valid_json": True,
+                "repaired": False,
+                "safety_action": "input_blocked",
+            },
+        )
+        return output
+
     # Acá se hace la llamada real (y paga) a la API de OpenAI.
     result = ask(question, model=model)
 
@@ -59,6 +85,16 @@ def run(question: str, model: str) -> dict:
     valid = len(errors) == 0
 
     output = result["parsed"] if valid else fallback_response("; ".join(errors))
+
+    # Capa 2 de seguridad: se revisa la respuesta final DESPUÉS de tenerla,
+    # por si el modelo terminó filtrando algo pese a que la pregunta no
+    # disparó la capa 1.
+    safety_action = "none"
+    if valid:
+        output_safety_errors = detect_unsafe_output(output.get("answer", ""), load_system_prompt())
+        if output_safety_errors:
+            output = fallback_response("salida bloqueada por seguridad: " + "; ".join(output_safety_errors))
+            safety_action = "output_blocked"
 
     log_execution(
         METRICS_PATH,
@@ -75,6 +111,7 @@ def run(question: str, model: str) -> dict:
             ),
             "valid_json": valid,
             "repaired": result["repaired"],
+            "safety_action": safety_action,
         },
     )
 

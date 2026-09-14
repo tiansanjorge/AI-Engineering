@@ -68,6 +68,7 @@ EXECUTION_FIELDNAMES = [
     "estimated_cost_usd",
     "valid_json",
     "repaired",
+    "safety_action",
 ]
 
 
