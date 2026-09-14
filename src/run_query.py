@@ -49,12 +49,12 @@ def run(question: str, model: str) -> dict:
     """Orquesta un ciclo completo: seguridad de entrada -> modelo ->
     validación de contrato -> seguridad de salida -> métricas -> respuesta.
     """
-    # Capa 1 de seguridad: se revisa la pregunta ANTES de gastar una
-    # llamada a la API. Si parece un intento de prompt injection, se corta
-    # acá — ni se llama al modelo.
+    # Capa 1 de seguridad: se revisa la pregunta ANTES de gastar una llamada a la API.
     input_safety_errors = detect_adversarial_input(question)
     if input_safety_errors:
-        output = fallback_response("entrada bloqueada por seguridad: " + "; ".join(input_safety_errors))
+        output = fallback_response(
+            "entrada bloqueada por seguridad: " + "; ".join(input_safety_errors)
+        )
         log_execution(
             METRICS_PATH,
             {
@@ -87,13 +87,16 @@ def run(question: str, model: str) -> dict:
     output = result["parsed"] if valid else fallback_response("; ".join(errors))
 
     # Capa 2 de seguridad: se revisa la respuesta final DESPUÉS de tenerla,
-    # por si el modelo terminó filtrando algo pese a que la pregunta no
-    # disparó la capa 1.
+    # por si el modelo terminó filtrando algo pese a la capa 1.
     safety_action = "none"
     if valid:
-        output_safety_errors = detect_unsafe_output(output.get("answer", ""), result["system_prompt"])
+        output_safety_errors = detect_unsafe_output(
+            output.get("answer", ""), result["system_prompt"]
+        )
         if output_safety_errors:
-            output = fallback_response("salida bloqueada por seguridad: " + "; ".join(output_safety_errors))
+            output = fallback_response(
+                "salida bloqueada por seguridad: " + "; ".join(output_safety_errors)
+            )
             safety_action = "output_blocked"
 
     log_execution(
