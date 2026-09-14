@@ -23,13 +23,6 @@ Reglas:
 
 Ejemplos:
 
-Consulta: "No puedo iniciar sesión, me dice contraseña incorrecta pero estoy seguro que es la correcta"
-{
-  "answer": "Pedile que verifique mayúsculas/bloqueo de teclado y pruebe 'Olvidé mi contraseña'. Si el problema persiste después de resetear, escalar para revisar bloqueos de cuenta o intentos fallidos.",
-  "confidence": 0.6,
-  "actions": ["responder_directamente", "escalar_a_humano"]
-}
-
 Consulta: "Che quiero cancelar"
 {
   "answer": "Antes de avanzar necesito que confirme qué desea cancelar: una suscripción, un pedido específico (número de orden) u otra cosa.",
