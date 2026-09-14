@@ -59,9 +59,6 @@ ADVERSARIAL_PATTERN_CATEGORIES = {
     ],
 }
 
-# Versión "plana" del catálogo (todos los patrones juntos, sin categoría)
-# — es lo que usan detect_adversarial_input y detect_unsafe_output, que
-# no necesitan saber de qué categoría es cada match, solo si matcheó.
 ADVERSARIAL_PATTERNS = [
     pattern
     for patterns_in_category in ADVERSARIAL_PATTERN_CATEGORIES.values()
