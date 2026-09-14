@@ -1,3 +1,4 @@
 ﻿timestamp,question,model,tokens_prompt,tokens_completion,total_tokens,latency_ms,estimated_cost_usd,valid_json,repaired
 2026-09-14T03:04:44.047070+00:00,"No puedo acceder a mi cuenta, dice que la contraseña es incorrecta pero la reseteé hace 5 minutos",gpt-4o-mini,462,161,623,3310.9,0.0001659,True,False
 2026-09-14T03:04:47.286747+00:00,che quiero cancelar,gpt-4o-mini,442,77,519,1915.27,0.0001125,True,False
+2026-09-14T03:34:33.976185+00:00,¿Puedo cambiar mi plan de suscripción?,gpt-4o-mini,449,92,541,2994.12,0.00012255,True,False

@@ -52,11 +52,10 @@ AI-Engineering/
 ├── config/
 │   └── pricing.json                 Precios por modelo (USD / 1M tokens)
 ├── prompts/
-│   ├── main_prompt.txt              Prompt de producción (ganador del experimento)
-│   └── variants/                    Las 3 variantes puras que se compararon
+│   ├── main_prompt.txt              Prompt de producción (ganador del experimento: chain-of-thought)
+│   └── variants/                    Las variantes alternativas comparadas
 │       ├── zero_shot.txt
-│       ├── few_shot.txt
-│       └── chain_of_thought.txt
+│       └── few_shot.txt
 ├── metrics/
 │   ├── metrics.csv                  Una fila por ejecución de run_query.py
 │   └── prompt_comparison.csv        Resultados del experimento de técnicas
@@ -71,13 +70,13 @@ AI-Engineering/
 ## Cómo se eligió la técnica de prompting
 
 `src/compare_prompt_techniques.py` corre un mismo set de preguntas contra
-tres prompts puros (`prompts/variants/`: zero-shot, few-shot,
-chain-of-thought — sin combinar entre sí) y mide tokens, latencia, costo y
-precisión de cada uno. El resultado queda en
-`metrics/prompt_comparison.csv`, y el prompt que ganó esa comparación
-(chain-of-thought, ver `reports/PI_report_en.md` para el detalle y el
-porqué) es el que se copió a `prompts/main_prompt.txt`, el que usa
-`run_query.py` en producción.
+tres prompts puros (zero-shot y few-shot en `prompts/variants/`, y
+chain-of-thought directamente contra `prompts/main_prompt.txt` — sin
+combinar técnicas entre sí) y mide tokens, latencia, costo y precisión de
+cada uno. El resultado queda en `metrics/prompt_comparison.csv`, y el
+prompt que ganó esa comparación (chain-of-thought, ver
+`reports/PI_report_en.md` para el detalle y el porqué) es el que quedó
+como `prompts/main_prompt.txt`, el que usa `run_query.py` en producción.
 
 Para reproducir el experimento (cuesta centavos, hace ~15 llamadas a la API):
 

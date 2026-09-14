@@ -10,9 +10,21 @@ import json
 import os
 
 from dotenv import load_dotenv
-from llm_client import ask
-from metrics import estimate_cost_usd, log_execution, now_iso
-from schema import fallback_response, validate_response
+
+# Se intenta primero el import "de paquete" (from src.xxx import ...), para
+# que funcione si alguien hace `from src.run_query import run` (por ejemplo,
+# un test futuro) con la raíz del repo en su sys.path. Si eso falla, se cae
+# al import "plano", que es el que funciona corriendo este archivo directo
+# con `python src/run_query.py` (ahí Python solo agrega src/ al path, no la
+# raíz del repo, así que "src.xxx" no se puede resolver).
+try:
+    from src.llm_client import ask
+    from src.metrics import estimate_cost_usd, log_execution, now_iso
+    from src.schema import fallback_response, validate_response
+except ImportError:
+    from llm_client import ask
+    from metrics import estimate_cost_usd, log_execution, now_iso
+    from schema import fallback_response, validate_response
 
 METRICS_PATH = os.path.join(os.path.dirname(__file__), "..", "metrics", "metrics.csv")
 
