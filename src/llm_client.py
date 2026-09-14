@@ -93,4 +93,10 @@ def ask(
         "completion_tokens": completion_tokens,
         "total_tokens": prompt_tokens + completion_tokens,
         "latency_ms": latency_ms,
+        # Se devuelve el texto ya leído (en vez de que quien llama tenga
+        # que volver a leer el archivo) — ver el uso en run_query.py:
+        # detect_unsafe_output necesita el prompt de sistema, y sin esto
+        # se leía prompts/main_prompt.txt del disco DOS veces por
+        # pregunta (acá adentro, y de nuevo en run_query.py).
+        "system_prompt": system_prompt,
     }

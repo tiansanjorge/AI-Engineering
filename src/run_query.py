@@ -18,12 +18,12 @@ from dotenv import load_dotenv
 # con `python src/run_query.py` (ahí Python solo agrega src/ al path, no la
 # raíz del repo, así que "src.xxx" no se puede resolver).
 try:
-    from src.llm_client import ask, load_system_prompt
+    from src.llm_client import ask
     from src.metrics import estimate_cost_usd, log_execution, now_iso
     from src.safety import detect_adversarial_input, detect_unsafe_output
     from src.schema import fallback_response, validate_response
 except ImportError:
-    from llm_client import ask, load_system_prompt
+    from llm_client import ask
     from metrics import estimate_cost_usd, log_execution, now_iso
     from safety import detect_adversarial_input, detect_unsafe_output
     from schema import fallback_response, validate_response
@@ -91,7 +91,7 @@ def run(question: str, model: str) -> dict:
     # disparó la capa 1.
     safety_action = "none"
     if valid:
-        output_safety_errors = detect_unsafe_output(output.get("answer", ""), load_system_prompt())
+        output_safety_errors = detect_unsafe_output(output.get("answer", ""), result["system_prompt"])
         if output_safety_errors:
             output = fallback_response("salida bloqueada por seguridad: " + "; ".join(output_safety_errors))
             safety_action = "output_blocked"
