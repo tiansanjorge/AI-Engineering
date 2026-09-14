@@ -73,15 +73,21 @@ AI-Engineering/
 - Métricas persistidas y auditables, no solo en consola.
 - Commits chicos y descriptivos desde el inicio.
 
-## Estado actual del proyecto (al 2026-09-11)
+## Estado actual del proyecto (al 2026-09-14)
 
-- Repo git con remote `origin` en `git@github.com:tiansanjorge/AI-Engineering.git`. Ramas `main` y `develop` ya creadas y pusheadas, con el flujo de branching transversal activo (ver arriba).
-- Hay un MVP mínimo exploratorio, no la estructura final:
-  - [index.py](index.py) — llamada básica a `openai` con `dotenv`, sin JSON estructurado ni métricas todavía.
-  - [testing.py](testing.py) — notas/output de ejemplo de `completion.usage`, no es un test real (no usa pytest/unittest).
-  - [requirements.txt](requirements.txt) — solo `openai` y `python-dotenv`.
-  - `.env` / `.env.example` — ya con placeholder de `OPENAI_API_KEY`.
-- Nada de esto sigue todavía la estructura de carpetas esperada (`src/`, `prompts/`, `metrics/`, `reports/`, `tests/`) — es el próximo paso de organización, no algo ya resuelto.
+- Repo git con remote `origin` en `git@github.com:tiansanjorge/AI-Engineering.git`. Ramas `main` y `develop` activas, flujo de branching transversal en uso (ver arriba) — `main` todavía no recibió ningún merge desde `develop`.
+- Objetivos obligatorios: **todos cumplidos**, en la estructura de carpetas esperada.
+  - `src/run_query.py` — entrypoint CLI, pregunta → JSON validado.
+  - `src/llm_client.py`, `schema.py`, `metrics.py`, `safety.py` — capas de soporte (llamada a OpenAI + reparación de JSON, validación de contrato, métricas/costo, seguridad).
+  - `src/compare_prompt_techniques.py` — técnica de prompting (chain-of-thought) elegida con un experimento real y reproducible, no por criterio propio. Historia completa (3 rondas, con un hallazgo real que llevó a ajustar el prompt) en `reports/PI_report_en.md`.
+  - `prompts/main_prompt.txt` + `prompts/variants/` — prompt de producción + variantes comparadas.
+  - `metrics/metrics.csv` + `metrics/prompt_comparison.csv` — ejecuciones reales registradas.
+  - `reports/PI_report_en.md` (oficial) + `PI_report_es.md` (traducción para consulta propia) — reportes cortos, sin mencionar el material de clase como fuente.
+  - `tests/test_core.py` — 32 tests, sin llamar a la API.
+  - `README.md` — setup, uso, estructura, limitaciones conocidas.
+- **Bonus implementado**: `src/safety.py` con defensa en capas (entrada + salida) ante prompt injection, catálogo de patrones por categoría medido contra un corpus etiquetado.
+- El MVP exploratorio inicial (`index.py`, `testing.py`) ya se borró — quedó completamente reemplazado por la estructura de arriba.
+- El flujo de trabajo usado: ramas `feature/...` cortas → code review (`/code-review`) → merge a `develop`. Ver historial de `develop` para el detalle de cada entrega.
 
 ## Cómo trabajar conmigo en este proyecto
 
