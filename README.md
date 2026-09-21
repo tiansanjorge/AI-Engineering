@@ -162,10 +162,18 @@ siendo una segunda barrera independiente).
 
 Este código se desarrolló con Claude Code como asistente. Las decisiones de
 diseño clave se discutieron y confirmaron explícitamente antes de
-implementar, y están documentadas en `reports/PI_report_en.md`:
+implementar, y están documentadas en `reports/PI_report_en.md`.
 
-- La técnica de prompting no se eligió por criterio propio: se comparó
-  zero-shot, few-shot y chain-of-thought con un experimento real
+**Material de referencia.** Claude Code tuvo acceso de solo lectura a las
+lecturas del módulo, a la consigna del proyecto integrador y al repositorio
+de ejemplos del profesor, que se guardan localmente en `material/` (fuera
+del repo, ver `.gitignore`). Se usaron como referencia de convenciones y
+del enunciado, nunca como destino de escritura. `CLAUDE.md` deja
+configurado ese límite y es el archivo de instrucciones que guía al
+asistente en este proyecto.
+
+- La técnica de prompting no se eligió a ojo: se comparó zero-shot,
+  few-shot y chain-of-thought con un experimento real
   (`src/compare_prompt_techniques.py`) siguiendo el flujo de "diseñar
   variantes → medir → elegir con evidencia", en vez de combinar técnicas
   sin comparar.

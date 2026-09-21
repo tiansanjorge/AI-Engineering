@@ -48,7 +48,12 @@ def ask(
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Consulta: {question}"},
         ],
+        # 0.4: valor moderado elegido a criterio. Busca respuestas poco erráticas sin volverlas
+        # robóticas; su costo es ruido entre corridas (ver "Trade-offs" del reporte).
         temperature=0.4,
+        # 500: techo de seguridad contra respuestas desbordadas.
+        # Lo medido en metrics/*.csv no pasa de ~160 tokens
+        # de completion (máx. 114 en el experimento), o sea >3x de margen.
         max_completion_tokens=500,
         response_format={"type": "json_object"},
     )

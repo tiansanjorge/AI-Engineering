@@ -1,31 +1,31 @@
-﻿timestamp,variant,question,tokens_prompt,tokens_completion,total_tokens,latency_ms,estimated_cost_usd,valid_json,expected_action,actions_returned,correct
-2026-09-14T04:00:02.982144+00:00,zero_shot,¿Cómo cambio la contraseña de mi cuenta?,363,53,416,1375.3,8.625e-05,True,responder_directamente,responder_directamente,True
-2026-09-14T04:00:04.285165+00:00,zero_shot,¿Dónde puedo descargar mi factura del mes pasado?,364,68,432,1307.58,9.54e-05,True,responder_directamente,pedir_mas_informacion,False
-2026-09-14T04:00:05.294942+00:00,zero_shot,Che quiero cancelar,357,50,407,1002.28,8.355e-05,True,pedir_mas_informacion,pedir_mas_informacion,True
-2026-09-14T04:00:06.239673+00:00,zero_shot,Tengo un problema con mi pedido,360,46,406,942.85,8.16e-05,True,pedir_mas_informacion,pedir_mas_informacion,True
-2026-09-14T04:00:07.290374+00:00,zero_shot,"La app se cierra sola cada vez que abro la sección de facturación, versión 4.2.1 en Android",380,66,446,1048.36,9.66e-05,True,crear_ticket_bug,crear_ticket_bug,True
-2026-09-14T04:00:08.250927+00:00,zero_shot,"El botón de 'Guardar cambios' en mi perfil no responde, lo probé en Chrome y Firefox y pasa siempre",377,52,429,959.91,8.775e-05,True,crear_ticket_bug,crear_ticket_bug,True
-2026-09-14T04:00:09.267661+00:00,zero_shot,"Quiero que me devuelvan la plata del pedido #4521, ya pasaron 20 días y nadie me contesta",380,58,438,1015.08,9.18e-05,True,escalar_a_humano,escalar_a_humano,True
-2026-09-14T04:00:10.174707+00:00,zero_shot,Me cobraron dos veces el mismo mes y necesito que alguien revise mi cuenta,369,54,423,905.66,8.775e-05,True,escalar_a_humano,escalar_a_humano,True
-2026-09-14T04:00:11.199850+00:00,zero_shot,"Esto ya lo pregunté ayer y me dijeron que lo iban a resolver, es el mismo problema de facturación de siempre",378,67,445,1023.72,9.69e-05,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado;escalar_a_humano,True
-2026-09-14T04:00:12.130874+00:00,zero_shot,"Este es el mismo problema de inicio de sesión que reporté hace dos semanas, en su momento me dijeron que ya estaba solucionado",380,59,439,929.26,9.24e-05,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado,True
-2026-09-14T04:00:13.079011+00:00,few_shot,¿Cómo cambio la contraseña de mi cuenta?,530,53,583,945.96,0.0001113,True,responder_directamente,responder_directamente,True
-2026-09-14T04:00:14.063627+00:00,few_shot,¿Dónde puedo descargar mi factura del mes pasado?,531,63,594,983.95,0.00011745,True,responder_directamente,responder_directamente,True
-2026-09-14T04:00:15.178803+00:00,few_shot,Che quiero cancelar,524,56,580,1115.0,0.0001122,True,pedir_mas_informacion,pedir_mas_informacion,True
-2026-09-14T04:00:16.082110+00:00,few_shot,Tengo un problema con mi pedido,527,57,584,899.2,0.00011325,True,pedir_mas_informacion,pedir_mas_informacion,True
-2026-09-14T04:00:17.656913+00:00,few_shot,"La app se cierra sola cada vez que abro la sección de facturación, versión 4.2.1 en Android",547,70,617,1573.24,0.00012405,True,crear_ticket_bug,crear_ticket_bug;escalar_a_humano,True
-2026-09-14T04:00:18.617695+00:00,few_shot,"El botón de 'Guardar cambios' en mi perfil no responde, lo probé en Chrome y Firefox y pasa siempre",544,64,608,961.25,0.00012,True,crear_ticket_bug,crear_ticket_bug;escalar_a_humano,True
-2026-09-14T04:00:19.652668+00:00,few_shot,"Quiero que me devuelvan la plata del pedido #4521, ya pasaron 20 días y nadie me contesta",547,58,605,1031.35,0.00011685,True,escalar_a_humano,escalar_a_humano,True
-2026-09-14T04:00:20.652533+00:00,few_shot,Me cobraron dos veces el mismo mes y necesito que alguien revise mi cuenta,536,58,594,998.43,0.0001152,True,escalar_a_humano,escalar_a_humano,True
-2026-09-14T04:00:21.664804+00:00,few_shot,"Esto ya lo pregunté ayer y me dijeron que lo iban a resolver, es el mismo problema de facturación de siempre",545,67,612,1010.85,0.00012195,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado;escalar_a_humano,True
-2026-09-14T04:00:22.711899+00:00,few_shot,"Este es el mismo problema de inicio de sesión que reporté hace dos semanas, en su momento me dijeron que ya estaba solucionado",547,58,605,1046.24,0.00011685,True,cerrar_ticket_duplicado,escalar_a_humano,False
-2026-09-14T04:00:23.870854+00:00,chain_of_thought,¿Cómo cambio la contraseña de mi cuenta?,562,88,650,1157.57,0.0001371,True,responder_directamente,responder_directamente,True
-2026-09-14T04:00:25.366385+00:00,chain_of_thought,¿Dónde puedo descargar mi factura del mes pasado?,563,83,646,1493.28,0.00013425,True,responder_directamente,responder_directamente,True
-2026-09-14T04:00:26.626999+00:00,chain_of_thought,Che quiero cancelar,556,81,637,1259.6,0.000132,True,pedir_mas_informacion,pedir_mas_informacion,True
-2026-09-14T04:00:27.788930+00:00,chain_of_thought,Tengo un problema con mi pedido,559,86,645,1159.96,0.00013545,True,pedir_mas_informacion,pedir_mas_informacion,True
-2026-09-14T04:00:29.024508+00:00,chain_of_thought,"La app se cierra sola cada vez que abro la sección de facturación, versión 4.2.1 en Android",579,109,688,1240.69,0.00015225,True,crear_ticket_bug,crear_ticket_bug,True
-2026-09-14T04:00:30.423731+00:00,chain_of_thought,"El botón de 'Guardar cambios' en mi perfil no responde, lo probé en Chrome y Firefox y pasa siempre",576,114,690,1395.56,0.0001548,True,crear_ticket_bug,crear_ticket_bug,True
-2026-09-14T04:00:31.682327+00:00,chain_of_thought,"Quiero que me devuelvan la plata del pedido #4521, ya pasaron 20 días y nadie me contesta",579,107,686,1252.97,0.00015105,True,escalar_a_humano,escalar_a_humano,True
-2026-09-14T04:00:32.833958+00:00,chain_of_thought,Me cobraron dos veces el mismo mes y necesito que alguien revise mi cuenta,568,101,669,1156.18,0.0001458,True,escalar_a_humano,escalar_a_humano,True
-2026-09-14T04:00:33.918742+00:00,chain_of_thought,"Esto ya lo pregunté ayer y me dijeron que lo iban a resolver, es el mismo problema de facturación de siempre",577,75,652,1078.77,0.00013155,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado,True
-2026-09-14T04:00:35.127418+00:00,chain_of_thought,"Este es el mismo problema de inicio de sesión que reporté hace dos semanas, en su momento me dijeron que ya estaba solucionado",579,108,687,1206.16,0.00015165,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado,True
+﻿timestamp,round,variant,question,tokens_prompt,tokens_completion,total_tokens,latency_ms,estimated_cost_usd,valid_json,expected_action,actions_returned,correct
+2026-09-14T04:00:02.982144+00:00,3,zero_shot,¿Cómo cambio la contraseña de mi cuenta?,363,53,416,1375.3,8.625e-05,True,responder_directamente,responder_directamente,True
+2026-09-14T04:00:04.285165+00:00,3,zero_shot,¿Dónde puedo descargar mi factura del mes pasado?,364,68,432,1307.58,9.54e-05,True,responder_directamente,pedir_mas_informacion,False
+2026-09-14T04:00:05.294942+00:00,3,zero_shot,Che quiero cancelar,357,50,407,1002.28,8.355e-05,True,pedir_mas_informacion,pedir_mas_informacion,True
+2026-09-14T04:00:06.239673+00:00,3,zero_shot,Tengo un problema con mi pedido,360,46,406,942.85,8.16e-05,True,pedir_mas_informacion,pedir_mas_informacion,True
+2026-09-14T04:00:07.290374+00:00,3,zero_shot,"La app se cierra sola cada vez que abro la sección de facturación, versión 4.2.1 en Android",380,66,446,1048.36,9.66e-05,True,crear_ticket_bug,crear_ticket_bug,True
+2026-09-14T04:00:08.250927+00:00,3,zero_shot,"El botón de 'Guardar cambios' en mi perfil no responde, lo probé en Chrome y Firefox y pasa siempre",377,52,429,959.91,8.775e-05,True,crear_ticket_bug,crear_ticket_bug,True
+2026-09-14T04:00:09.267661+00:00,3,zero_shot,"Quiero que me devuelvan la plata del pedido #4521, ya pasaron 20 días y nadie me contesta",380,58,438,1015.08,9.18e-05,True,escalar_a_humano,escalar_a_humano,True
+2026-09-14T04:00:10.174707+00:00,3,zero_shot,Me cobraron dos veces el mismo mes y necesito que alguien revise mi cuenta,369,54,423,905.66,8.775e-05,True,escalar_a_humano,escalar_a_humano,True
+2026-09-14T04:00:11.199850+00:00,3,zero_shot,"Esto ya lo pregunté ayer y me dijeron que lo iban a resolver, es el mismo problema de facturación de siempre",378,67,445,1023.72,9.69e-05,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado;escalar_a_humano,True
+2026-09-14T04:00:12.130874+00:00,3,zero_shot,"Este es el mismo problema de inicio de sesión que reporté hace dos semanas, en su momento me dijeron que ya estaba solucionado",380,59,439,929.26,9.24e-05,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado,True
+2026-09-14T04:00:13.079011+00:00,3,few_shot,¿Cómo cambio la contraseña de mi cuenta?,530,53,583,945.96,0.0001113,True,responder_directamente,responder_directamente,True
+2026-09-14T04:00:14.063627+00:00,3,few_shot,¿Dónde puedo descargar mi factura del mes pasado?,531,63,594,983.95,0.00011745,True,responder_directamente,responder_directamente,True
+2026-09-14T04:00:15.178803+00:00,3,few_shot,Che quiero cancelar,524,56,580,1115.0,0.0001122,True,pedir_mas_informacion,pedir_mas_informacion,True
+2026-09-14T04:00:16.082110+00:00,3,few_shot,Tengo un problema con mi pedido,527,57,584,899.2,0.00011325,True,pedir_mas_informacion,pedir_mas_informacion,True
+2026-09-14T04:00:17.656913+00:00,3,few_shot,"La app se cierra sola cada vez que abro la sección de facturación, versión 4.2.1 en Android",547,70,617,1573.24,0.00012405,True,crear_ticket_bug,crear_ticket_bug;escalar_a_humano,True
+2026-09-14T04:00:18.617695+00:00,3,few_shot,"El botón de 'Guardar cambios' en mi perfil no responde, lo probé en Chrome y Firefox y pasa siempre",544,64,608,961.25,0.00012,True,crear_ticket_bug,crear_ticket_bug;escalar_a_humano,True
+2026-09-14T04:00:19.652668+00:00,3,few_shot,"Quiero que me devuelvan la plata del pedido #4521, ya pasaron 20 días y nadie me contesta",547,58,605,1031.35,0.00011685,True,escalar_a_humano,escalar_a_humano,True
+2026-09-14T04:00:20.652533+00:00,3,few_shot,Me cobraron dos veces el mismo mes y necesito que alguien revise mi cuenta,536,58,594,998.43,0.0001152,True,escalar_a_humano,escalar_a_humano,True
+2026-09-14T04:00:21.664804+00:00,3,few_shot,"Esto ya lo pregunté ayer y me dijeron que lo iban a resolver, es el mismo problema de facturación de siempre",545,67,612,1010.85,0.00012195,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado;escalar_a_humano,True
+2026-09-14T04:00:22.711899+00:00,3,few_shot,"Este es el mismo problema de inicio de sesión que reporté hace dos semanas, en su momento me dijeron que ya estaba solucionado",547,58,605,1046.24,0.00011685,True,cerrar_ticket_duplicado,escalar_a_humano,False
+2026-09-14T04:00:23.870854+00:00,3,chain_of_thought,¿Cómo cambio la contraseña de mi cuenta?,562,88,650,1157.57,0.0001371,True,responder_directamente,responder_directamente,True
+2026-09-14T04:00:25.366385+00:00,3,chain_of_thought,¿Dónde puedo descargar mi factura del mes pasado?,563,83,646,1493.28,0.00013425,True,responder_directamente,responder_directamente,True
+2026-09-14T04:00:26.626999+00:00,3,chain_of_thought,Che quiero cancelar,556,81,637,1259.6,0.000132,True,pedir_mas_informacion,pedir_mas_informacion,True
+2026-09-14T04:00:27.788930+00:00,3,chain_of_thought,Tengo un problema con mi pedido,559,86,645,1159.96,0.00013545,True,pedir_mas_informacion,pedir_mas_informacion,True
+2026-09-14T04:00:29.024508+00:00,3,chain_of_thought,"La app se cierra sola cada vez que abro la sección de facturación, versión 4.2.1 en Android",579,109,688,1240.69,0.00015225,True,crear_ticket_bug,crear_ticket_bug,True
+2026-09-14T04:00:30.423731+00:00,3,chain_of_thought,"El botón de 'Guardar cambios' en mi perfil no responde, lo probé en Chrome y Firefox y pasa siempre",576,114,690,1395.56,0.0001548,True,crear_ticket_bug,crear_ticket_bug,True
+2026-09-14T04:00:31.682327+00:00,3,chain_of_thought,"Quiero que me devuelvan la plata del pedido #4521, ya pasaron 20 días y nadie me contesta",579,107,686,1252.97,0.00015105,True,escalar_a_humano,escalar_a_humano,True
+2026-09-14T04:00:32.833958+00:00,3,chain_of_thought,Me cobraron dos veces el mismo mes y necesito que alguien revise mi cuenta,568,101,669,1156.18,0.0001458,True,escalar_a_humano,escalar_a_humano,True
+2026-09-14T04:00:33.918742+00:00,3,chain_of_thought,"Esto ya lo pregunté ayer y me dijeron que lo iban a resolver, es el mismo problema de facturación de siempre",577,75,652,1078.77,0.00013155,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado,True
+2026-09-14T04:00:35.127418+00:00,3,chain_of_thought,"Este es el mismo problema de inicio de sesión que reporté hace dos semanas, en su momento me dijeron que ya estaba solucionado",579,108,687,1206.16,0.00015165,True,cerrar_ticket_duplicado,cerrar_ticket_duplicado,True
