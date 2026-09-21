@@ -75,7 +75,7 @@ AI-Engineering/
 
 ## Estado actual del proyecto (al 2026-09-14)
 
-- Repo git con remote `origin` en `git@github.com:tiansanjorge/AI-Engineering.git`. Ramas `main` y `develop` activas, flujo de branching transversal en uso (ver arriba) — `main` todavía no recibió ningún merge desde `develop`.
+- Repo git con remote `origin` en `git@github.com:tiansanjorge/AI-Engineering.git`. Ramas `main` y `develop` activas, flujo de branching transversal en uso (ver arriba) — `main` ya recibió el merge de `develop` de la entrega del Módulo 1 (validada por Henry).
 - Objetivos obligatorios: **todos cumplidos**, en la estructura de carpetas esperada.
   - `src/run_query.py` — entrypoint CLI, pregunta → JSON validado.
   - `src/llm_client.py`, `schema.py`, `metrics.py`, `safety.py` — capas de soporte (llamada a OpenAI + reparación de JSON, validación de contrato, métricas/costo, seguridad).
@@ -83,7 +83,7 @@ AI-Engineering/
   - `prompts/main_prompt.txt` + `prompts/variants/` — prompt de producción + variantes comparadas.
   - `metrics/metrics.csv` + `metrics/prompt_comparison.csv` — ejecuciones reales registradas.
   - `reports/PI_report_en.md` (oficial) + `PI_report_es.md` (traducción para consulta propia) — reportes cortos, sin mencionar el material de clase como fuente.
-  - `tests/test_core.py` — 32 tests, sin llamar a la API.
+  - `tests/test_core.py` — 32 tests unitarios y `tests/test_integration.py` — 7 tests de integración de `run_query.run()` con OpenAI mockeado. Ninguno llama a la API.
   - `README.md` — setup, uso, estructura, limitaciones conocidas.
 - **Bonus implementado**: `src/safety.py` con defensa en capas (entrada + salida) ante prompt injection, catálogo de patrones por categoría medido contra un corpus etiquetado.
 - El MVP exploratorio inicial (`index.py`, `testing.py`) ya se borró — quedó completamente reemplazado por la estructura de arriba.
