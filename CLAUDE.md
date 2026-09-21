@@ -4,7 +4,7 @@ Este repo (`AI-Engineering`) es el destino de **todas** las entregas de la carre
 
 ## Reglas transversales (todos los módulos)
 
-**Framing de negocio preferido (decisión 2026-09-11, aplica a toda la carrera):** cuando la consigna de un módulo deja espacio de elección (ejemplos, dominio de datos, vocabulario, tipo de acciones/casos de uso), inclinarse por defecto hacia un dominio de **Help Desk / soporte al cliente vía tickets**, en línea con una propuesta de proyecto Full Stack más grande que estoy evaluando por fuera de esta carrera (notas privadas en `HelpDesk - Proyecto Full Stack.txt`, gitignoreado, no es un entregable). **La consigna de cada módulo manda siempre por encima de este framing** — si en algún punto entran en conflicto, gana la consigna.
+**Framing de negocio preferido (decisión 2026-09-11, aplica a toda la carrera):** cuando la consigna de un módulo deja espacio de elección (ejemplos, dominio de datos, vocabulario, tipo de acciones/casos de uso), inclinarse por defecto hacia un dominio de **Help Desk / soporte al cliente vía tickets**, que además es coherente con el contexto de negocio de la consigna del Módulo 1. **La consigna de cada módulo manda siempre por encima de este framing** — si en algún punto entran en conflicto, gana la consigna.
 
 **Branching (decisión 2026-09-11, aplica a toda la carrera):** `develop` + feature branches cortas, siguiendo la skill `git-workflow-and-versioning`. Nunca commitear directo a `main`.
 1. Cada objetivo/módulo va en su propia rama corta (`feature/...`) que mergea a `develop`.
@@ -78,16 +78,16 @@ AI-Engineering/
 - Métricas persistidas y auditables, no solo en consola.
 - Commits chicos y descriptivos desde el inicio.
 
-## Estado actual del proyecto (al 2026-09-14)
+## Estado actual del proyecto (Módulo 1 validado por Henry, actualizado 2026-09-20)
 
 - Repo git con remote `origin` en `git@github.com:tiansanjorge/AI-Engineering.git`. Ramas `main` y `develop` activas, flujo de branching transversal en uso (ver arriba) — `main` ya recibió el merge de `develop` de la entrega del Módulo 1 (validada por Henry).
 - Objetivos obligatorios: **todos cumplidos**, en la estructura de carpetas esperada.
   - `src/run_query.py` — entrypoint CLI, pregunta → JSON validado.
   - `src/llm_client.py`, `schema.py`, `metrics.py`, `safety.py` — capas de soporte (llamada a OpenAI + reparación de JSON, validación de contrato, métricas/costo, seguridad).
-  - `src/compare_prompt_techniques.py` — técnica de prompting (chain-of-thought) elegida con un experimento real y reproducible, no por criterio propio. Historia completa (3 rondas, con un hallazgo real que llevó a ajustar el prompt) en `reports/PI_report_en.md`.
+  - `src/compare_prompt_techniques.py` — técnica de prompting (chain-of-thought) elegida con un experimento real y reproducible (evidencia medida, no a ojo). Historia completa (3 rondas, con un hallazgo real que llevó a ajustar el prompt) en `reports/PI_report_en.md`.
   - `prompts/main_prompt.txt` + `prompts/variants/` — prompt de producción + variantes comparadas.
   - `metrics/metrics.csv` + `metrics/prompt_comparison.csv` — ejecuciones reales registradas.
-  - `reports/PI_report_en.md` (oficial) + `PI_report_es.md` (traducción para consulta propia) — reportes cortos, sin mencionar el material de clase como fuente.
+  - `reports/PI_report_en.md` (oficial) + `PI_report_es.md` (traducción para consulta propia) — reportes cortos. El uso de IA y del material de referencia de `material/` se declara en el README (sección "Sobre el uso de IA como apoyo").
   - `tests/test_core.py` — 32 tests unitarios y `tests/test_integration.py` — 7 tests de integración de `run_query.run()` con OpenAI mockeado. Ninguno llama a la API.
   - `README.md` — setup, uso, estructura, limitaciones conocidas.
 - **Bonus implementado**: `src/safety.py` con defensa en capas (entrada + salida) ante prompt injection, catálogo de patrones por categoría medido contra un corpus etiquetado.
