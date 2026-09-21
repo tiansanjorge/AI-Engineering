@@ -14,11 +14,21 @@ from dotenv import load_dotenv
 
 try:
     from src.llm_client import ask
-    from src.metrics import estimate_cost_usd, log_comparison_row, now_iso
+    from src.metrics import (
+        estimate_cost_usd,
+        log_comparison_row,
+        next_comparison_round,
+        now_iso,
+    )
     from src.schema import validate_response
 except ImportError:
     from llm_client import ask
-    from metrics import estimate_cost_usd, log_comparison_row, now_iso
+    from metrics import (
+        estimate_cost_usd,
+        log_comparison_row,
+        next_comparison_round,
+        now_iso,
+    )
     from schema import validate_response
 
 COMPARISON_CSV_PATH = os.path.join(
@@ -83,8 +93,13 @@ TEST_QUESTIONS = [
 ]
 
 
-def run_comparison(model: str = "gpt-4o-mini") -> list[dict]:
-    """Corre cada pregunta de prueba contra cada variante de prompt."""
+def run_comparison(model: str = "gpt-4o-mini", round_number: int | None = None) -> list[dict]:
+    """Corre cada pregunta de prueba contra cada variante de prompt. Cada
+    fila queda etiquetada con `round` para que las corridas sucesivas se
+    acumulen en el CSV sin pisarse y sigan siendo auditables por separado.
+    """
+    if round_number is None:
+        round_number = next_comparison_round(COMPARISON_CSV_PATH)
     rows = []
 
     for variant_name, prompt_path in VARIANTS.items():
@@ -103,6 +118,7 @@ def run_comparison(model: str = "gpt-4o-mini") -> list[dict]:
 
             row = {
                 "timestamp": now_iso(),
+                "round": round_number,
                 "variant": variant_name,
                 "question": case["question"],
                 "tokens_prompt": result["prompt_tokens"],

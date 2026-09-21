@@ -80,6 +80,7 @@ def log_execution(csv_path: str, row: dict) -> None:
 # Columnas del CSV del experimento de comparación de técnicas de prompt
 COMPARISON_FIELDNAMES = [
     "timestamp",
+    "round",
     "variant",
     "question",
     "tokens_prompt",
@@ -98,6 +99,16 @@ def log_comparison_row(csv_path: str, row: dict) -> None:
     """Agrega una fila de resultados del experimento de comparación de
     técnicas de prompting."""
     _append_csv_row(csv_path, row, COMPARISON_FIELDNAMES)
+
+
+def next_comparison_round(csv_path: str) -> int:
+    """Número de la próxima ronda del experimento: 1 + la mayor ronda ya
+    registrada en el CSV (o 1 si el archivo no existe todavía)."""
+    if not os.path.isfile(csv_path):
+        return 1
+    with open(csv_path, "r", newline="", encoding="utf-8-sig") as f:
+        rounds = [int(r["round"]) for r in csv.DictReader(f) if r.get("round")]
+    return max(rounds, default=0) + 1
 
 
 def now_iso() -> str:
