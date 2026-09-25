@@ -9,7 +9,7 @@ propios), documentada en su propio README.
 | Módulo | Carpeta | Qué construye |
 |---|---|---|
 | 1 | [`modulo-1/`](modulo-1/README.md) | Asistente de soporte al cliente: pregunta → JSON con respuesta, confianza y acciones, con métricas de costo/latencia por ejecución. |
-| 2 | `modulo-2/` | *(en construcción)* Chatbot de FAQs con RAG: chunking, embeddings, búsqueda vectorial y generación con contexto recuperado. |
+| 2 | [`modulo-2/`](modulo-2/README.md) | Chatbot de FAQs con RAG: chunking, embeddings, búsqueda vectorial y generación con contexto recuperado. Flujo obligatorio + bonus (agente evaluador) completos. |
 
 ## Entorno compartido
 
