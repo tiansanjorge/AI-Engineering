@@ -118,8 +118,15 @@ Consigna extraída de `material/Lecciones/Modulo 2/Consignas y guía proyecto in
 - **Agente evaluador (bonus):** se encara después de que el flujo obligatorio funcione de punta a punta, mismo criterio que en M1 (camino principal primero, iterar después).
 - **Documento fuente:** contenido original a escribir (no se copia de `material/Repositorios Profe/modulo 2/datos/`, que es solo referencia de qué tipo de contenido usar).
 
-### Estado actual
-En diseño — todavía no se escribió código de `modulo-2/`. Este documento se actualizará a medida que avance la implementación, igual que se hizo con el Módulo 1.
+### Estado actual (actualizado 2026-09-25)
+Flujo obligatorio completo y funcionando de punta a punta, en `feature/modulo-2-rag-faq` (todavía no mergeada a `develop`):
+- `data/faq_document.txt` — documento original (1747 palabras, 13 secciones) sobre NimbusHR (HR SaaS ficticio).
+- `src/chunking.py`, `embeddings.py`, `vector_store.py`, `build_index.py` — pipeline de indexación (chunk_size=100, overlap=20 → 22 chunks reales, 67-100 palabras c/u). Corrido contra la API real, índice guardado en `data/index.json`.
+- `src/llm_client.py`, `query.py` — pipeline de consulta (k-NN con coseno explícito → contexto → generación). JSON de salida con las 3 claves exactas que pide la consigna.
+- `outputs/sample_queries.json` — 3 preguntas reales (dato puntual, sí/no, "cómo hacer"), corridas dos veces: la primera corrida encontró un hallazgo real (el modelo rechazaba una pregunta cuyo chunk recuperado sí tenía la respuesta, por ser demasiado literal con la regla "si no está, decilo"); se ajustó la regla del prompt a "rechazá solo si ningún fragmento se relaciona" y las 3 preguntas pasaron a responder bien. Detalle completo en `modulo-2/README.md`.
+- `tests/test_core.py` — 12 tests (chunking, similitud coseno, k-NN, guardado/lectura del índice, contrato JSON de `query.py`), ninguno llama a la API real.
+- `README.md` propio con setup, uso, estructura, decisiones técnicas justificadas y el hallazgo documentado.
+- **Pendiente:** el bonus del agente evaluador (deferido a después del flujo obligatorio, según lo acordado).
 
 ## Cómo trabajar conmigo en este proyecto
 
