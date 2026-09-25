@@ -13,6 +13,7 @@ import pytest
 
 import query
 from chunking import DEFAULT_DOCUMENT_PATH, chunk_text, load_and_chunk_document
+from evaluator import build_evaluation_prompt, evaluate_response
 from vector_store import cosine_similarity, load_index, save_index, search_similar_chunks
 
 
@@ -133,3 +134,50 @@ def test_answer_question_output_is_json_serializable(fake_index):
     result = query.answer_question("pregunta de prueba", index_path=fake_index, k=2)
     # Si esto no tira excepcion, el JSON de salida es valido de punta a punta.
     json.dumps(result, ensure_ascii=False)
+
+
+# ---------------------------------------------------------------------------
+# evaluator.py (bonus) — LLM mockeado, no llama a la API
+# ---------------------------------------------------------------------------
+
+def test_build_evaluation_prompt_includes_question_answer_and_chunks():
+    prompt = build_evaluation_prompt("pregunta?", "respuesta.", ["chunk uno", "chunk dos"])
+    assert "pregunta?" in prompt
+    assert "respuesta." in prompt
+    assert "chunk uno" in prompt
+    assert "chunk dos" in prompt
+
+
+class _FakeMessage:
+    def __init__(self, content):
+        self.content = content
+
+
+class _FakeChoice:
+    def __init__(self, content):
+        self.message = _FakeMessage(content)
+
+
+class _FakeCompletion:
+    def __init__(self, content):
+        self.choices = [_FakeChoice(content)]
+
+
+def test_evaluate_response_parses_score_and_reason(monkeypatch):
+    fake_json = json.dumps(
+        {"score": 8, "reason": "Usa el chunk correcto y responde completo, sin inventar nada fuera del contexto dado."}
+    )
+
+    class _FakeClient:
+        class chat:
+            class completions:
+                @staticmethod
+                def create(**kwargs):
+                    return _FakeCompletion(fake_json)
+
+    monkeypatch.setattr("evaluator.OpenAI", lambda: _FakeClient())
+
+    result = evaluate_response("pregunta?", "respuesta.", ["chunk uno"])
+
+    assert result["score"] == 8
+    assert len(result["reason"]) >= 50

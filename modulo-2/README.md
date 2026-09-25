@@ -54,30 +54,59 @@ Imprime por stdout el JSON con `user_question`, `system_answer` y
 python -m pytest
 ```
 
-12 tests sobre chunking, similitud coseno, búsqueda k-NN, guardado/lectura
-del índice, y el contrato JSON de `query.py`. Ninguno llama a la API real
-(`embed_query` y `generate_answer` se mockean) — corren rápido y gratis en
-cualquier máquina.
+14 tests sobre chunking, similitud coseno, búsqueda k-NN, guardado/lectura
+del índice, el contrato JSON de `query.py`, y el parseo del agente
+evaluador. Ninguno llama a la API real (`embed_query`, `generate_answer` y
+`OpenAI` del evaluador se mockean) — corren rápido y gratis en cualquier
+máquina.
+
+## Bonus: agente evaluador
+
+```bash
+python src/evaluate_samples.py
+```
+
+Lee `outputs/sample_queries.json`, le pide a un LLM que puntúe cada
+respuesta (0-10) en 3 dimensiones — relevancia de los chunks, fidelidad al
+contexto, completitud — y guarda el resultado en un archivo **separado**:
+`outputs/sample_queries_evaluated.json` (cada entrada = la salida original
++ `score` + `reason`). No modifica `sample_queries.json`, para no romper el
+contrato de 3 claves exactas que exige la consigna y que ya validan los
+tests.
+
+**Hallazgo real:** la primera versión del evaluador acertó los scores
+(8-9/10) pero el *reason* de una respuesta afirmó que le faltaba un dato
+que en realidad **sí estaba** en el texto evaluado — un error de lectura
+del propio evaluador (fidelidad de un LLM-juez a su propio input),
+independiente de si la respuesta original estaba bien. Se agregó una
+instrucción explícita: cada observación sobre "falta X" o "dice Y" debe ir
+acompañada de una cita textual entre comillas que la respalde, y releer el
+texto completo antes de afirmar que algo no está. Con eso, las citas pasan
+a ser verificables contra el texto real y el error no volvió a aparecer en
+las 3 preguntas de prueba.
 
 ## Estructura
 
 ```
 modulo-2/
 ├── data/
-│   ├── faq_document.txt        Documento fuente (1747 palabras, 13 secciones)
-│   └── index.json               Chunks + embeddings, generado por build_index.py
+│   ├── faq_document.txt         Documento fuente (1747 palabras, 13 secciones)
+│   └── index.json                Chunks + embeddings, generado por build_index.py
 ├── src/
-│   ├── chunking.py              Carga del documento + division en chunks
-│   ├── embeddings.py            Generacion de embeddings (OpenAI)
-│   ├── vector_store.py          Guardado del indice + busqueda k-NN (coseno explicito)
-│   ├── llm_client.py            Generacion de la respuesta final (grounded en el contexto)
-│   ├── build_index.py           Entrypoint: pipeline de indexacion completo
-│   └── query.py                 Entrypoint: pipeline de consulta completo
+│   ├── chunking.py               Carga del documento + division en chunks
+│   ├── embeddings.py             Generacion de embeddings (OpenAI)
+│   ├── vector_store.py           Guardado del indice + busqueda k-NN (coseno explicito)
+│   ├── llm_client.py             Generacion de la respuesta final (grounded en el contexto)
+│   ├── evaluator.py              Bonus: puntua una respuesta ya generada (0-10 + reason)
+│   ├── build_index.py            Entrypoint: pipeline de indexacion completo
+│   ├── query.py                  Entrypoint: pipeline de consulta completo
+│   └── evaluate_samples.py       Entrypoint: corre el evaluador sobre sample_queries.json
 ├── outputs/
-│   └── sample_queries.json      3 ejemplos reales de punta a punta
+│   ├── sample_queries.json           3 ejemplos reales de punta a punta
+│   └── sample_queries_evaluated.json Los mismos 3, con score + reason del evaluador
 ├── tests/
 │   └── test_core.py
-└── conftest.py                   Permite `import chunking`, `import query`, etc. en los tests
+└── conftest.py                    Permite `import chunking`, `import query`, etc. en los tests
 ```
 
 ## Decisiones técnicas
@@ -140,6 +169,12 @@ detalle de las dos corridas está en el historial de commits de esta rama.
 - El documento fuente es contenido original escrito para este proyecto
   integrador (empresa y políticas ficticias), no un documento real de
   producción.
+- El agente evaluador (bonus) es un LLM-juez: da scores razonables y
+  citas verificables después del ajuste documentado arriba, pero sigue
+  siendo un modelo evaluando texto, no una verificación formal. Un score
+  alto no es una garantía matemática de corrección, es una señal
+  aproximada — la misma limitación que tiene cualquier evaluación
+  automática basada en LLM.
 
 ## Sobre el uso de IA como apoyo
 

@@ -126,7 +126,7 @@ Flujo obligatorio completo y funcionando de punta a punta, en `feature/modulo-2-
 - `outputs/sample_queries.json` — 3 preguntas reales (dato puntual, sí/no, "cómo hacer"), corridas dos veces: la primera corrida encontró un hallazgo real (el modelo rechazaba una pregunta cuyo chunk recuperado sí tenía la respuesta, por ser demasiado literal con la regla "si no está, decilo"); se ajustó la regla del prompt a "rechazá solo si ningún fragmento se relaciona" y las 3 preguntas pasaron a responder bien. Detalle completo en `modulo-2/README.md`.
 - `tests/test_core.py` — 12 tests (chunking, similitud coseno, k-NN, guardado/lectura del índice, contrato JSON de `query.py`), ninguno llama a la API real.
 - `README.md` propio con setup, uso, estructura, decisiones técnicas justificadas y el hallazgo documentado.
-- **Pendiente:** el bonus del agente evaluador (deferido a después del flujo obligatorio, según lo acordado).
+- **Bonus implementado:** `src/evaluator.py` + `src/evaluate_samples.py`. Puntúa (0-10 + reason) cada entrada de `outputs/sample_queries.json` en 3 dimensiones (relevancia, fidelidad, completitud) y guarda el resultado en `outputs/sample_queries_evaluated.json` — separado, sin tocar el contrato de 3 claves de `sample_queries.json`. Hallazgo real: la primera versión del evaluador acertaba el score pero su `reason` afirmó que faltaba un dato que en realidad estaba en el texto evaluado (error de lectura del propio LLM-juez); se corrigió exigiendo cita textual entre comillas para cada observación. Limitación conocida documentada en el README: un LLM-juez da una señal aproximada, no una verificación formal. 14 tests en total (12 del flujo obligatorio + 2 del evaluador, mockeado).
 
 ## Cómo trabajar conmigo en este proyecto
 
