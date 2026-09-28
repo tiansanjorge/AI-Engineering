@@ -118,8 +118,8 @@ Consigna extraída de `material/Lecciones/Modulo 2/Consignas y guía proyecto in
 - **Agente evaluador (bonus):** se encara después de que el flujo obligatorio funcione de punta a punta, mismo criterio que en M1 (camino principal primero, iterar después).
 - **Documento fuente:** contenido original a escribir (no se copia de `material/Repositorios Profe/modulo 2/datos/`, que es solo referencia de qué tipo de contenido usar).
 
-### Estado actual (actualizado 2026-09-25)
-Flujo obligatorio completo y funcionando de punta a punta, en `feature/modulo-2-rag-faq` (todavía no mergeada a `develop`):
+### Estado actual (actualizado 2026-09-28)
+Flujo obligatorio completo y funcionando de punta a punta, ya mergeado a `develop` (incluye la migración de chunking a tokens del 2026-09-28):
 - `data/faq_document.txt` — documento original (1747 palabras, 13 secciones) sobre NimbusHR (HR SaaS ficticio).
 - `src/chunking.py`, `embeddings.py`, `vector_store.py`, `build_index.py` — pipeline de indexación (chunk_size=150, overlap=30 en tokens → 23 chunks reales, 57-150 tokens c/u). Corrido contra la API real, índice guardado en `data/index.json`.
 - `src/llm_client.py`, `query.py` — pipeline de consulta (k-NN con coseno explícito → contexto → generación). JSON de salida con las 3 claves exactas que pide la consigna.
