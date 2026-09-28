@@ -8,6 +8,9 @@ import tiktoken
 # Mismo tokenizador que usa text-embedding-3-small.
 _ENCODING = tiktoken.get_encoding("cl100k_base")
 
+DEFAULT_CHUNK_SIZE = 150
+DEFAULT_OVERLAP = 30
+
 
 def load_document(path: str) -> str:
     """Lee el documento fuente como texto plano (UTF-8)."""
@@ -21,7 +24,9 @@ def _is_continuation(token: int) -> bool:
     return _ENCODING.decode_single_token_bytes(token)[0] & 0b11000000 == 0b10000000
 
 
-def chunk_text(text: str, chunk_size: int = 150, overlap: int = 30) -> list[str]:
+def chunk_text(
+    text: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_OVERLAP
+) -> list[str]:
     """Divide el texto en bloques de chunk_size tokens, solapando
     overlap tokens entre bloques consecutivos.
 
@@ -53,7 +58,7 @@ def chunk_text(text: str, chunk_size: int = 150, overlap: int = 30) -> list[str]
 
 
 def load_and_chunk_document(
-    path: str, chunk_size: int = 150, overlap: int = 30
+    path: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_OVERLAP
 ) -> list[str]:
     """Etapas 1 y 2 del pipeline de indexacion: carga el documento y lo
     parte en chunks."""
