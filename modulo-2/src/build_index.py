@@ -10,7 +10,12 @@ import os
 
 from dotenv import load_dotenv
 
-from chunking import DEFAULT_DOCUMENT_PATH, load_and_chunk_document
+from chunking import (
+    DEFAULT_CHUNK_SIZE,
+    DEFAULT_DOCUMENT_PATH,
+    DEFAULT_OVERLAP,
+    load_and_chunk_document,
+)
 from embeddings import generate_embeddings
 from vector_store import save_index
 
@@ -22,8 +27,8 @@ DEFAULT_INDEX_PATH = os.path.join(
 def build_index(
     document_path: str = DEFAULT_DOCUMENT_PATH,
     index_path: str = DEFAULT_INDEX_PATH,
-    chunk_size: int = 150,
-    overlap: int = 30,
+    chunk_size: int = DEFAULT_CHUNK_SIZE,
+    overlap: int = DEFAULT_OVERLAP,
 ) -> None:
     """Corre las 4 etapas del pipeline de indexacion y deja el resultado
     en index_path."""
@@ -42,8 +47,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Pipeline de indexacion RAG")
     parser.add_argument("--document", default=DEFAULT_DOCUMENT_PATH)
     parser.add_argument("--index", default=DEFAULT_INDEX_PATH)
-    parser.add_argument("--chunk-size", type=int, default=150, help="tokens por chunk")
-    parser.add_argument("--overlap", type=int, default=30, help="tokens de solapamiento")
+    parser.add_argument(
+        "--chunk-size", type=int, default=DEFAULT_CHUNK_SIZE, help="tokens por chunk"
+    )
+    parser.add_argument(
+        "--overlap", type=int, default=DEFAULT_OVERLAP, help="tokens de solapamiento"
+    )
     args = parser.parse_args()
 
     build_index(args.document, args.index, args.chunk_size, args.overlap)
