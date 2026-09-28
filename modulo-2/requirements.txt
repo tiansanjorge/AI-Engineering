@@ -1,5 +1,5 @@
-openai
-python-dotenv
-numpy
-pytest
-tiktoken
+openai==3.8.0
+python-dotenv==1.2.3
+numpy==2.5.3
+pytest==9.1.1
+tiktoken==0.14.0

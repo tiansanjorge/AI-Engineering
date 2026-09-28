@@ -29,6 +29,10 @@ def cosine_similarity(query_vector: np.ndarray, matrix: np.ndarray) -> np.ndarra
     coseno(a, b) = (a . b) / (|a| * |b|). Se calcula explicito (no se
     delega a una libreria de vector store) para que el metodo de busqueda
     quede auditable en el propio codigo.
+
+    Primero se normaliza cada vector (pregunta y cada fila de la matriz)
+    a longitud 1, y recien despues se suma el producto de sus dimensiones
+    (@ = producto punto).
     """
     query_norm = query_vector / np.linalg.norm(query_vector)
     matrix_norms = matrix / np.linalg.norm(matrix, axis=1, keepdims=True)
