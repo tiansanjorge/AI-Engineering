@@ -111,15 +111,18 @@ modulo-2/
 
 ## Decisiones técnicas
 
-**Chunking: tamaño fijo con solapamiento** (`chunk_size=100` palabras,
-`overlap=20`, ~20%). Se eligió por tres razones: son los parámetros que la
+**Chunking: tamaño fijo con solapamiento** (`chunk_size=150` tokens,
+`overlap=30`, ~20%). Se eligió por tres razones: son los parámetros que la
 consigna pide documentar explícitamente; sobre un documento de este tamaño
 (no miles de páginas) las estrategias más sofisticadas (semántica, por
 estructura) no aportan una ventaja medible, según lo comprobado en el
 material de referencia del módulo; y el solapamiento mitiga el riesgo de
 cortar una oración importante justo en el borde entre dos chunks. Con estos
-parámetros, el documento fuente genera 22 chunks de 67 a 100 palabras cada
-uno (~90 a ~150 tokens estimados), dentro del rango de 50 a 500 tokens.
+parámetros, el documento fuente genera 23 chunks de 57 a 150 tokens cada
+uno, dentro del rango de 50 a 500 tokens. El tamaño se mide en tokens
+reales con `tiktoken` (`cl100k_base`, el mismo tokenizador que usa
+`text-embedding-3-small`), la misma unidad en la que la consigna define el
+rango; un test verifica que todos los chunks generados caen dentro de él.
 
 **Búsqueda vectorial: k-NN exacto con similitud coseno, calculada a mano
 con NumPy** (no una librería de vector store). Se eligió así por dos
@@ -158,10 +161,10 @@ detalle de las dos corridas está en el historial de commits de esta rama.
 
 ## Limitaciones conocidas
 
-- El tamaño de chunk se mide en palabras, no en tokens reales (evita
-  depender de una librería de tokenización adicional). Se verificó que la
-  aproximación (palabras × 1.3) deja a todos los chunks generados
-  cómodamente dentro del rango de 50-500 tokens que pide la consigna.
+- El chunking corta por cantidad de tokens sin respetar límites de
+  palabra u oración: un chunk puede empezar o terminar a mitad de palabra.
+  El solapamiento mitiga el efecto, pero no lo elimina. El tokenizador
+  (`cl100k_base`) está atado a la familia de modelos de OpenAI.
 - La búsqueda es k-NN exacto (fuerza bruta): compara contra todos los
   embeddings guardados. Funciona bien para el tamaño de este documento;
   no escala a un corpus de miles de documentos sin un índice aproximado
