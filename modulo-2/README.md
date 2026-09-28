@@ -54,7 +54,7 @@ Imprime por stdout el JSON con `user_question`, `system_answer` y
 python -m pytest
 ```
 
-14 tests sobre chunking, similitud coseno, búsqueda k-NN, guardado/lectura
+16 tests sobre chunking, similitud coseno, búsqueda k-NN, guardado/lectura
 del índice, el contrato JSON de `query.py`, y el parseo del agente
 evaluador. Ninguno llama a la API real (`embed_query`, `generate_answer` y
 `OpenAI` del evaluador se mockean) — corren rápido y gratis en cualquier
@@ -122,7 +122,9 @@ parámetros, el documento fuente genera 23 chunks de 57 a 150 tokens cada
 uno, dentro del rango de 50 a 500 tokens. El tamaño se mide en tokens
 reales con `tiktoken` (`cl100k_base`, el mismo tokenizador que usa
 `text-embedding-3-small`), la misma unidad en la que la consigna define el
-rango; un test verifica que todos los chunks generados caen dentro de él.
+rango; un test verifica que todos los chunks generados caen dentro de él. Los
+bordes se alinean a límites de carácter UTF-8 para no partir acentos ni
+emojis, y no se emite una cola final ya contenida en el chunk anterior.
 
 **Búsqueda vectorial: k-NN exacto con similitud coseno, calculada a mano
 con NumPy** (no una librería de vector store). Se eligió así por dos
