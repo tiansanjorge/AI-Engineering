@@ -1,9 +1,12 @@
 # Proyecto Integrador — Módulo 2
 
-Chatbot de FAQs con RAG para NimbusHR (HR SaaS ficticio): responde preguntas
-de empleados recuperando información real de la documentación interna en
-vez de contestar de memoria, y cita los fragmentos que usó para cada
-respuesta.
+Chatbot de FAQs con RAG para NimbusHR (HR SaaS ficticio). Resuelve un
+problema real de soporte al cliente: más de 200 preguntas repetitivas por
+día sobre políticas y funcionalidades que ya están documentadas. En vez de
+que un LLM responda de memoria (con riesgo de inventar), el sistema
+recupera los fragmentos relevantes de la documentación interna, genera la
+respuesta a partir de ellos, y los cita en `chunks_related` para que
+cualquier respuesta quede auditable contra la fuente real.
 
 > Este es uno de los módulos del monorepo de la carrera. Ver
 > [`../README.md`](../README.md) para el índice general. Todos los
