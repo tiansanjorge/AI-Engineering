@@ -1,6 +1,12 @@
-"""Carga del documento fuente y division en chunks de tamano fijo."""
+"""Carga del documento fuente y division en chunks de tamano fijo (en tokens)."""
 
 import os
+
+import tiktoken
+
+
+# Mismo tokenizador que usa text-embedding-3-small.
+_ENCODING = tiktoken.get_encoding("cl100k_base")
 
 
 def load_document(path: str) -> str:
@@ -9,33 +15,28 @@ def load_document(path: str) -> str:
         return f.read()
 
 
-def chunk_text(text: str, chunk_size: int = 100, overlap: int = 20) -> list[str]:
-    """Divide el texto en bloques de chunk_size palabras, solapando
-    overlap palabras entre bloques consecutivos.
-
-    Tamano fijo con solapamiento: los parametros (chunk_size, overlap)
-    quedan documentados aca y en el README. El overlap evita que una
-    oracion importante quede cortada a la mitad entre dos chunks
-    consecutivos, sin necesidad de detectar limites de oracion.
+def chunk_text(text: str, chunk_size: int = 150, overlap: int = 30) -> list[str]:
+    """Divide el texto en bloques de chunk_size tokens, solapando
+    overlap tokens entre bloques consecutivos.
     """
     if overlap >= chunk_size:
         raise ValueError("overlap debe ser menor que chunk_size")
 
-    words = text.split()
+    tokens = _ENCODING.encode(text)
     step = chunk_size - overlap
     chunks = []
 
     start = 0
-    while start < len(words):
-        block = words[start : start + chunk_size]
-        chunks.append(" ".join(block))
+    while start < len(tokens):
+        block = tokens[start : start + chunk_size]
+        chunks.append(_ENCODING.decode(block))
         start += step
 
     return chunks
 
 
 def load_and_chunk_document(
-    path: str, chunk_size: int = 100, overlap: int = 20
+    path: str, chunk_size: int = 150, overlap: int = 30
 ) -> list[str]:
     """Etapas 1 y 2 del pipeline de indexacion: carga el documento y lo
     parte en chunks."""

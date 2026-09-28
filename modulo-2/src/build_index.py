@@ -2,7 +2,7 @@
 
 Uso:
     python src/build_index.py
-    python src/build_index.py --document data/faq_document.txt --chunk-size 100 --overlap 20
+    python src/build_index.py --document data/faq_document.txt --chunk-size 150 --overlap 30
 """
 
 import argparse
@@ -22,8 +22,8 @@ DEFAULT_INDEX_PATH = os.path.join(
 def build_index(
     document_path: str = DEFAULT_DOCUMENT_PATH,
     index_path: str = DEFAULT_INDEX_PATH,
-    chunk_size: int = 100,
-    overlap: int = 20,
+    chunk_size: int = 150,
+    overlap: int = 30,
 ) -> None:
     """Corre las 4 etapas del pipeline de indexacion y deja el resultado
     en index_path."""
@@ -42,8 +42,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Pipeline de indexacion RAG")
     parser.add_argument("--document", default=DEFAULT_DOCUMENT_PATH)
     parser.add_argument("--index", default=DEFAULT_INDEX_PATH)
-    parser.add_argument("--chunk-size", type=int, default=100)
-    parser.add_argument("--overlap", type=int, default=20)
+    parser.add_argument("--chunk-size", type=int, default=150, help="tokens por chunk")
+    parser.add_argument("--overlap", type=int, default=30, help="tokens de solapamiento")
     args = parser.parse_args()
 
     build_index(args.document, args.index, args.chunk_size, args.overlap)

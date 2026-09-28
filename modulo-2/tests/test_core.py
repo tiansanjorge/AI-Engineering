@@ -10,11 +10,14 @@ import os
 
 import numpy as np
 import pytest
+import tiktoken
 
 import query
 from chunking import DEFAULT_DOCUMENT_PATH, chunk_text, load_and_chunk_document
 from evaluator import build_evaluation_prompt, evaluate_response
 from vector_store import cosine_similarity, load_index, save_index, search_similar_chunks
+
+ENCODING = tiktoken.get_encoding("cl100k_base")
 
 
 # ---------------------------------------------------------------------------
@@ -22,19 +25,21 @@ from vector_store import cosine_similarity, load_index, save_index, search_simil
 # ---------------------------------------------------------------------------
 
 def test_chunk_text_respects_chunk_size():
-    text = " ".join(f"palabra{i}" for i in range(250))
+    text = " ".join(f"palabra{i}" for i in range(500))
     chunks = chunk_text(text, chunk_size=100, overlap=20)
-    # el primer chunk siempre tiene exactamente chunk_size palabras (hay
-    # suficiente texto); ningun chunk supera ese tamano.
-    assert len(chunks[0].split()) == 100
-    assert all(len(chunk.split()) <= 100 for chunk in chunks)
+    # el primer chunk tiene exactamente chunk_size tokens (hay suficiente
+    # texto); ningun chunk supera ese tamano.
+    assert len(ENCODING.encode(chunks[0])) == 100
+    assert all(len(ENCODING.encode(chunk)) <= 100 for chunk in chunks)
 
 
 def test_chunk_text_overlaps_between_consecutive_chunks():
-    text = " ".join(f"palabra{i}" for i in range(150))
+    text = " ".join(f"palabra{i}" for i in range(500))
     chunks = chunk_text(text, chunk_size=100, overlap=20)
-    # las ultimas 20 palabras del primer chunk son las primeras 20 del segundo
-    assert chunks[0].split()[-20:] == chunks[1].split()[:20]
+    # los ultimos 20 tokens del primer chunk son los primeros 20 del segundo
+    assert (
+        ENCODING.encode(chunks[0])[-20:] == ENCODING.encode(chunks[1])[:20]
+    )
 
 
 def test_chunk_text_rejects_overlap_gte_chunk_size():
@@ -46,18 +51,16 @@ def test_load_and_chunk_document_generates_at_least_20_chunks():
     # Corre contra el documento fuente real (data/faq_document.txt), no
     # un texto sintetico: es la verificacion de que el documento entregado
     # efectivamente cumple el minimo que pide la consigna.
-    chunks = load_and_chunk_document(DEFAULT_DOCUMENT_PATH, chunk_size=100, overlap=20)
+    chunks = load_and_chunk_document(DEFAULT_DOCUMENT_PATH)
     assert len(chunks) >= 20
 
 
 def test_load_and_chunk_document_chunk_sizes_within_token_range():
-    # Aproximamos tokens con palabras * 1.3 (relacion tipica para
-    # espaniol). El chunk_size=100 esta bien adentro de 50-500 tokens
-    # incluso en el peor caso (el ultimo chunk, mas corto).
-    chunks = load_and_chunk_document(DEFAULT_DOCUMENT_PATH, chunk_size=100, overlap=20)
+    # Tokens reales (cl100k_base, el de text-embedding-3-small), no una
+    # estimacion. La consigna pide 50-500 tokens por chunk.
+    chunks = load_and_chunk_document(DEFAULT_DOCUMENT_PATH)
     for chunk in chunks:
-        estimated_tokens = len(chunk.split()) * 1.3
-        assert 50 <= estimated_tokens <= 500
+        assert 50 <= len(ENCODING.encode(chunk)) <= 500
 
 
 # ---------------------------------------------------------------------------
