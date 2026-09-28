@@ -15,9 +15,19 @@ def load_document(path: str) -> str:
         return f.read()
 
 
+def _is_continuation(token: int) -> bool:
+    """True si el token empieza con un byte de continuacion UTF-8, es decir,
+    si cortar justo antes de el partiria un caracter multibyte."""
+    return _ENCODING.decode_single_token_bytes(token)[0] & 0b11000000 == 0b10000000
+
+
 def chunk_text(text: str, chunk_size: int = 150, overlap: int = 30) -> list[str]:
     """Divide el texto en bloques de chunk_size tokens, solapando
     overlap tokens entre bloques consecutivos.
+
+    Los bordes se corren unos pocos tokens si hace falta para no partir un
+    caracter multibyte (acentos, emojis), asi que un chunk puede exceder
+    chunk_size en esos tokens.
     """
     if overlap >= chunk_size:
         raise ValueError("overlap debe ser menor que chunk_size")
@@ -28,8 +38,15 @@ def chunk_text(text: str, chunk_size: int = 150, overlap: int = 30) -> list[str]
 
     start = 0
     while start < len(tokens):
-        block = tokens[start : start + chunk_size]
-        chunks.append(_ENCODING.decode(block))
+        block_start = start
+        while block_start > 0 and _is_continuation(tokens[block_start]):
+            block_start -= 1
+        end = start + chunk_size
+        while end < len(tokens) and _is_continuation(tokens[end]):
+            end += 1
+        chunks.append(_ENCODING.decode(tokens[block_start:end]))
+        if end >= len(tokens):
+            break
         start += step
 
     return chunks

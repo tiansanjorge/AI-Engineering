@@ -13,7 +13,12 @@ import pytest
 import tiktoken
 
 import query
-from chunking import DEFAULT_DOCUMENT_PATH, chunk_text, load_and_chunk_document
+from chunking import (
+    DEFAULT_DOCUMENT_PATH,
+    chunk_text,
+    load_and_chunk_document,
+    load_document,
+)
 from evaluator import build_evaluation_prompt, evaluate_response
 from vector_store import cosine_similarity, load_index, save_index, search_similar_chunks
 
@@ -40,6 +45,22 @@ def test_chunk_text_overlaps_between_consecutive_chunks():
     assert (
         ENCODING.encode(chunks[0])[-20:] == ENCODING.encode(chunks[1])[:20]
     )
+
+
+def test_chunk_text_does_not_emit_tail_contained_in_previous_chunk():
+    # 270 tokens con chunk_size=150 y overlap=30: la tercera ventana
+    # empezaria en el token 240 y solo tendria 30 tokens, todos ya
+    # incluidos en el chunk anterior.
+    full = ENCODING.encode(load_document(DEFAULT_DOCUMENT_PATH))
+    chunks = chunk_text(ENCODING.decode(full[:270]), chunk_size=150, overlap=30)
+    assert len(chunks) == 2
+
+
+def test_chunk_text_does_not_split_multibyte_characters():
+    text = "áéíóú ñ 😀 ü ¿cómo está? " * 200
+    chunks = chunk_text(text, chunk_size=150, overlap=30)
+    assert len(chunks) > 1
+    assert all("�" not in chunk for chunk in chunks)
 
 
 def test_chunk_text_rejects_overlap_gte_chunk_size():
