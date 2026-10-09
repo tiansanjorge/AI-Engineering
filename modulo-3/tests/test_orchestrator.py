@@ -177,7 +177,6 @@ def test_end_to_end_with_real_agents_and_fake_models(indexed):
         return LLMAnswer(
             answer="Reiniciá el cliente.",
             source_ids=first_ids(messages, 1),
-            abstained=False,
         )
 
     llm = FakeLLM(responder)
@@ -190,3 +189,11 @@ def test_end_to_end_with_real_agents_and_fake_models(indexed):
     assert result.status == "answered" and result.intent == "tech"
     assert result.sources[0].chunk_id.startswith("tech:")
     assert {r.chunk_id.split(":")[0] for r in result.agent_result.retrieved} == {"tech"}
+
+
+def test_out_of_scope_listed_in_also_involves_is_ignored_not_a_crash():
+    orchestrator, _, _ = make(decision("tech", also=["out_of_scope", "finance"]))
+    result = orchestrator.run("algo")
+    assert result.status == "answered"
+    assert result.also_involves == ["finance"]
+    assert "out_of_scope" not in result.answer

@@ -118,3 +118,12 @@ def get_retriever(
         metadata_filter=metadata_filter or None,
         name=f"retriever_{domain}",
     )
+
+
+def nearest_distance(store: Chroma, query_vector: list[float]) -> float:
+    """Distancia coseno del chunk mas cercano de una coleccion a un vector ya calculado.
+
+    Usa la coleccion de Chroma directamente (una sola llamada, sin volver a embeber la consulta).
+    """
+    result = store._collection.query(query_embeddings=[query_vector], n_results=1)
+    return float(result["distances"][0][0])

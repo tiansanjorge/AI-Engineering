@@ -29,11 +29,7 @@ def first_ids(messages, n=2):
 
 
 def test_answer_cites_only_retrieved_chunks_with_metadata(indexed):
-    llm = FakeLLM(
-        lambda m: LLMAnswer(
-            answer="Respuesta.", source_ids=first_ids(m), abstained=False
-        )
-    )
+    llm = FakeLLM(lambda m: LLMAnswer(answer="Respuesta.", source_ids=first_ids(m)))
     result = make_agent(indexed, llm).answer("¿Cuántos días de vacaciones me tocan?")
     assert not result.abstained and result.error is None
     assert len(result.sources) == 2
@@ -46,7 +42,7 @@ def test_answer_cites_only_retrieved_chunks_with_metadata(indexed):
 
 
 def test_prompt_includes_context_question_and_scope(indexed):
-    llm = FakeLLM(lambda m: LLMAnswer(answer="x", source_ids=[], abstained=True))
+    llm = FakeLLM(lambda m: LLMAnswer(answer="x", source_ids=[]))
     make_agent(indexed, llm).answer("¿Cuándo cobro?")
     text = llm.calls[0].to_string()
     assert (
@@ -62,7 +58,6 @@ def test_invented_source_ids_are_dropped(indexed):
         lambda m: LLMAnswer(
             answer="Respuesta.",
             source_ids=[*first_ids(m, 1), "hr:inventado:999"],
-            abstained=False,
         )
     )
     result = make_agent(indexed, llm).answer("¿Vacaciones?")
@@ -72,9 +67,7 @@ def test_invented_source_ids_are_dropped(indexed):
 
 def test_answer_with_only_invented_sources_is_discarded(indexed):
     llm = FakeLLM(
-        lambda m: LLMAnswer(
-            answer="Dato inventado.", source_ids=["hr:fake:1"], abstained=False
-        )
+        lambda m: LLMAnswer(answer="Dato inventado.", source_ids=["hr:fake:1"])
     )
     result = make_agent(indexed, llm).answer("¿Vacaciones?")
     assert result.abstained and result.sources == []
@@ -83,15 +76,23 @@ def test_answer_with_only_invented_sources_is_discarded(indexed):
     assert result.error
 
 
-def test_model_abstention_keeps_its_explanation_and_clears_sources(indexed):
+def test_no_sources_means_abstention_and_keeps_the_models_explanation(indexed):
+    llm = FakeLLM(lambda m: LLMAnswer(answer="No encuentro eso.", source_ids=[]))
+    result = make_agent(indexed, llm).answer("¿Capital de Marte?")
+    assert result.abstained and result.sources == [] and result.error is None
+    assert result.answer == "No encuentro eso."
+
+
+def test_evidence_decides_abstention_not_the_models_hedging(indexed):
+    """Si el modelo duda en el texto pero cita un fragmento valido, la respuesta cuenta."""
     llm = FakeLLM(
         lambda m: LLMAnswer(
-            answer="No encuentro eso.", source_ids=["hr:x:1"], abstained=True
+            answer="No hay un dato específico, pero en general son 30 días.",
+            source_ids=first_ids(m, 1),
         )
     )
-    result = make_agent(indexed, llm).answer("¿Capital de Marte?")
-    assert result.abstained and result.sources == []
-    assert result.answer == "No encuentro eso."
+    result = make_agent(indexed, llm).answer("¿Plazo del reembolso?")
+    assert not result.abstained and len(result.sources) == 1
 
 
 def test_malformed_model_output_becomes_abstention_not_crash(indexed):
@@ -113,16 +114,14 @@ def test_provider_failure_becomes_abstention_not_crash(indexed):
 
 @pytest.mark.parametrize("question", ["", "   ", None])
 def test_empty_question_is_rejected(indexed, question):
-    llm = FakeLLM(lambda m: LLMAnswer(answer="x", source_ids=[], abstained=True))
+    llm = FakeLLM(lambda m: LLMAnswer(answer="x", source_ids=[]))
     with pytest.raises(ValueError):
         make_agent(indexed, llm).answer(question)
     assert llm.calls == []  # no se gasta una llamada al modelo
 
 
 def test_registry_builds_three_isolated_agents(indexed):
-    llm = FakeLLM(
-        lambda m: LLMAnswer(answer="x", source_ids=first_ids(m, 1), abstained=False)
-    )
+    llm = FakeLLM(lambda m: LLMAnswer(answer="x", source_ids=first_ids(m, 1)))
     agents = build_agents(
         llm, persist_dir=indexed["persist_dir"], embeddings=indexed["embeddings"]
     )

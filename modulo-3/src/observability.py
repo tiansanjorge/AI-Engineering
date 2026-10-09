@@ -85,6 +85,7 @@ def traced_query(
                 "actual_intent": result.intent,
                 "status": result.status,
                 "low_confidence": result.low_confidence,
+                "route_overridden": result.route_overridden,
                 "also_involves": result.also_involves,
             },
         )

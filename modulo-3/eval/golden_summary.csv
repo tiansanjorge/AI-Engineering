@@ -1,0 +1,17 @@
+run_tag,set,timestamp,note,n,pass_rate,routing_strict,routing_lenient,status_ok,facts_ok,sources_ok,forbidden_ok,false_abstentions,false_answers,latency_ms_p50,latency_ms_p95,input_tokens,output_tokens,estimated_cost_usd
+golden-run-v1,dev,2026-10-09T23:33:10.642470+00:00,baseline: sistema de la fase 4 (golden con T-TE-01 corregido),39,0.923,0.872,0.949,0.923,0.905,1.0,1.0,3,0,2609.2,3787.6,55982,3979,0.010785
+holdout-run-v1,holdout,2026-10-09T23:33:47.644453+00:00,baseline: sistema de la fase 4 (H-HR-03 corregido),14,0.786,0.786,0.786,0.786,0.727,1.0,1.0,3,0,2414.7,3272.7,18525,1210,0.003505
+golden-run-v2,dev,2026-10-09T23:35:49.407369+00:00,v2: router - alcance explicito de cada area y out_of_scope solo si es ajeno a la empresa,39,0.974,0.897,1.0,0.974,1.0,1.0,1.0,1,0,2585.1,3198.2,66745,4286,0.012583
+holdout-run-v2,holdout,2026-10-09T23:36:30.949710+00:00,v2: router (set de validacion),14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2487.3,2844.0,24354,1410,0.004499
+golden-run-v3,dev,2026-10-09T23:38:31.877924+00:00,v3: agente finance - glosario de reembolso (gastos del empleado vs. cargos a clientes),39,1.0,0.897,1.0,1.0,1.0,1.0,1.0,0,0,2654.9,3503.9,67977,4255,0.01275
+holdout-run-v3,holdout,2026-10-09T23:39:12.308521+00:00,v3: agente finance (set de validacion),14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2584.1,2828.9,24914,1406,0.004581
+blind-run-v3,blind,2026-10-09T23:41:38.088947+00:00,set ciego sobre el sistema v3 (tras corregir KeyError en finalize); sin ajustes de prompt posteriores,14,0.857,0.857,0.857,0.857,0.778,1.0,1.0,2,0,2529.4,4938.8,21679,1226,0.003987
+golden-run-v4,dev,2026-10-09T23:45:23.914459+00:00,v4: guarda de recuperacion (umbral 0.43) sobre v3,39,0.974,0.897,1.0,0.974,1.0,1.0,1.0,1,0,2575.1,3353.6,67977,4312,0.012784
+holdout-run-v4,holdout,2026-10-09T23:46:06.710724+00:00,v4: guarda de recuperacion (umbral 0.43) sobre v3,14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2521.4,3375.7,24914,1419,0.004588
+blind-run-v4,blind,2026-10-09T23:46:48.627643+00:00,v4: guarda de recuperacion (umbral 0.43) sobre v3,14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2539.5,4073.4,23758,1331,0.004362
+golden-run-v5,dev,2026-10-09T23:51:11.613322+00:00,v5: abstencion decidida por evidencia (fuentes validas) en vez de booleano autodeclarado,39,1.0,0.897,1.0,1.0,1.0,1.0,1.0,0,0,2507.3,3430.6,67593,4112,0.012606
+holdout-run-v5,holdout,2026-10-09T23:51:51.584143+00:00,v5: abstencion decidida por evidencia (fuentes validas) en vez de booleano autodeclarado,14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2383.4,2903.7,24770,1343,0.004521
+blind-run-v5,blind,2026-10-09T23:52:32.829498+00:00,v5: abstencion decidida por evidencia (fuentes validas) en vez de booleano autodeclarado,14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2476.2,3714.2,23626,1266,0.004304
+golden-run-v5-rep2,dev,2026-10-09T23:54:30.028298+00:00,repeticion de v5 para medir estabilidad (misma configuracion),39,1.0,0.897,1.0,1.0,1.0,1.0,1.0,0,0,2487.9,2965.8,67593,4078,0.012586
+holdout-run-v5-rep2,holdout,2026-10-09T23:55:09.962322+00:00,repeticion de v5 para medir estabilidad (misma configuracion),14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2343.1,2810.2,24770,1333,0.004515
+blind-run-v5-rep2,blind,2026-10-09T23:55:53.044331+00:00,repeticion de v5 para medir estabilidad (misma configuracion),14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2432.1,4224.8,23626,1283,0.004314
