@@ -3,6 +3,7 @@
 import itertools
 
 import pytest
+
 from src.config import DOMAINS, MAX_CHUNK_TOKENS
 from src.ingestion import count_tokens, load_domain, load_file, split_long_text
 
