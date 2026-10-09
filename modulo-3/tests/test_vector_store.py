@@ -2,6 +2,7 @@
 
 import pytest
 from langchain_core.embeddings import DeterministicFakeEmbedding
+
 from src.config import DOMAINS
 from src.vector_store import (
     build_domain_store,

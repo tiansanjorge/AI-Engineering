@@ -8,8 +8,10 @@ from pathlib import Path
 import chromadb
 from chromadb.errors import NotFoundError
 from langchain_chroma import Chroma
+from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
-from langchain_core.vectorstores import VectorStoreRetriever
+from langchain_core.retrievers import BaseRetriever
+from pydantic import ConfigDict
 
 from src.config import CHROMA_DIR, DEFAULT_K, DOMAINS, EMBEDDING_MODEL
 from src.ingestion import load_domain
@@ -73,17 +75,46 @@ def get_store(
     return store
 
 
+class ScoredChromaRetriever(BaseRetriever):
+    """Retriever sobre una coleccion Chroma que agrega `distance` (coseno) a cada chunk.
+
+    Es un `BaseRetriever` de LangChain: Langfuse lo registra como una observacion de tipo
+    retriever, y la distancia queda disponible para diagnosticar recuperaciones malas.
+    """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    store: Chroma
+    k: int = DEFAULT_K
+    metadata_filter: dict | None = None
+
+    def _get_relevant_documents(
+        self, query: str, *, run_manager=None
+    ) -> list[Document]:
+        results = self.store.similarity_search_with_score(
+            query, k=self.k, filter=self.metadata_filter
+        )
+        return [
+            Document(
+                page_content=doc.page_content,
+                metadata={**doc.metadata, "distance": round(d, 4)},
+            )
+            for doc, d in results
+        ]
+
+
 def get_retriever(
     domain: str,
     k: int = DEFAULT_K,
     metadata_filter: dict | None = None,
     persist_dir: Path = CHROMA_DIR,
     embeddings: Embeddings | None = None,
-) -> VectorStoreRetriever:
+) -> ScoredChromaRetriever:
     """Retriever LangChain sobre la coleccion de un dominio, con filtro opcional por metadatos."""
-    search_kwargs: dict = {"k": k}
-    if metadata_filter:
-        search_kwargs["filter"] = metadata_filter
-    return get_store(domain, persist_dir, embeddings).as_retriever(
-        search_kwargs=search_kwargs
+    store = get_store(domain, persist_dir, embeddings)
+    return ScoredChromaRetriever(
+        store=store,
+        k=k,
+        metadata_filter=metadata_filter or None,
+        name=f"retriever_{domain}",
     )
