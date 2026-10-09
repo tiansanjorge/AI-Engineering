@@ -1,0 +1,32 @@
+Comunicaciones de Recursos Humanos de Nimbus Desk
+Boletín interno de la empresa ficticia Nimbus Desk. Contenido de práctica.
+
+Canales oficiales de Recursos Humanos
+Recursos Humanos atiende consultas por tres canales. El principal es el portal Nimbus People, sección "Consultas", que genera un número de caso y permite seguir el estado. El segundo es el correo rrhh@nimbusdesk.example, pensado para temas que requieren adjuntar documentos. El tercero es la atención presencial en la oficina central, los martes y jueves de 10:00 a 16:00. Todas las consultas se responden dentro de 3 días hábiles.
+
+Cómo se clasifica una consulta
+Las consultas que llegan a Recursos Humanos se clasifican por tema: ausencias, nómina, beneficios, desempeño, conducta y documentos. Cada tema tiene una persona referente. Si la consulta no pertenece a Recursos Humanos, por ejemplo un problema técnico con el portal o un reembolso de gastos, se deriva al área correspondiente y se avisa a quien consultó.
+
+Qué pasa cuando el portal Nimbus People no funciona
+Si Nimbus People no permite iniciar sesión o falla al cargar una solicitud, el problema es técnico y corresponde al equipo de soporte técnico, que se contacta desde el portal de soporte interno. Mientras tanto, las solicitudes urgentes de ausencias pueden enviarse por correo a rrhh@nimbusdesk.example, con copia a la persona responsable. Recursos Humanos las carga después en el portal.
+
+Anuncios importantes del año
+En enero se publican el calendario de feriados, los días puente y las fechas de cierre del ciclo de beneficios. En junio y en diciembre se abren las evaluaciones de desempeño. En marzo se paga el bono anual. En noviembre se abre la elección de cobertura médica para el año siguiente, que se puede cambiar solo en ese período, salvo eventos de vida.
+
+Canal de ética
+El canal de ética es un buzón confidencial para informar situaciones de acoso, discriminación, fraude, conflictos de interés u otras violaciones al código de conducta. El correo es etica@nimbusdesk.example. También se puede usar el formulario anónimo de Nimbus People. Quien denuncia recibe un número de seguimiento y una respuesta inicial dentro de 5 días hábiles.
+
+Protección a quien denuncia
+Ninguna persona puede sufrir represalias por hacer una denuncia de buena fe. Se consideran represalias el despido, un cambio injustificado de funciones, la reducción de beneficios o el aislamiento del equipo. Si una persona cree que sufre represalias, debe avisar de inmediato al canal de ética, que activa medidas de protección.
+
+Investigaciones internas
+Una investigación la conduce un equipo independiente del área involucrada. Se entrevista a las partes y se revisa la evidencia. La persona investigada tiene derecho a conocer los cargos y a responder. El resultado se comunica a las partes dentro de los 30 días y puede incluir medidas correctivas, capacitación o sanciones.
+
+Encuesta de clima
+Una vez por año, en septiembre, se realiza una encuesta anónima de clima laboral de 25 preguntas. Los resultados se comparten con toda la empresa en octubre, y cada área define dos acciones de mejora con fecha. La participación no es obligatoria, pero se recomienda porque orienta las prioridades del año siguiente.
+
+Diversidad e inclusión
+Nimbus Desk impulsa la diversidad en sus equipos y en sus procesos de selección. Las búsquedas laborales exigen una lista corta con candidaturas diversas. Los grupos de interés internos, abiertos a toda la empresa, se reúnen una vez por mes y cuentan con un presupuesto anual para actividades.
+
+Reconocimientos
+Cada trimestre, los equipos pueden nominar a compañeros para un reconocimiento por vivir los valores de la empresa. Quienes lo reciben obtienen una tarjeta de regalo de USD 100 y una mención en el boletín. Las nominaciones se envían por Nimbus People hasta el día 15 del último mes del trimestre.

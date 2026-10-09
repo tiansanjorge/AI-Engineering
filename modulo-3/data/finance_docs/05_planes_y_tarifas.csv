@@ -1,0 +1,26 @@
+concepto,categoria,detalle,valor_usd,condiciones
+Plan Starter,plan,Para equipos pequeños: correo y portal de autoservicio,19 por agente por mes,Hasta 5 agentes. Sin automatizaciones ni informes de SLA.
+Plan Business,plan,"Automatizaciones, informes de SLA y reglas de enrutamiento",49 por agente por mes,Desde 3 agentes. Incluye integraciones estándar.
+Plan Enterprise,plan,"Inicio de sesión único, registro de auditoría y 99.95 % de disponibilidad",99 por agente por mes,Desde 25 agentes. Soporte prioritario 24/7.
+Agente adicional,complemento,Un agente más sobre el plan contratado,Mismo precio del plan,Se cobra de forma proporcional desde el día del alta.
+Almacenamiento extra,complemento,100 GB adicionales de adjuntos,15 por mes,Se factura junto con la suscripción mensual.
+Canal de chat en vivo,complemento,Chat en vivo para el sitio web del cliente,25 por mes,Disponible en Business y Enterprise.
+Asistente de IA para respuestas,complemento,Sugerencias de respuestas con inteligencia artificial,12 por agente por mes,Disponible desde Business.
+Servicios de implementación,servicio,Configuración inicial y capacitación,1500 pago único,Incluye hasta 10 horas de consultoría.
+Hora de consultoría adicional,servicio,Horas extra de consultoría técnica,150 por hora,Se factura por mes vencido.
+Descuento por pago anual,descuento,Pago anticipado de 12 meses,15 % sobre el precio mensual,No se combina con otros descuentos.
+Descuento para organizaciones sin fines de lucro,descuento,Con constancia vigente,25 %,No se combina con otros descuentos.
+Descuento por volumen,descuento,A partir de 100 agentes,Negociable,Lo aprueba Finanzas.
+Plazo de pago estándar,pago,Neto 30 días desde la emisión,0,Tarjeta de crédito se cobra de forma automática.
+Plazo de pago Enterprise,pago,Hasta 60 días con acuerdo contractual,0,Requiere aprobación de Finanzas.
+Intereses por mora,pago,Sobre el saldo vencido,1.5 % mensual,Recordatorio a los 15 días y suspensión a los 60 días.
+Medios de pago,pago,"Tarjeta de crédito, transferencia bancaria y débito directo",0,No se aceptan cheques ni efectivo.
+Reembolso de un cargo,reembolso,Dentro de los 30 días del pago,Importe del cargo,Siempre que se use menos del 20 % de las funcionalidades.
+Disputa de una factura,facturacion,Se pide a facturacion@nimbusdesk.example,0,Dentro de 15 días de la emisión.
+Cancelación sin cargo,cancelacion,Desde el portal del cliente,0,Avisar con 7 días de anticipación a la renovación.
+Retención de datos tras cancelar,cancelacion,Los datos se eliminan después,0,Se conservan 90 días.
+Impuesto indirecto (clientes locales),impuestos,Se muestra por separado en la factura,21 %,No aplica a clientes del exterior.
+Moneda de facturación,pago,Todas las facturas en dólares estadounidenses,0,Pago local al tipo de cambio de referencia del día 1.
+Reintegro de gimnasio (interno),beneficio,Pedido en Nimbus Expenses,Hasta 25 por mes,50 % de la cuota. Se acredita con el sueldo.
+Tope de comida en viaje (interno),gastos,Comidas durante un viaje de trabajo,35 por día,Comprobante obligatorio sobre 15.
+Tope de hotel (interno),gastos,Noche de alojamiento,160 por noche,220 en ciudades de alto costo.
