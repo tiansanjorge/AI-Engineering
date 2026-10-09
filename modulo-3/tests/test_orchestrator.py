@@ -177,7 +177,6 @@ def test_end_to_end_with_real_agents_and_fake_models(indexed):
         return LLMAnswer(
             answer="Reiniciá el cliente.",
             source_ids=first_ids(messages, 1),
-            abstained=False,
         )
 
     llm = FakeLLM(responder)
