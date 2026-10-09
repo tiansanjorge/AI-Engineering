@@ -136,6 +136,31 @@ Módulo 2 **validado**, con feedback muy positivo (RAG funcional, trazabilidad v
 4. **Diversidad de documentos:** M3 exige 3 colecciones (`hr_docs/`, `tech_docs/`, `finance_docs/`, ≥50 chunks c/u); usarlas con documentos variados, no un solo archivo por dominio.
 5. **Búsqueda por fuerza bruta:** adecuada para el corpus chico, pero no escala. M3 usa FAISS (según las lecciones); dejar documentada la limitación/migración, no es prioridad.
 
+## Módulo 3: sistema multi-agente con LangChain + Langfuse
+
+Consigna extraída de `material/Lecciones/modulo 3/Consignas y guía proyecto integrador.docx`. Vive en `modulo-3/`.
+
+**Contexto de negocio:** AI engineer en una SaaS mediana; los tickets se enrutan mal entre áreas (HR, IT, Finance, Legal). Se pide un orquestador que clasifique la intención y rutee de forma condicional a agentes RAG especializados (≥3, colecciones `data/hr_docs/`, `tech_docs/`, `finance_docs/` con ≥50 chunks c/u), todo con LangChain y trazado completo en Langfuse. Entregables: notebook `multi_agent_system.ipynb` (6 secciones: setup, docs/vector stores, agentes, orquestador y routing, pruebas, Langfuse) o archivos en `src/agents/`; `test_queries` (≥10, con intent esperado, incluye casos borde); README; `requirements.txt` (≥9 paquetes); `.env.example`. **Bonus:** agente evaluador con la Score API de Langfuse (1-10 por respuesta).
+
+### Decisiones tomadas (2026-10-09)
+- **Stack:** LangChain 1.x + LangGraph (orquestador con aristas condicionales) + **Chroma persistente** (no FAISS: filtros por metadatos nativos, camino a `HttpClient` en el M4) + Langfuse Cloud (región **EE.UU.**, `us.cloud.langfuse.com`) + Pydantic. `pip` + `requirements.txt` (como M1/M2).
+- **Modelos:** `gpt-4o-mini` / `text-embedding-3-small`, configurables por `CHAT_MODEL`/`EMBEDDING_MODEL`. Los nombres GPT-6 del repo del profe no están verificados en mi cuenta.
+- **Dominios:** HR, Tech/IT y Finance como agentes; Legal es caso borde (fuera de alcance). Un solo agente por consulta en el MVP (multi-intención = stretch).
+- **Forma:** módulos en `modulo-3/src/` + notebook que los importa; una función de entrada única tipada (pensando en envolverla con FastAPI en el M4). Índices Chroma en `modulo-3/chroma_db/` (gitignoreado, se reconstruyen desde los documentos).
+- **Evaluador (fase 7):** lo etiqueta/calibra Claude, no el usuario. El usuario aprende con la guía final (`guias/modulo-3-guia.md`), no fase a fase.
+- **Autorización:** commits y manejo de ramas (feature → `develop`) delegados a Claude; nunca `main`.
+
+### Hallazgos de la auditoría del material (importantes)
+- Las lecturas usan APIs **obsoletas**: Langfuse v2 (`langfuse.trace()`, `trace.span()`, `langfuse.score()`) y LangChain legacy (`initialize_agent`, `RetrievalQA`). Usar Langfuse v4 (`get_client()`, `start_as_current_observation`, `propagate_attributes`, `langfuse.langchain.CallbackHandler`, `create_score`) y LangChain 1.x.
+- `client.api.trace.get()` devuelve **410** en organizaciones nuevas (≥2026-09-16): leer traces con `client.api.observations.get_many(trace_id=...)`.
+- El repo del profe (`henry-ai-engineering`) no usa Langfuse (apaga el tracing); sirve de referencia para LangGraph (`graph.py`: router + `Send` + especialistas + abstención; `operations.py`: golden set y métricas; clase 5: supervisor/handoff; clase 6: juez calibrado).
+
+### Plan por fases (cada fase: tests/verificación → commits chicos → actualizar este estado)
+0 Setup (hecho) · 1 Corpus (3 dominios, 1a/1b/1c) · 2 Ingesta + Chroma (chunking por estructura, metadatos) · 3 Agentes RAG · 4 Orquestador LangGraph · 5 Langfuse · 6 Golden set (~30) + evaluación agregada + iteración v1→v2 · 7 Bonus evaluador · 8 Notebook, README, guía, corrida limpia, `/code-review`, merge.
+
+### Estado actual
+- **Fase 0 completada:** estructura `modulo-3/`, `requirements.txt` pinneado, `.env.example`, `scripts/smoke_test.py` (Langfuse auth, Chroma + filtro, LangGraph, traza LLM leída de vuelta) pasando contra servicios reales.
+
 ## Cómo trabajar conmigo en este proyecto
 
 - Priorizar el flujo principal (una llamada que devuelva JSON útil) antes de pulir, iterar el prompt como si fuera código, y armar la estructura de carpetas esperada desde el principio para no migrar después.

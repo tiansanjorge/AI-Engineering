@@ -5,3 +5,6 @@ __pycache__/
 HelpDesk - Proyecto Full Stack.txt
 material/
 guias/
+
+# modulo-3: indices vectoriales locales (se reconstruyen desde data/)
+modulo-3/chroma_db/
