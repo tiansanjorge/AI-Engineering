@@ -128,6 +128,14 @@ Flujo obligatorio completo y funcionando de punta a punta, ya mergeado a `develo
 - `README.md` propio con setup, uso, estructura, decisiones técnicas justificadas y el hallazgo documentado.
 - **Bonus implementado:** `src/evaluator.py` + `src/evaluate_samples.py`. Puntúa (0-10 + reason) cada entrada de `outputs/sample_queries.json` en 3 dimensiones (relevancia, fidelidad, completitud) y guarda el resultado en `outputs/sample_queries_evaluated.json` — separado, sin tocar el contrato de 3 claves de `sample_queries.json`. Hallazgo real: la primera versión del evaluador acertaba el score pero su `reason` afirmó que faltaba un dato que en realidad estaba en el texto evaluado (error de lectura del propio LLM-juez); se corrigió exigiendo cita textual entre comillas para cada observación. Limitación conocida documentada en el README: un LLM-juez da una señal aproximada, no una verificación formal. 16 tests en total (14 del flujo obligatorio + 2 del evaluador, mockeado).
 
+### Feedback recibido del Módulo 2 (2026-10-09)
+Módulo 2 **validado**, con feedback muy positivo (RAG funcional, trazabilidad vía `chunks_related`, tests, hallazgo real documentado, evaluador bonus). **Decisión: no se aplican fixes al Módulo 2**; las mejoras se tienen en cuenta al diseñar el Módulo 3:
+1. **Evaluación con más cobertura:** el M2 solo tiene 3 preguntas end-to-end y evaluadas. En M3 armar un set más amplio y sistemático (la consigna ya pide ≥10 test queries con categoría esperada; incluir casos borde, ambiguos y fuera de dominio) y reportar resultados agregados (p. ej. accuracy de routing).
+2. **Chunking más robusto:** el chunking fijo por tokens puede cortar oraciones. En M3 considerar chunking por estructura (secciones/encabezados) o por límites de oración, manteniendo overlap, y justificar la elección.
+3. **Metadatos y filtros de recuperación:** guardar metadatos por chunk (dominio, sección, fuente) y evaluar filtros de recuperación; encaja de forma natural con 3 corpus separados.
+4. **Diversidad de documentos:** M3 exige 3 colecciones (`hr_docs/`, `tech_docs/`, `finance_docs/`, ≥50 chunks c/u); usarlas con documentos variados, no un solo archivo por dominio.
+5. **Búsqueda por fuerza bruta:** adecuada para el corpus chico, pero no escala. M3 usa FAISS (según las lecciones); dejar documentada la limitación/migración, no es prioridad.
+
 ## Cómo trabajar conmigo en este proyecto
 
 - Priorizar el flujo principal (una llamada que devuelva JSON útil) antes de pulir, iterar el prompt como si fuera código, y armar la estructura de carpetas esperada desde el principio para no migrar después.
