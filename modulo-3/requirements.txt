@@ -1,0 +1,16 @@
+langchain==1.4.4
+langchain-core==1.6.9
+langchain-openai==1.7.0
+langchain-chroma==1.1.0
+langgraph==1.2.14
+langfuse==4.17.0
+chromadb==1.5.9
+openai==3.8.0
+pydantic==2.13.5
+tiktoken==0.14.0
+python-dotenv==1.2.3
+numpy==2.5.3
+jupyter==1.1.1
+ipykernel==7.4.0
+pytest==9.1.1
+ruff==0.17.0

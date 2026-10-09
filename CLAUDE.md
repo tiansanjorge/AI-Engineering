@@ -128,6 +128,39 @@ Flujo obligatorio completo y funcionando de punta a punta, ya mergeado a `develo
 - `README.md` propio con setup, uso, estructura, decisiones técnicas justificadas y el hallazgo documentado.
 - **Bonus implementado:** `src/evaluator.py` + `src/evaluate_samples.py`. Puntúa (0-10 + reason) cada entrada de `outputs/sample_queries.json` en 3 dimensiones (relevancia, fidelidad, completitud) y guarda el resultado en `outputs/sample_queries_evaluated.json` — separado, sin tocar el contrato de 3 claves de `sample_queries.json`. Hallazgo real: la primera versión del evaluador acertaba el score pero su `reason` afirmó que faltaba un dato que en realidad estaba en el texto evaluado (error de lectura del propio LLM-juez); se corrigió exigiendo cita textual entre comillas para cada observación. Limitación conocida documentada en el README: un LLM-juez da una señal aproximada, no una verificación formal. 16 tests en total (14 del flujo obligatorio + 2 del evaluador, mockeado).
 
+### Feedback recibido del Módulo 2 (2026-10-09)
+Módulo 2 **validado**, con feedback muy positivo (RAG funcional, trazabilidad vía `chunks_related`, tests, hallazgo real documentado, evaluador bonus). **Decisión: no se aplican fixes al Módulo 2**; las mejoras se tienen en cuenta al diseñar el Módulo 3:
+1. **Evaluación con más cobertura:** el M2 solo tiene 3 preguntas end-to-end y evaluadas. En M3 armar un set más amplio y sistemático (la consigna ya pide ≥10 test queries con categoría esperada; incluir casos borde, ambiguos y fuera de dominio) y reportar resultados agregados (p. ej. accuracy de routing).
+2. **Chunking más robusto:** el chunking fijo por tokens puede cortar oraciones. En M3 considerar chunking por estructura (secciones/encabezados) o por límites de oración, manteniendo overlap, y justificar la elección.
+3. **Metadatos y filtros de recuperación:** guardar metadatos por chunk (dominio, sección, fuente) y evaluar filtros de recuperación; encaja de forma natural con 3 corpus separados.
+4. **Diversidad de documentos:** M3 exige 3 colecciones (`hr_docs/`, `tech_docs/`, `finance_docs/`, ≥50 chunks c/u); usarlas con documentos variados, no un solo archivo por dominio.
+5. **Búsqueda por fuerza bruta:** adecuada para el corpus chico, pero no escala. M3 usa FAISS (según las lecciones); dejar documentada la limitación/migración, no es prioridad.
+
+## Módulo 3: sistema multi-agente con LangChain + Langfuse
+
+Consigna extraída de `material/Lecciones/modulo 3/Consignas y guía proyecto integrador.docx`. Vive en `modulo-3/`.
+
+**Contexto de negocio:** AI engineer en una SaaS mediana; los tickets se enrutan mal entre áreas (HR, IT, Finance, Legal). Se pide un orquestador que clasifique la intención y rutee de forma condicional a agentes RAG especializados (≥3, colecciones `data/hr_docs/`, `tech_docs/`, `finance_docs/` con ≥50 chunks c/u), todo con LangChain y trazado completo en Langfuse. Entregables: notebook `multi_agent_system.ipynb` (6 secciones: setup, docs/vector stores, agentes, orquestador y routing, pruebas, Langfuse) o archivos en `src/agents/`; `test_queries` (≥10, con intent esperado, incluye casos borde); README; `requirements.txt` (≥9 paquetes); `.env.example`. **Bonus:** agente evaluador con la Score API de Langfuse (1-10 por respuesta).
+
+### Decisiones tomadas (2026-10-09)
+- **Stack:** LangChain 1.x + LangGraph (orquestador con aristas condicionales) + **Chroma persistente** (no FAISS: filtros por metadatos nativos, camino a `HttpClient` en el M4) + Langfuse Cloud (región **EE.UU.**, `us.cloud.langfuse.com`) + Pydantic. `pip` + `requirements.txt` (como M1/M2).
+- **Modelos:** `gpt-4o-mini` / `text-embedding-3-small`, configurables por `CHAT_MODEL`/`EMBEDDING_MODEL`. Los nombres GPT-6 del repo del profe no están verificados en mi cuenta.
+- **Dominios:** HR, Tech/IT y Finance como agentes; Legal es caso borde (fuera de alcance). Un solo agente por consulta en el MVP (multi-intención = stretch).
+- **Forma:** módulos en `modulo-3/src/` + notebook que los importa; una función de entrada única tipada (pensando en envolverla con FastAPI en el M4). Índices Chroma en `modulo-3/chroma_db/` (gitignoreado, se reconstruyen desde los documentos).
+- **Evaluador (fase 7):** lo etiqueta/calibra Claude, no el usuario. El usuario aprende con la guía final (`guias/modulo-3-guia.md`), no fase a fase.
+- **Autorización:** commits y manejo de ramas (feature → `develop`) delegados a Claude; nunca `main`.
+
+### Hallazgos de la auditoría del material (importantes)
+- Las lecturas usan APIs **obsoletas**: Langfuse v2 (`langfuse.trace()`, `trace.span()`, `langfuse.score()`) y LangChain legacy (`initialize_agent`, `RetrievalQA`). Usar Langfuse v4 (`get_client()`, `start_as_current_observation`, `propagate_attributes`, `langfuse.langchain.CallbackHandler`, `create_score`) y LangChain 1.x.
+- `client.api.trace.get()` devuelve **410** en organizaciones nuevas (≥2026-09-16): leer traces con `client.api.observations.get_many(trace_id=...)`.
+- El repo del profe (`henry-ai-engineering`) no usa Langfuse (apaga el tracing); sirve de referencia para LangGraph (`graph.py`: router + `Send` + especialistas + abstención; `operations.py`: golden set y métricas; clase 5: supervisor/handoff; clase 6: juez calibrado).
+
+### Plan por fases (cada fase: tests/verificación → commits chicos → actualizar este estado)
+0 Setup (hecho) · 1 Corpus (3 dominios, 1a/1b/1c) · 2 Ingesta + Chroma (chunking por estructura, metadatos) · 3 Agentes RAG · 4 Orquestador LangGraph · 5 Langfuse · 6 Golden set (~30) + evaluación agregada + iteración v1→v2 · 7 Bonus evaluador · 8 Notebook, README, guía, corrida limpia, `/code-review`, merge.
+
+### Estado actual
+- **Fase 0 completada:** estructura `modulo-3/`, `requirements.txt` pinneado, `.env.example`, `scripts/smoke_test.py` (Langfuse auth, Chroma + filtro, LangGraph, traza LLM leída de vuelta) pasando contra servicios reales.
+
 ## Cómo trabajar conmigo en este proyecto
 
 - Priorizar el flujo principal (una llamada que devuelva JSON útil) antes de pulir, iterar el prompt como si fuera código, y armar la estructura de carpetas esperada desde el principio para no migrar después.
