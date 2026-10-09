@@ -56,7 +56,7 @@ def _markdown_units(text: str) -> tuple[str, list[Unit]]:
 def _csv_units(path: Path) -> tuple[str, list[Unit]]:
     with path.open(encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
-    first_column = list(rows[0])[0]
+    first_column = next(iter(rows[0]))
     units = [
         Unit(
             section=row[first_column].strip(),

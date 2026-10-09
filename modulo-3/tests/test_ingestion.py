@@ -1,5 +1,7 @@
 """Tests de carga de documentos y chunking. No llaman a ninguna API."""
 
+import itertools
+
 import pytest
 from src.config import DOMAINS, MAX_CHUNK_TOKENS
 from src.ingestion import count_tokens, load_domain, load_file, split_long_text
@@ -102,7 +104,7 @@ def test_long_text_splits_on_sentence_boundaries_with_overlap():
         assert count_tokens(part) <= 80
         assert part.endswith(".")  # nunca se corta a mitad de oracion
     # solapamiento: la ultima oracion de un trozo abre el siguiente
-    for a, b in zip(parts, parts[1:], strict=False):
+    for a, b in itertools.pairwise(parts):
         assert a.split(". ")[-1].rstrip(".") in b
 
 
