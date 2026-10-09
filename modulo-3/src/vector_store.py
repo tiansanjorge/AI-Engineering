@@ -6,6 +6,7 @@ Las colecciones se reconstruyen desde `data/` (el directorio `chroma_db/` no se 
 from pathlib import Path
 
 import chromadb
+from chromadb.errors import NotFoundError
 from langchain_chroma import Chroma
 from langchain_core.embeddings import Embeddings
 from langchain_core.vectorstores import VectorStoreRetriever
@@ -52,7 +53,7 @@ def build_domain_store(
     client = chromadb.PersistentClient(path=str(persist_dir))
     try:
         client.delete_collection(collection_name(domain))
-    except Exception:  # la coleccion todavia no existia
+    except NotFoundError:  # la coleccion todavia no existia
         pass
     store = _open(domain, persist_dir, embeddings)
     store.add_documents(documents, ids=[d.metadata["chunk_id"] for d in documents])
