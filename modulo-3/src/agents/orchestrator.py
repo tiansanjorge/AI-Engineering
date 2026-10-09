@@ -23,6 +23,7 @@ from openai import OpenAIError
 from pydantic import BaseModel, Field, ValidationError
 
 from src.agents.rag_agent import AgentResult, SourceRef, default_llm
+from src.routing_guard import RetrievalGuard
 
 Intent = Literal["hr", "tech", "finance", "out_of_scope"]
 AGENT_INTENTS = ("hr", "tech", "finance")
@@ -98,6 +99,8 @@ class OrchestratorResult(BaseModel):
     reason: str | None = None
     also_involves: list[str] = Field(default_factory=list)
     low_confidence: bool = False
+    route_overridden: bool = False
+    guard_distance: float | None = None
     status: Literal["answered", "abstained", "out_of_scope", "error"]
     answer: str
     sources: list[SourceRef] = Field(default_factory=list)
@@ -108,6 +111,7 @@ class OrchestratorResult(BaseModel):
 class OrchestratorState(TypedDict, total=False):
     question: str
     decision: dict | None
+    guard: dict | None
     router_error: str | None
     agent_result: dict | None
     result: dict
@@ -131,7 +135,7 @@ def build_router(llm: BaseChatModel) -> Runnable:
     )
 
 
-def build_orchestrator_graph(agents: dict, llm: BaseChatModel):
+def build_orchestrator_graph(agents: dict, llm: BaseChatModel, guard=None):
     """Compila el grafo del orquestador. `agents` mapea dominio -> agente con `.answer()`."""
     router = build_router(llm)
 
@@ -149,7 +153,28 @@ def build_orchestrator_graph(agents: dict, llm: BaseChatModel):
                 "decision": None,
                 "router_error": f"Fallo del modelo: {type(exc).__name__}",
             }
-        return {"decision": decision.model_dump(), "router_error": None}
+        guard_info = None
+        if guard is not None and decision.intent == "out_of_scope":
+            veto = guard.veto(state["question"])
+            if veto is not None:
+                domain, distance = veto
+                guard_info = {"overridden": True, "distance": round(distance, 4)}
+                decision = decision.model_copy(
+                    update={
+                        "intent": domain,
+                        "confidence": min(decision.confidence, 0.5),
+                        "reason": (
+                            f"[Corregido por recuperación: la consulta es muy cercana a {domain} "
+                            f"(distancia {distance:.2f}); el router había dicho out_of_scope] "
+                            + decision.reason
+                        ),
+                    }
+                )
+        return {
+            "decision": decision.model_dump(),
+            "guard": guard_info,
+            "router_error": None,
+        }
 
     def choose_branch(state: OrchestratorState) -> str:
         decision = state.get("decision")
@@ -186,6 +211,8 @@ def build_orchestrator_graph(agents: dict, llm: BaseChatModel):
             reason=decision.reason,
             also_involves=others,
             low_confidence=decision.confidence < LOW_CONFIDENCE,
+            route_overridden=bool(state.get("guard")),
+            guard_distance=(state.get("guard") or {}).get("distance"),
             status="abstained" if agent_result.abstained else "answered",
             answer=answer,
             sources=agent_result.sources,
@@ -240,12 +267,21 @@ def build_orchestrator_graph(agents: dict, llm: BaseChatModel):
 class Orchestrator:
     """Punto de entrada unico: `run(question)` devuelve un `OrchestratorResult` validado."""
 
-    def __init__(self, agents: dict | None = None, llm: BaseChatModel | None = None):
+    def __init__(
+        self,
+        agents: dict | None = None,
+        llm: BaseChatModel | None = None,
+        guard: RetrievalGuard | None = None,
+    ):
         from src.agents.registry import build_agents
 
         llm = llm or default_llm()
-        self.agents = agents if agents is not None else build_agents(llm)
-        self.graph = build_orchestrator_graph(self.agents, llm)
+        if agents is None:
+            # Configuracion por defecto: agentes reales y guarda de recuperacion activa.
+            agents = build_agents(llm)
+            guard = guard or RetrievalGuard.from_default()
+        self.agents = agents
+        self.graph = build_orchestrator_graph(self.agents, llm, guard)
 
     def run(
         self, question: str, config: RunnableConfig | None = None
