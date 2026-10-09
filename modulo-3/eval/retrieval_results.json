@@ -1,0 +1,363 @@
+{
+  "k": 4,
+  "overall": {
+    "n": 18,
+    "hit@1": 0.8888888888888888,
+    "hit@3": 0.9444444444444444,
+    "hit@4": 1.0,
+    "mrr": 0.921,
+    "routing_by_best_score": 1.0
+  },
+  "by_domain": {
+    "hr": {
+      "n": 6,
+      "hit@1": 1.0,
+      "hit@3": 1.0,
+      "hit@4": 1.0,
+      "mrr": 1.0,
+      "routing_by_best_score": 1.0
+    },
+    "tech": {
+      "n": 6,
+      "hit@1": 0.8333333333333334,
+      "hit@3": 1.0,
+      "hit@4": 1.0,
+      "mrr": 0.889,
+      "routing_by_best_score": 1.0
+    },
+    "finance": {
+      "n": 6,
+      "hit@1": 0.8333333333333334,
+      "hit@3": 0.8333333333333334,
+      "hit@4": 1.0,
+      "mrr": 0.875,
+      "routing_by_best_score": 1.0
+    }
+  },
+  "cases": [
+    {
+      "id": "R-HR-01",
+      "domain": "hr",
+      "query": "Llevo 4 años en la empresa, ¿cuántos días de vacaciones me tocan?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Días de vacaciones por antigüedad",
+        "HR-FAQ-01",
+        "HR-FAQ-04",
+        "Arrastre de días no usados"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.3655,
+        "tech": 0.5632,
+        "finance": 0.6141
+      },
+      "score_based_route": "hr"
+    },
+    {
+      "id": "R-HR-02",
+      "domain": "hr",
+      "query": "Mi hijo nació la semana pasada, ¿cuánto tiempo de licencia me corresponde?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "HR-FAQ-06",
+        "Licencia por nacimiento o adopción",
+        "Reducción horaria por lactancia",
+        "HR-FAQ-05"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.3582,
+        "tech": 0.665,
+        "finance": 0.6848
+      },
+      "score_based_route": "hr"
+    },
+    {
+      "id": "R-HR-03",
+      "domain": "hr",
+      "query": "¿Qué día del mes depositan el sueldo?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Fechas de pago de sueldos",
+        "HR-FAQ-09",
+        "HR-FAQ-10",
+        "HR-FAQ-12"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.3451,
+        "tech": 0.6375,
+        "finance": 0.5621
+      },
+      "score_based_route": "hr"
+    },
+    {
+      "id": "R-HR-04",
+      "domain": "hr",
+      "query": "¿Cuándo hacen las evaluaciones de desempeño?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "HR-FAQ-19",
+        "Ciclo de evaluación de desempeño",
+        "HR-FAQ-20",
+        "Ajustes salariales y promociones"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.2336,
+        "tech": 0.5526,
+        "finance": 0.581
+      },
+      "score_based_route": "hr"
+    },
+    {
+      "id": "R-HR-05",
+      "domain": "hr",
+      "query": "¿Puedo trabajar un mes entero desde otro país?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "HR-FAQ-23",
+        "Trabajo desde otro país",
+        "HR-FAQ-04",
+        "HR-FAQ-03"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.3443,
+        "tech": 0.5928,
+        "finance": 0.6053
+      },
+      "score_based_route": "hr"
+    },
+    {
+      "id": "R-HR-06",
+      "domain": "hr",
+      "query": "¿Cuánta plata me dan para almorzar cuando voy a la oficina?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "HR-FAQ-16",
+        "Tarjeta de comidas",
+        "Bono de home office",
+        "Regalos y atenciones"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.3605,
+        "tech": 0.6433,
+        "finance": 0.5344
+      },
+      "score_based_route": "hr"
+    },
+    {
+      "id": "R-TE-01",
+      "domain": "tech",
+      "query": "La VPN me tira el error 502, ¿qué hago?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Error VPN-502: puerta de enlace no disponible",
+        "VPN-502",
+        "Error VPN-619: tiempo de espera agotado",
+        "VPN-619"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.6879,
+        "tech": 0.3051,
+        "finance": 0.6961
+      },
+      "score_based_route": "tech"
+    },
+    {
+      "id": "R-TE-02",
+      "domain": "tech",
+      "query": "Dejé la notebook en un taxi y no la encuentro",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Pérdida o robo de un dispositivo",
+        "Devolución de equipos al dejar la empresa",
+        "SEC-215",
+        "Notebook con falla"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.6737,
+        "tech": 0.5252,
+        "finance": 0.5872
+      },
+      "score_based_route": "tech"
+    },
+    {
+      "id": "R-TE-03",
+      "domain": "tech",
+      "query": "¿En cuánto tiempo responden a un incidente crítico?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Tiempos de respuesta y resolución",
+        "Prioridades de los incidentes",
+        "Incidentes de seguridad",
+        "Qué hacer ante una caída general"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.5465,
+        "tech": 0.4318,
+        "finance": 0.6497
+      },
+      "score_based_route": "tech"
+    },
+    {
+      "id": "R-TE-04",
+      "domain": "tech",
+      "query": "Cambié de teléfono y ya no me sirve el código de verificación para entrar",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Cambio de celular y MFA",
+        "SSO-204",
+        "Autenticación en dos pasos (MFA)",
+        "Primer inicio de sesión"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.7039,
+        "tech": 0.4759,
+        "finance": 0.6909
+      },
+      "score_based_route": "tech"
+    },
+    {
+      "id": "R-TE-05",
+      "domain": "tech",
+      "query": "Me llegó un mail raro que me pide mi contraseña",
+      "rank_of_expected": 3,
+      "top_sections": [
+        "Primer inicio de sesión",
+        "Fraude del director por correo",
+        "Cómo reconocer un phishing",
+        "Reportar un correo sospechoso"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.6593,
+        "tech": 0.5158,
+        "finance": 0.6286
+      },
+      "score_based_route": "tech"
+    },
+    {
+      "id": "R-TE-06",
+      "domain": "tech",
+      "query": "¿Cómo pido que me instalen un programa que no figura en el catálogo?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Solicitar software nuevo que no está en el catálogo",
+        "Catálogo de software",
+        "SW-110",
+        "Solicitar una licencia de software"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.6946,
+        "tech": 0.491,
+        "finance": 0.6726
+      },
+      "score_based_route": "tech"
+    },
+    {
+      "id": "R-FI-01",
+      "domain": "finance",
+      "query": "¿Hasta cuánto puedo gastar por noche de hotel en un viaje de trabajo?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Hoteles y alojamiento",
+        "Límites para comidas",
+        "Viajes aprobados con anticipación",
+        "Adelantos de gastos"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.5395,
+        "tech": 0.5846,
+        "finance": 0.3837
+      },
+      "score_based_route": "finance"
+    },
+    {
+      "id": "R-FI-02",
+      "domain": "finance",
+      "query": "¿En cuánto tiempo me devuelven un gasto que ya fue aprobado?",
+      "rank_of_expected": 4,
+      "top_sections": [
+        "Plazo para presentar gastos",
+        "Reembolsos rechazados",
+        "Viajes aprobados con anticipación",
+        "Plazo de pago de reembolsos"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.5418,
+        "tech": 0.5972,
+        "finance": 0.4084
+      },
+      "score_based_route": "finance"
+    },
+    {
+      "id": "R-FI-03",
+      "domain": "finance",
+      "query": "Un cliente quiere discutir una factura, ¿cuánto tiempo tiene para hacerlo?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Disputas de facturas",
+        "Disputa de una factura",
+        "Reembolsos a clientes",
+        "Plazo de pago"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.5426,
+        "tech": 0.5634,
+        "finance": 0.3227
+      },
+      "score_based_route": "finance"
+    },
+    {
+      "id": "R-FI-04",
+      "domain": "finance",
+      "query": "¿Cuánto sale el plan Business por agente?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Plan Business",
+        "Plan Enterprise",
+        "Plan Starter",
+        "Agente adicional"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.6136,
+        "tech": 0.6873,
+        "finance": 0.3223
+      },
+      "score_based_route": "finance"
+    },
+    {
+      "id": "R-FI-05",
+      "domain": "finance",
+      "query": "¿Quién tiene que aprobar una compra de 5000 dólares?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Niveles de aprobación de compras",
+        "Aprobaciones según el monto",
+        "Principios de compras",
+        "Contratos con proveedores"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.6525,
+        "tech": 0.6124,
+        "finance": 0.3832
+      },
+      "score_based_route": "finance"
+    },
+    {
+      "id": "R-FI-06",
+      "domain": "finance",
+      "query": "¿Qué día se cierra la contabilidad del mes?",
+      "rank_of_expected": 1,
+      "top_sections": [
+        "Fechas límite del cierre",
+        "Cierre contable mensual",
+        "Año fiscal",
+        "Auditoría interna y externa"
+      ],
+      "best_distance_by_domain": {
+        "hr": 0.5061,
+        "tech": 0.5561,
+        "finance": 0.3201
+      },
+      "score_based_route": "finance"
+    }
+  ]
+}

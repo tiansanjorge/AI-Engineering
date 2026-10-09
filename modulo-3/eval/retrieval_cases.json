@@ -1,0 +1,20 @@
+[
+  {"id": "R-HR-01", "domain": "hr", "query": "Llevo 4 años en la empresa, ¿cuántos días de vacaciones me tocan?", "expected_sections": ["Días de vacaciones por antigüedad", "HR-FAQ-01"]},
+  {"id": "R-HR-02", "domain": "hr", "query": "Mi hijo nació la semana pasada, ¿cuánto tiempo de licencia me corresponde?", "expected_sections": ["Licencia por nacimiento o adopción", "HR-FAQ-06"]},
+  {"id": "R-HR-03", "domain": "hr", "query": "¿Qué día del mes depositan el sueldo?", "expected_sections": ["Fechas de pago de sueldos", "HR-FAQ-09"]},
+  {"id": "R-HR-04", "domain": "hr", "query": "¿Cuándo hacen las evaluaciones de desempeño?", "expected_sections": ["Ciclo de evaluación de desempeño", "HR-FAQ-19"]},
+  {"id": "R-HR-05", "domain": "hr", "query": "¿Puedo trabajar un mes entero desde otro país?", "expected_sections": ["Trabajo desde otro país", "HR-FAQ-23"]},
+  {"id": "R-HR-06", "domain": "hr", "query": "¿Cuánta plata me dan para almorzar cuando voy a la oficina?", "expected_sections": ["Tarjeta de comidas", "HR-FAQ-16"]},
+  {"id": "R-TE-01", "domain": "tech", "query": "La VPN me tira el error 502, ¿qué hago?", "expected_sections": ["Error VPN-502: puerta de enlace no disponible", "VPN-502"]},
+  {"id": "R-TE-02", "domain": "tech", "query": "Dejé la notebook en un taxi y no la encuentro", "expected_sections": ["Pérdida o robo de un dispositivo", "SEC-215"]},
+  {"id": "R-TE-03", "domain": "tech", "query": "¿En cuánto tiempo responden a un incidente crítico?", "expected_sections": ["Tiempos de respuesta y resolución", "Prioridades de los incidentes"]},
+  {"id": "R-TE-04", "domain": "tech", "query": "Cambié de teléfono y ya no me sirve el código de verificación para entrar", "expected_sections": ["Cambio de celular y MFA", "Autenticación en dos pasos (MFA)", "SSO-204"]},
+  {"id": "R-TE-05", "domain": "tech", "query": "Me llegó un mail raro que me pide mi contraseña", "expected_sections": ["Reportar un correo sospechoso", "Cómo reconocer un phishing", "SEC-001"]},
+  {"id": "R-TE-06", "domain": "tech", "query": "¿Cómo pido que me instalen un programa que no figura en el catálogo?", "expected_sections": ["Solicitar software nuevo que no está en el catálogo"]},
+  {"id": "R-FI-01", "domain": "finance", "query": "¿Hasta cuánto puedo gastar por noche de hotel en un viaje de trabajo?", "expected_sections": ["Hoteles y alojamiento", "Tope de hotel (interno)"]},
+  {"id": "R-FI-02", "domain": "finance", "query": "¿En cuánto tiempo me devuelven un gasto que ya fue aprobado?", "expected_sections": ["Plazo de pago de reembolsos"]},
+  {"id": "R-FI-03", "domain": "finance", "query": "Un cliente quiere discutir una factura, ¿cuánto tiempo tiene para hacerlo?", "expected_sections": ["Disputas de facturas", "Disputa de una factura"]},
+  {"id": "R-FI-04", "domain": "finance", "query": "¿Cuánto sale el plan Business por agente?", "expected_sections": ["Plan Business"]},
+  {"id": "R-FI-05", "domain": "finance", "query": "¿Quién tiene que aprobar una compra de 5000 dólares?", "expected_sections": ["Niveles de aprobación de compras"]},
+  {"id": "R-FI-06", "domain": "finance", "query": "¿Qué día se cierra la contabilidad del mes?", "expected_sections": ["Cierre contable mensual", "Fechas límite del cierre"]}
+]
