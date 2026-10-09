@@ -168,8 +168,12 @@ def build_orchestrator_graph(agents: dict, llm: BaseChatModel):
     def finalize(state: OrchestratorState) -> dict:
         decision = RouteDecision.model_validate(state["decision"])
         agent_result = AgentResult.model_validate(state["agent_result"])
+        # `also_involves` comparte el tipo Intent, asi que el modelo podria listar "out_of_scope":
+        # solo se anotan areas reales y distintas de la principal.
         others = [
-            d for d in dict.fromkeys(decision.also_involves) if d != decision.intent
+            d
+            for d in dict.fromkeys(decision.also_involves)
+            if d in AREA_NAMES and d != decision.intent
         ]
         answer = agent_result.answer
         if others and not agent_result.abstained:

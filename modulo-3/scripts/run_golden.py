@@ -22,6 +22,7 @@ from langchain_core.callbacks import get_usage_metadata_callback
 
 from src.config import CHAT_MODEL, MODULE_ROOT
 from src.evaluation import (
+    BLIND_PATH,
     GOLDEN_PATH,
     HOLDOUT_PATH,
     aggregate,
@@ -46,13 +47,13 @@ def main() -> None:
     parser.add_argument("--run-tag", required=True)
     parser.add_argument("--note", default="")
     parser.add_argument(
-        "--set", choices=["dev", "holdout"], default="dev",
-        help="dev = test_queries.json (se usa para ajustar); holdout = set de validacion aparte",
+        "--set", choices=["dev", "holdout", "blind"], default="dev",
+        help="dev = test_queries.json (se usa para ajustar); holdout = validacion; blind = ciego (se corre sin ajustar nada despues)",
     )  # fmt: skip
     parser.add_argument("--only", nargs="*", help="Ids de casos a correr (diagnostico)")
     args = parser.parse_args()
 
-    path = GOLDEN_PATH if args.set == "dev" else HOLDOUT_PATH
+    path = {"dev": GOLDEN_PATH, "holdout": HOLDOUT_PATH, "blind": BLIND_PATH}[args.set]
     cases = [c for c in load_golden(path) if not args.only or c["id"] in args.only]
     evals = []
     for case in cases:

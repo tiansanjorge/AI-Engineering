@@ -23,6 +23,7 @@ from src.config import MODULE_ROOT
 
 GOLDEN_PATH = MODULE_ROOT / "test_queries.json"
 HOLDOUT_PATH = MODULE_ROOT / "test_queries_holdout.json"
+BLIND_PATH = MODULE_ROOT / "test_queries_blind.json"
 INTENTS = ["hr", "tech", "finance", "out_of_scope"]
 # Precio de gpt-4o-mini en USD por millon de tokens (mismo que modulo-1/config/pricing.json).
 CHAT_PRICE_PER_M_TOKENS = {"gpt-4o-mini": (0.15, 0.60)}
