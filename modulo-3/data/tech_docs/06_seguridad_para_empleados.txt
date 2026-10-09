@@ -1,0 +1,35 @@
+Seguridad de la información para empleados de Nimbus Desk
+Guía del equipo de seguridad de la empresa ficticia Nimbus Desk. Contenido de práctica.
+
+Por qué importa la seguridad
+Nimbus Desk guarda en sus sistemas los tickets y los datos de miles de clientes. Un incidente de seguridad puede afectar la confianza de los clientes y la continuidad del negocio. Todas las personas, y no solo el equipo de seguridad, son responsables de proteger la información. Esta guía resume las reglas básicas que todas las personas deben cumplir.
+
+Clasificación de la información
+La información se clasifica en cuatro niveles: pública, interna, confidencial y restringida. Los datos de clientes y los datos personales del personal son confidenciales. Las claves, los secretos y los datos financieros no publicados son restringidos. Cuanto más alto el nivel, más estrictas son las reglas para guardarla, compartirla y destruirla.
+
+Cómo reconocer un phishing
+Un correo de phishing suele crear urgencia, pedir credenciales o dinero, venir de una dirección parecida pero distinta de la oficial, o tener errores de redacción. Ante la duda, no se hace clic. El equipo de seguridad realiza simulacros de phishing cada trimestre. Quienes caen en un simulacro reciben una capacitación breve, sin sanción.
+
+Fraude del director por correo
+Un tipo de fraude frecuente es un correo que simula ser de un director y pide una transferencia urgente o tarjetas de regalo. Nadie en Nimbus Desk puede pedir pagos por correo o chat sin la verificación del proceso formal de compras. Cualquier pedido de ese tipo se debe confirmar por teléfono con la persona y reportar a seguridad.
+
+Compartir archivos de forma segura
+Los archivos con información confidencial se comparten solo mediante enlaces de la carpeta corporativa, con acceso limitado a personas concretas y fecha de vencimiento. No se envían por correo personal, por aplicaciones de mensajería personales ni se suben a servicios de almacenamiento no autorizados.
+
+Dispositivos USB y medios externos
+Está prohibido conectar pendrives o discos externos desconocidos a una notebook de la empresa. Los medios externos que se necesiten para el trabajo se piden a soporte técnico, que los entrega cifrados. Un dispositivo USB encontrado en la oficina debe entregarse al equipo de seguridad sin conectarlo.
+
+Redes públicas y viajes
+En aeropuertos, hoteles o cafés se debe usar siempre la VPN, o el hotspot del celular, para cualquier actividad de trabajo. No se debe iniciar sesión en sistemas corporativos desde computadoras públicas. Durante los viajes, la notebook no se deja desatendida ni en el equipaje facturado.
+
+Pantalla y escritorio limpio
+Al alejarse del puesto, hay que bloquear la pantalla con Windows+L o Control+Comando+Q. Los documentos impresos con datos confidenciales no se dejan sobre el escritorio y se destruyen en las trituradoras. En las videollamadas desde espacios públicos se evita mostrar información sensible en pantalla.
+
+Desarrollo seguro
+Los equipos de ingeniería no deben guardar claves, contraseñas ni tokens en el código ni en los repositorios. Se usa el administrador de secretos de la empresa. Un análisis automático revisa cada cambio y bloquea la publicación si detecta secretos. Una clave expuesta se considera comprometida y debe rotarse de inmediato.
+
+Uso de inteligencia artificial generativa
+Se pueden usar las herramientas de inteligencia artificial aprobadas por la empresa para tareas de trabajo, pero no se debe pegar en ellas información confidencial o restringida, ni datos personales de clientes o de personas empleadas. Las herramientas no aprobadas requieren una revisión de seguridad antes de usarse.
+
+Aviso de cualquier sospecha
+Ante cualquier sospecha de un incidente, lo más importante es avisar rápido. No hay sanciones por reportar de buena fe, aunque resulte una falsa alarma. Los avisos se envían a seguridad@nimbusdesk.example o al teléfono 5555, opción 1, las 24 horas. Un aviso temprano reduce el daño.
