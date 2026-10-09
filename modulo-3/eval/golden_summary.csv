@@ -1,0 +1,3 @@
+run_tag,set,timestamp,note,n,pass_rate,routing_strict,routing_lenient,status_ok,facts_ok,sources_ok,forbidden_ok,false_abstentions,false_answers,latency_ms_p50,latency_ms_p95,input_tokens,output_tokens,estimated_cost_usd
+golden-run-v1,dev,2026-10-09T23:33:10.642470+00:00,baseline: sistema de la fase 4 (golden con T-TE-01 corregido),39,0.923,0.872,0.949,0.923,0.905,1.0,1.0,3,0,2609.2,3787.6,55982,3979,0.010785
+holdout-run-v1,holdout,2026-10-09T23:33:47.644453+00:00,baseline: sistema de la fase 4 (H-HR-03 corregido),14,0.786,0.786,0.786,0.786,0.727,1.0,1.0,3,0,2414.7,3272.7,18525,1210,0.003505
