@@ -41,8 +41,8 @@ SCORABLE_STATUSES = ("answered", "abstained")
 JUDGE_PROMPT = """Sos un verificador estricto de las respuestas de un asistente de soporte interno de Nimbus Desk (empresa ficticia). Recibís una consulta, la respuesta del asistente y los fragmentos de documentación con los que contaba. NO das un puntaje: hacés una verificación estructurada, y el puntaje se calcula aparte.
 
 Procedimiento:
-1. question_parts: descomponé la consulta en las cosas concretas que pide (una por ítem; si pide una sola cosa, un ítem). Para cada parte marcá answered=true solo si la respuesta da el dato, plazo, monto o paso concreto que se pide; decir que "existe" algo sin dar lo pedido NO cuenta.
-2. claims: listá cada afirmación factual de la respuesta (cada cifra, plazo, condición, paso, dirección o nombre), una por ítem. Para cada una buscá en los fragmentos un texto que diga lo mismo, con los mismos números y condiciones: supported=true y en quote copiá literalmente ese texto (máximo 20 palabras). Si los fragmentos dicen otra cosa, o nada, supported=false y quote vacío. Si un fragmento da rangos o una tabla (por ejemplo "21 días desde los 5 años"), aplicá la regla a la situación concreta de la consulta antes de decidir: una cifra que corresponde a otro tramo NO está respaldada. No incluyas como afirmación el reconocer que a un dato le falta información en los fragmentos.
+1. question_parts: descomponé la consulta en las cosas que pide EXPLÍCITAMENTE (una por ítem; si pide una sola cosa, un ítem); no inventes partes que la persona no preguntó ni exijas detalles extra. Para cada parte marcá answered=true solo si la respuesta da el dato, plazo, monto o paso concreto que se pide; una respuesta breve que da lo pedido SÍ cuenta; decir que "existe" algo sin dar lo pedido NO cuenta.
+2. claims: listá cada afirmación factual de la respuesta (cada cifra, plazo, condición, paso, dirección o nombre), una por ítem. Para cada una buscá en los fragmentos un texto que diga lo mismo, con los mismos números y condiciones: supported=true y en quote copiá literalmente ese texto (máximo 20 palabras). Si los fragmentos dicen otra cosa, o nada, supported=false y quote vacío. Marcá central=true en las afirmaciones que constituyen la respuesta directa a lo preguntado (el dato, plazo, monto o paso pedido) y central=false en los detalles accesorios. Si un fragmento da rangos o una tabla (por ejemplo "21 días desde los 5 años"), aplicá la regla a la situación concreta de la consulta antes de decidir: una cifra que corresponde a otro tramo NO está respaldada. No incluyas como afirmación el reconocer que a un dato le falta información en los fragmentos.
 3. abstention_justified: solo si el asistente se abstuvo ("no encuentro esa información"). true si ningún fragmento contiene la información para responder la consulta (releé todos antes de decidir); false si la respuesta sí está en los fragmentos. Si el asistente respondió, devolvé null.
 4. relevance: de 1 a 10, qué tan bien trata la respuesta lo que se preguntó (1 = habla de otra cosa).
 5. reason: una o dos oraciones con lo más importante de tu verificación.
@@ -72,6 +72,9 @@ class ClaimCheck(BaseModel):
     )
     quote: str = Field(
         description="Cita literal del fragmento que la respalda; vacío si no está respaldada"
+    )
+    central: bool = Field(
+        description="Es la respuesta directa a lo preguntado, no un detalle accesorio"
     )
 
 
@@ -111,10 +114,11 @@ def compute_verdict(raw: RawJudgment, status: str) -> JudgeVerdict:
     """Convierte la verificacion del LLM en puntajes con reglas explicitas y deterministicas.
 
     - abstencion: 9 si estaba justificada (los fragmentos no tenian la respuesta), 1 si no.
-    - exactitud: 10 sin afirmaciones no respaldadas; con alguna, como maximo 4 (proporcional).
+    - exactitud: 10 sin afirmaciones no respaldadas; 4 si solo falla un detalle accesorio; 1 si
+      falla la afirmacion central (la respuesta directa a lo preguntado).
     - completitud: fraccion de partes de la consulta realmente contestadas.
     - global: pondera el peor de los tres (70 %) y el promedio (30 %); con una afirmacion no
-      respaldada nunca supera exactitud + 1.
+      respaldada nunca supera exactitud + 1 (y una afirmacion central incorrecta lo deja en 2 o menos).
     """
     unsupported = [c.claim for c in raw.claims if not c.supported]
     unanswered = [p.part for p in raw.question_parts if not p.answered]
@@ -137,11 +141,13 @@ def compute_verdict(raw: RawJudgment, status: str) -> JudgeVerdict:
     completeness = (
         _clip(10 * (len(parts) - len(unanswered)) / len(parts)) if parts else 5
     )
+    central_wrong = [c for c in raw.claims if c.central and not c.supported]
     if not raw.claims:
         accuracy = 5
+    elif central_wrong:
+        accuracy = 1
     elif unsupported:
-        supported_share = (len(raw.claims) - len(unsupported)) / len(raw.claims)
-        accuracy = max(1, min(4, _clip(10 * supported_share)))
+        accuracy = 4
     else:
         accuracy = 10
     relevance = raw.relevance
