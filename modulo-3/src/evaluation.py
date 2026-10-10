@@ -197,3 +197,66 @@ def aggregate(evals: list[CaseEval]) -> dict:
         "output_tokens": out_tokens,
         "estimated_cost_usd": estimate_cost_usd(in_tokens, out_tokens),
     }
+
+
+def _ranks(values: list[float]) -> list[float]:
+    """Rangos (empezando en 1) con promedio en los empates."""
+    order = sorted(range(len(values)), key=lambda i: values[i])
+    ranks = [0.0] * len(values)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and values[order[j + 1]] == values[order[i]]:
+            j += 1
+        for k in range(i, j + 1):
+            ranks[order[k]] = (i + j) / 2 + 1
+        i = j + 1
+    return ranks
+
+
+def spearman(x: list[float], y: list[float]) -> float | None:
+    """Correlacion de Spearman (Pearson sobre rangos); None si una serie es constante."""
+    if len(x) != len(y) or len(x) < 2:
+        raise ValueError("Se necesitan dos series de la misma longitud (>= 2)")
+    rx, ry = _ranks(x), _ranks(y)
+    mx, my = sum(rx) / len(rx), sum(ry) / len(ry)
+    cov = sum((a - mx) * (b - my) for a, b in zip(rx, ry, strict=True))
+    var_x = sum((a - mx) ** 2 for a in rx)
+    var_y = sum((b - my) ** 2 for b in ry)
+    if var_x == 0 or var_y == 0:
+        return None
+    return round(cov / (var_x * var_y) ** 0.5, 3)
+
+
+def judge_agreement(
+    human: list[int], judge: list[int], good_threshold: int = 7
+) -> dict:
+    """Acuerdo entre el juez y las etiquetas humanas.
+
+    `bias` > 0 significa que el juez es mas generoso que la persona. `false_good` son respuestas
+    que la persona considera malas (< umbral) y el juez buenas: el error mas peligroso de un juez.
+    """
+    n = len(human)
+    diffs = [j - h for h, j in zip(human, judge, strict=True)]
+    return {
+        "n": n,
+        "spearman": spearman(human, judge),
+        "mae": round(sum(abs(d) for d in diffs) / n, 2),
+        "bias": round(sum(diffs) / n, 2),
+        "within_1": round(sum(abs(d) <= 1 for d in diffs) / n, 3),
+        "within_2": round(sum(abs(d) <= 2 for d in diffs) / n, 3),
+        "binary_agreement": round(
+            sum(
+                (h >= good_threshold) == (j >= good_threshold)
+                for h, j in zip(human, judge, strict=True)
+            )
+            / n,
+            3,
+        ),
+        "false_good": sum(
+            h < good_threshold <= j for h, j in zip(human, judge, strict=True)
+        ),
+        "false_bad": sum(
+            j < good_threshold <= h for h, j in zip(human, judge, strict=True)
+        ),
+    }

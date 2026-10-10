@@ -56,6 +56,7 @@ class RetrievedChunk(BaseModel):
     chunk_id: str
     section: str
     distance: float
+    text: str = ""
 
 
 class AgentResult(BaseModel):
@@ -123,6 +124,7 @@ class RAGAgent:
                 chunk_id=d.metadata["chunk_id"],
                 section=d.metadata["section"],
                 distance=d.metadata.get("distance", 0.0),
+                text=d.page_content,
             )
             for d in documents
         ]
