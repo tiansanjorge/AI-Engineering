@@ -132,3 +132,18 @@ def test_registry_builds_three_isolated_agents(indexed):
         assert result.domain == domain
     prompts = {agent.area for agent in agents.values()}
     assert len(prompts) == 3
+
+
+def test_retrieval_failure_becomes_abstention_not_crash():
+    class FailingRetriever:
+        def invoke(self, question, config=None):
+            raise APIConnectionError(
+                request=httpx.Request("POST", "https://api.openai.com")
+            )
+
+    agent = RAGAgent(
+        "hr", "Recursos Humanos", "Nota.", FailingRetriever(), FakeLLM(lambda m: None)
+    )
+    result = agent.answer("¿Vacaciones?")
+    assert result.abstained and "recuperación" in result.error
+    assert not result.sources and not result.retrieved

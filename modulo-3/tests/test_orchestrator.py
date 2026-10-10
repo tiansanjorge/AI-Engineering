@@ -197,3 +197,17 @@ def test_out_of_scope_listed_in_also_involves_is_ignored_not_a_crash():
     assert result.status == "answered"
     assert result.also_involves == ["finance"]
     assert "out_of_scope" not in result.answer
+
+
+def test_guard_failure_keeps_the_routers_out_of_scope():
+    class FailingGuard:
+        def veto(self, question):
+            raise APIConnectionError(
+                request=httpx.Request("POST", "https://api.openai.com")
+            )
+
+    agents = {d: StubAgent(d) for d in ("hr", "tech", "finance")}
+    llm = FakeLLM(lambda m: decision("out_of_scope"))
+    result = Orchestrator(agents=agents, llm=llm, guard=FailingGuard()).run("consulta")
+    assert result.status == "out_of_scope" and not result.route_overridden
+    assert not any(a.questions for a in agents.values())

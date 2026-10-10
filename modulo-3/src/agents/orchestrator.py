@@ -155,7 +155,11 @@ def build_orchestrator_graph(agents: dict, llm: BaseChatModel, guard=None):
             }
         guard_info = None
         if guard is not None and decision.intent == "out_of_scope":
-            veto = guard.veto(state["question"])
+            try:
+                veto = guard.veto(state["question"])
+            except OpenAIError:
+                # La guarda es una segunda opinion opcional: si falla, se respeta el out_of_scope.
+                veto = None
             if veto is not None:
                 domain, distance = veto
                 guard_info = {"overridden": True, "distance": round(distance, 4)}
