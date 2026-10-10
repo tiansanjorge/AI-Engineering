@@ -32,7 +32,7 @@ seguridad; **Media** = limita la confianza en las métricas o la calidad; **Baja
 | P-20 | Alcance | Un solo modelo y un solo embedding; no se comparó con otras opciones | Baja | Abierto |
 | P-21 | Proceso | Avisos CRLF/LF en git (falta `.gitattributes`) | Baja | Abierto |
 | P-22 | Evaluador | Consulta de acceso a Nimbus Expenses recibe 2/10 del juez: ¿juez estricto o respuesta fuera de foco? | Media | Abierto |
-| P-23 | Notebook | Dependencia de la latencia de Langfuse (timeouts SSL intermitentes al ejecutar) | Baja | Abierto |
+| P-23 | Notebook | Dependencia de la latencia de Langfuse (timeouts intermitentes al ejecutar) | Baja | Mitigado |
 
 ---
 
@@ -216,3 +216,5 @@ seguridad; **Media** = limita la confianza en las métricas o la calidad; **Baja
   Langfuse en 2 de 4 corridas; una medición directa tardó 8,6 s en responder.
 - **Impacto:** la ejecución «Run All» puede fallar por red, no por código.
 - **Idea:** reintentos con espera en las celdas que leen de Langfuse, o aumentar el timeout del cliente.
+- **Mitigación aplicada:** la celda de setup fija `LANGFUSE_TIMEOUT=30` (el default es 5 s) y el
+  notebook se re-ejecutó sin errores. Sigue dependiendo de la red: sin reintentos explícitos.

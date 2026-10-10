@@ -84,7 +84,9 @@ ROOT = Path.cwd() if (Path.cwd() / "src").exists() else Path.cwd().parent
 sys.path.insert(0, str(ROOT))
 os.chdir(ROOT)
 
-from IPython.display import Markdown, display
+# Langfuse Cloud a veces tarda mas que los 5 s por defecto del cliente
+os.environ.setdefault("LANGFUSE_TIMEOUT", "30")
+
 from langfuse import get_client
 
 from src.config import CHAT_MODEL, DOMAINS, EMBEDDING_MODEL
@@ -232,7 +234,7 @@ queries = [
 print(f"{'intención':13}{'conf':>5}  {'estado':13}{'corregido':>10}  consulta")
 for question in queries:
     r = system.run(question)
-    print(f"{str(r.intent):13}{r.confidence:>5}  {r.status:13}{str(r.route_overridden):>10}  {question}")
+    print(f"{r.intent!s:13}{r.confidence:>5}  {r.status:13}{r.route_overridden!s:>10}  {question}")
 """)
 
 code("""
@@ -428,7 +430,8 @@ flush()
 code("""
 import csv
 
-rows = list(csv.DictReader(open("eval/judge_calibration_history.csv", encoding="utf-8")))
+with open("eval/judge_calibration_history.csv", encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))
 print(f"{'juez':24}{'modelo':13}{'split':6}{'Spearman':>9}{'error':>7}{'sesgo':>7}{'acuerdo':>8}{'falsos buenos':>14}")
 for r in rows:
     if r["split"] == "all":
@@ -458,7 +461,8 @@ ciego). La tabla sale de `eval/golden_summary.csv`.
 code("""
 import csv
 
-rows = list(csv.DictReader(open("eval/golden_summary.csv", encoding="utf-8")))
+with open("eval/golden_summary.csv", encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))
 print(f"{'corrida':22}{'set':9}{'casos':>6}{'OK':>6}{'ruteo':>7}{'abst. indebidas':>16}  cambio")
 for r in rows:
     if r["run_tag"].endswith("rep2") or r["run_tag"].endswith("judge"):
