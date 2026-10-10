@@ -118,7 +118,13 @@ class RAGAgent:
         if not question:
             raise ValueError("La pregunta no puede estar vacía")
 
-        documents = self.retriever.invoke(question, config)
+        try:
+            documents = self.retriever.invoke(question, config)
+        except OpenAIError as exc:
+            # Fallo al embeber la consulta (red, cuota, auth): no rompe el flujo.
+            return self._abstain(
+                question, [], f"Fallo de recuperación: {type(exc).__name__}"
+            )
         retrieved = [
             RetrievedChunk(
                 chunk_id=d.metadata["chunk_id"],

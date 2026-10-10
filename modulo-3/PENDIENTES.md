@@ -33,6 +33,13 @@ seguridad; **Media** = limita la confianza en las métricas o la calidad; **Baja
 | P-21 | Proceso | Avisos CRLF/LF en git (falta `.gitattributes`) | Baja | Abierto |
 | P-22 | Evaluador | Consulta de acceso a Nimbus Expenses recibe 2/10 del juez: ¿juez estricto o respuesta fuera de foco? | Media | Abierto |
 | P-23 | Notebook | Dependencia de la latencia de Langfuse (timeouts intermitentes al ejecutar) | Baja | Mitigado |
+| P-24 | Agente RAG | Sin citar fuentes, el texto del modelo se devuelve como «abstención» (podría ser conocimiento externo) | Alta | Abierto |
+| P-25 | Indexación | `build_domain_store` borra la colección antes de embeber: un fallo deja el índice vacío o parcial | Media | Abierto |
+| P-26 | Ingesta | CSV/TXT con filas cortas, vacíos o párrafos de una línea rompen el build o se pierden en silencio | Media | Abierto |
+| P-27 | Evaluación | `run_golden.py` pierde toda la corrida si falla un caso; `--only` con ids inexistentes da TypeError | Media | Abierto |
+| P-28 | Costos | Tablas de precio fijas: ignoran `CHAT_MODEL`/`JUDGE_MODEL` y fallan con modelos no listados | Baja | Abierto |
+| P-29 | Corpus | `chunk_id` secuencial por archivo: no es estable si cambia el contenido | Baja | Abierto |
+| P-30 | Robustez | El `retriever` del agente y la guarda del orquestador no capturaban fallos de la API | Media | Resuelto |
 
 ---
 
@@ -218,3 +225,56 @@ seguridad; **Media** = limita la confianza en las métricas o la calidad; **Baja
 - **Idea:** reintentos con espera en las celdas que leen de Langfuse, o aumentar el timeout del cliente.
 - **Mitigación aplicada:** la celda de setup fija `LANGFUSE_TIMEOUT=30` (el default es 5 s) y el
   notebook se re-ejecutó sin errores. Sigue dependiendo de la red: sin reintentos explícitos.
+
+## P-24 · Texto sin respaldo devuelto como abstención (hallazgo del code review)
+
+- **Qué pasa:** en `rag_agent.py`, si el modelo no cita ningún `source_id` (ni válido ni inventado),
+  se conserva su texto como explicación de la abstención. Si en vez de «no lo encuentro» respondió con
+  conocimiento externo, el usuario lo recibe con `status="abstained"` y sin fuentes. El juez lo puntúa
+  como abstención justificada.
+- **Por qué se dejó:** esa política se tomó en v5 (si no cita nada, su explicación se conserva) y el
+  sistema se validó con ella; cambiarla sin volver a medir invalida las corridas.
+- **Idea:** usar un mensaje fijo de abstención y guardar el texto del modelo solo en el trace, y medir de nuevo.
+
+## P-25 · Reconstrucción destructiva del índice
+
+- **Qué pasa:** `build_domain_store` ejecuta `delete_collection` y después embebe. Si el embedding
+  falla, la colección queda vacía (`get_store` lanza `RuntimeError`) o parcial.
+- **Idea:** embeber primero y reemplazar después, o construir en una colección temporal y renombrar.
+
+## P-26 · Ingesta frágil ante documentos nuevos
+
+- **Qué pasa:** `_csv_units` lanza `AttributeError`/`IndexError` con filas cortas, con columnas de más o
+  sin filas; `_text_units` descarta párrafos de una sola línea y falla con un `.txt` vacío. El corpus
+  actual está validado por `scripts/corpus_stats.py`, por eso no se manifiesta.
+- **Idea:** validar y reportar en vez de romper; tests con CSV/TXT malformados.
+
+## P-27 · `run_golden.py` frágil
+
+- **Qué pasa:** los resultados se escriben recién al final, así que un fallo en el caso 30 de 39 pierde
+  los 29 anteriores (y su costo). `--only` con ids inexistentes termina en `TypeError` al formatear
+  `pass_rate=None`.
+- **Idea:** try/except por caso (registrando el error como resultado) y guardado incremental.
+
+## P-28 · Costo con tablas fijas
+
+- **Qué pasa:** `aggregate` siempre calcula el costo con precios de `gpt-4o-mini` y `quality_summary` con
+  `gpt-4o`, sin mirar `CHAT_MODEL`/`JUDGE_MODEL`; un modelo fuera de la tabla da `KeyError` al final de
+  una corrida ya pagada. Con `CHAT_MODEL=gpt-4o` el costo reportado se subestimaría ~16 veces.
+- **Idea:** pasar el modelo real y degradar a «costo desconocido» si no está en la tabla.
+
+## P-29 · `chunk_id` no estables
+
+- **Qué pasa:** el contador es secuencial por archivo. Si se agrega o borra una sección al principio de un
+  `.md`, se renumera todo lo que sigue y las citas guardadas en corridas y calibración dejan de apuntar al
+  mismo contenido.
+- **Idea:** id derivado de archivo + sección (o un hash del contenido).
+
+## P-30 · Fallos de la API en recuperación y guarda (resuelto)
+
+- **Qué pasaba:** `retriever.invoke` y `guard.veto` estaban fuera de los `try/except`: un fallo de la
+  API de embeddings rompía la consulta en vez de degradar.
+- **Resolución:** el agente devuelve una abstención con el error, y la guarda, al fallar, respeta el
+  `out_of_scope` del router. Dos tests de regresión nuevos (114 en total).
+- **Relacionado:** el review también marcó el umbral de la guarda (P-07) como un riesgo para
+  inyecciones con vocabulario de dominio.
