@@ -1,0 +1,819 @@
+{
+  "label": "j1-baseline",
+  "judge_model": "gpt-4o-mini",
+  "items": [
+    {
+      "id": "C-01",
+      "split": "tune",
+      "kind": "real",
+      "domain": "hr",
+      "status": "answered",
+      "question": "¿Cuántos días de vacaciones me corresponden con 6 años de antigüedad?",
+      "answer": "Con 6 años de antigüedad, te corresponden 21 días hábiles de vacaciones, según la política de vacaciones de Nimbus Desk.",
+      "context_sections": [
+        "Días de vacaciones por antigüedad",
+        "HR-FAQ-01"
+      ],
+      "human_score": 10,
+      "human_note": "Dato correcto y completo.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "te corresponden 21 días hábiles de vacaciones",
+          "21 días hábiles desde los 5 años",
+          "cada persona empleada tiene derecho a vacaciones pagas según su antigüedad"
+        ],
+        "reason": "La respuesta es completamente precisa, relevante y respaldada por los fragmentos, indicando correctamente los días de vacaciones para 6 años de antigüedad."
+      }
+    },
+    {
+      "id": "C-02",
+      "split": "test",
+      "kind": "real",
+      "domain": "hr",
+      "status": "answered",
+      "question": "Mi pareja va a tener un bebé, ¿cuánta licencia me dan?",
+      "answer": "La otra persona progenitora o cuidadora tiene derecho a 8 semanas de licencia paga por nacimiento. Esta licencia puede iniciarse hasta 2 semanas antes de la fecha prevista de parto y debe tomarse de forma continua, salvo acuerdo con Recursos Humanos.",
+      "context_sections": [
+        "HR-FAQ-06",
+        "Licencia por nacimiento o adopción"
+      ],
+      "human_score": 9,
+      "human_note": "Correcto; el detalle extra del inicio es del documento.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "8 semanas de licencia paga por nacimiento",
+          "La licencia puede iniciarse hasta 2 semanas antes",
+          "debe tomarse de forma continua"
+        ],
+        "reason": "La respuesta es precisa, completa y está completamente respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-03",
+      "split": "tune",
+      "kind": "real",
+      "domain": "hr",
+      "status": "answered",
+      "question": "¿Cuánto me pagan si recomiendo a alguien y entra a trabajar?",
+      "answer": "Si recomiendas a un candidato que se incorpora y supera el período de prueba, recibirás un bono de USD 500. Este bono se paga en el siguiente sueldo posterior al fin del período de prueba.",
+      "context_sections": [
+        "Referidos de personal"
+      ],
+      "human_score": 10,
+      "human_note": "Completo y fiel.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "recibirás un bono de USD 500",
+          "se paga en el siguiente sueldo posterior al fin del período de prueba",
+          "recomienda a un candidato que se incorpora y supera el período de prueba"
+        ],
+        "reason": "La respuesta es completamente precisa, relevante y está respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-04",
+      "split": "test",
+      "kind": "real",
+      "domain": "tech",
+      "status": "answered",
+      "question": "¿Cuántos intentos fallidos de contraseña hasta que se bloquea la cuenta?",
+      "answer": "La cuenta se bloquea después de 5 intentos fallidos consecutivos.",
+      "context_sections": [
+        "Bloqueo de cuenta",
+        "SSO-101"
+      ],
+      "human_score": 9,
+      "human_note": "Responde lo preguntado; no menciona los 15 minutos, que no se pedían.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "la cuenta se bloquea después de 5 intentos fallidos consecutivos",
+          "la cuenta se bloquea durante 15 minutos",
+          "el equipo de soporte puede desbloquearla"
+        ],
+        "reason": "La respuesta es precisa, completa y está completamente respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-05",
+      "split": "tune",
+      "kind": "real",
+      "domain": "tech",
+      "status": "answered",
+      "question": "¿Cada cuánto se renuevan las notebooks?",
+      "answer": "Las notebooks se renuevan cada 36 meses. Soporte técnico avisa con 60 días de anticipación y se agenda la entrega del nuevo equipo.",
+      "context_sections": [
+        "Ciclo de renovación"
+      ],
+      "human_score": 10,
+      "human_note": "Correcto, detalle extra respaldado.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "Las notebooks se renuevan cada 36 meses.",
+          "Soporte técnico avisa con 60 días de anticipación.",
+          "se agenda la entrega."
+        ],
+        "reason": "La respuesta es precisa, completa y está completamente respaldada por los fragmentos."
+      }
+    },
+    {
+      "id": "C-06",
+      "split": "test",
+      "kind": "real",
+      "domain": "tech",
+      "status": "answered",
+      "question": "¿A qué dirección reenvío un mail de phishing?",
+      "answer": "Debes reenviar el correo sospechoso como adjunto a la dirección phishing@nimbusdesk.example.",
+      "context_sections": [
+        "Reportar un correo sospechoso",
+        "SEC-001"
+      ],
+      "human_score": 10,
+      "human_note": "Exacto.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "reenviándolo como adjunto a phishing@nimbusdesk.example",
+          "reportar un correo sospechoso",
+          "No abrir enlaces ni archivos adjuntos"
+        ],
+        "reason": "La respuesta es completamente precisa, relevante y respaldada por los fragmentos, cubriendo la consulta de manera adecuada."
+      }
+    },
+    {
+      "id": "C-07",
+      "split": "tune",
+      "kind": "real",
+      "domain": "finance",
+      "status": "answered",
+      "question": "¿Cuál es el tope por día para comidas en un viaje de trabajo?",
+      "answer": "El tope por día para comidas durante un viaje de trabajo es de USD 35. Además, las comidas con clientes tienen un límite de USD 60 por persona.",
+      "context_sections": [
+        "Límites para comidas",
+        "Tope de comida en viaje (interno)"
+      ],
+      "human_score": 9,
+      "human_note": "Correcto; agrega un dato relacionado y respaldado.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "El tope por día para comidas durante un viaje de trabajo es de USD 35.",
+          "Las comidas con clientes tienen un límite de USD 60 por persona.",
+          "Las comidas en la ciudad de residencia durante un día normal no son reembolsables."
+        ],
+        "reason": "La respuesta es precisa, completa y está completamente respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-08",
+      "split": "test",
+      "kind": "real",
+      "domain": "finance",
+      "status": "answered",
+      "question": "¿Qué interés cobran si un cliente paga una factura tarde?",
+      "answer": "Si una factura no se paga en su plazo, se aplica un interés por mora del 1,5 % mensual sobre el saldo vencido.",
+      "context_sections": [
+        "Intereses por mora"
+      ],
+      "human_score": 10,
+      "human_note": "Exacto.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "interés por mora del 1,5 % mensual",
+          "sobre el saldo vencido",
+          "se aplica un interés por mora"
+        ],
+        "reason": "La respuesta es precisa, completa y está completamente respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-09",
+      "split": "tune",
+      "kind": "real",
+      "domain": "finance",
+      "status": "answered",
+      "question": "¿Cuántos días tengo para pedir el reembolso de un viaje?",
+      "answer": "No se encuentra información específica sobre el plazo para pedir el reembolso de un viaje en la documentación de Finanzas. Sin embargo, se menciona que los gastos deben cargarse dentro de los 30 días corridos posteriores a la fecha del gasto.",
+      "context_sections": [
+        "Plazo para presentar gastos"
+      ],
+      "human_score": 7,
+      "human_note": "Da el dato correcto (30 días) pero lo precede con un descargo confuso de que no hay información.",
+      "judge_score": 9,
+      "judge": {
+        "relevance": 10,
+        "completeness": 9,
+        "accuracy": 9,
+        "score": 9,
+        "evidence": [
+          "los gastos deben cargarse dentro de los 30 días corridos",
+          "el plazo se cuenta desde el regreso",
+          "salvo autorización excepcional de la gerencia de Finanzas"
+        ],
+        "reason": "La respuesta es relevante y precisa, aunque no menciona explícitamente que el plazo se cuenta desde el regreso del viaje."
+      }
+    },
+    {
+      "id": "C-10",
+      "split": "test",
+      "kind": "real",
+      "domain": "finance",
+      "status": "answered",
+      "question": "Quiero que me reintegren un curso de Python que pagué con mi plata",
+      "answer": "Para que te reintegren el curso de Python, debes presentar un informe de gastos en Nimbus Expenses, utilizando la categoría \"Formación\". Recuerda que el presupuesto de formación es de USD 600 por año y necesitas la aprobación de la persona responsable. Si el curso costó más que lo que queda del presupuesto, deberás pagar la diferencia con tu propio dinero.",
+      "context_sections": [
+        "Formación y desarrollo profesional"
+      ],
+      "human_score": 10,
+      "human_note": "Completo y fiel al documento.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "debes presentar un informe de gastos en Nimbus Expenses",
+          "El presupuesto de formación es de USD 600 por año",
+          "se paga la diferencia con dinero propio"
+        ],
+        "reason": "La respuesta es completamente relevante, completa y precisa, respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-11",
+      "split": "tune",
+      "kind": "real",
+      "domain": "hr",
+      "status": "answered",
+      "question": "Quiero saber cuándo cobro el sueldo y cómo cambio mi cuenta bancaria",
+      "answer": "El sueldo se cobra el último día hábil de cada mes por transferencia bancaria. Si ese día es feriado bancario, el pago se adelanta al día hábil anterior. Para cambiar tu cuenta bancaria, debes cargar la nueva cuenta en Nimbus People antes del día 20 del mes; de lo contrario, el cambio se aplicará en la liquidación del mes siguiente.",
+      "context_sections": [
+        "HR-FAQ-09",
+        "HR-FAQ-12",
+        "Datos bancarios y cambios de cuenta",
+        "Fechas de pago de sueldos"
+      ],
+      "human_score": 10,
+      "human_note": "Cubre las dos partes, todo respaldado.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "El sueldo se cobra el último día hábil de cada mes",
+          "debes cargar la nueva cuenta en Nimbus People antes del día 20",
+          "los cambios cargados después de esa fecha se aplican en la liquidación del mes siguiente."
+        ],
+        "reason": "La respuesta es completa, precisa y está completamente respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-12",
+      "split": "test",
+      "kind": "real",
+      "domain": "tech",
+      "status": "answered",
+      "question": "Me robaron la notebook, ¿qué hago y me la descuentan del sueldo?",
+      "answer": "Si te robaron la notebook, debes avisar al equipo de seguridad (seguridad@nimbusdesk.example) y a soporte técnico dentro de las 2 horas de advertir la pérdida. El equipo bloqueará las cuentas y borrará el dispositivo de forma remota. También es necesario hacer la denuncia policial y enviar la constancia. No tengo información sobre si se te descontará del sueldo.",
+      "context_sections": [
+        "Pérdida o robo de un dispositivo",
+        "SEC-215"
+      ],
+      "human_score": 9,
+      "human_note": "Responde lo documentado y reconoce con honestidad lo que no sabe.",
+      "judge_score": 9,
+      "judge": {
+        "relevance": 10,
+        "completeness": 8,
+        "accuracy": 10,
+        "score": 9,
+        "evidence": [
+          "debes avisar al equipo de seguridad",
+          "hacer la denuncia policial y enviar la constancia",
+          "no tengo información sobre si se te descontará del sueldo"
+        ],
+        "reason": "La respuesta es precisa y completa en cuanto a los pasos a seguir tras el robo, pero omite información sobre el descuento del sueldo, que no está en los fragmentos."
+      }
+    },
+    {
+      "id": "C-13",
+      "split": "tune",
+      "kind": "real",
+      "domain": "hr",
+      "status": "answered",
+      "question": "How many vacation days do I get after 5 years at the company?",
+      "answer": "Después de 5 años en la empresa, te corresponden 21 días hábiles de vacaciones. Esto se basa en la antigüedad al 31 de diciembre del año en curso.",
+      "context_sections": [
+        "Días de vacaciones por antigüedad",
+        "HR-FAQ-01"
+      ],
+      "human_score": 10,
+      "human_note": "Correcto (responde en español a una pregunta en inglés; el dato es exacto).",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "te corresponden 21 días hábiles de vacaciones",
+          "21 días hábiles desde los 5 años",
+          "antigüedad al 31 de diciembre del año en curso"
+        ],
+        "reason": "La respuesta es precisa, completa y está completamente respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-14",
+      "split": "tune",
+      "kind": "dato_cambiado",
+      "domain": "hr",
+      "status": "answered",
+      "question": "¿Cuántos días de vacaciones me corresponden con 6 años de antigüedad?",
+      "answer": "Con 6 años de antigüedad, te corresponden 18 días hábiles de vacaciones, según la política de vacaciones de Nimbus Desk.",
+      "context_sections": [
+        "Días de vacaciones por antigüedad",
+        "HR-FAQ-01"
+      ],
+      "human_score": 2,
+      "human_note": "Cifra incorrecta: 18 corresponde a 3 años; con 6 son 21.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "te corresponden 18 días hábiles de vacaciones",
+          "18 días hábiles desde los 3 años",
+          "21 días hábiles desde los 5 años"
+        ],
+        "reason": "La respuesta es precisa, completa y está completamente respaldada por los fragmentos proporcionados."
+      }
+    },
+    {
+      "id": "C-15",
+      "split": "test",
+      "kind": "dato_cambiado",
+      "domain": "finance",
+      "status": "answered",
+      "question": "¿Cuál es el tope por día para comidas en un viaje de trabajo?",
+      "answer": "El tope por día para comidas durante un viaje de trabajo es de USD 50.",
+      "context_sections": [
+        "Límites para comidas",
+        "Tope de comida en viaje (interno)"
+      ],
+      "human_score": 2,
+      "human_note": "El tope real es USD 35.",
+      "judge_score": 2,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 1,
+        "score": 2,
+        "evidence": [
+          "El límite de USD 35 por día.",
+          "Las comidas durante un viaje de trabajo tienen un límite de USD 35.",
+          "Comidas con clientes se permiten hasta USD 60."
+        ],
+        "reason": "La respuesta del asistente es incorrecta, ya que el tope es de USD 35 y no de USD 50."
+      }
+    },
+    {
+      "id": "C-16",
+      "split": "tune",
+      "kind": "dato_cambiado",
+      "domain": "tech",
+      "status": "answered",
+      "question": "¿Cuántos intentos fallidos de contraseña hasta que se bloquea la cuenta?",
+      "answer": "La cuenta se bloquea después de 3 intentos fallidos consecutivos.",
+      "context_sections": [
+        "Bloqueo de cuenta",
+        "SSO-101"
+      ],
+      "human_score": 2,
+      "human_note": "Son 5 intentos.",
+      "judge_score": 2,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 1,
+        "score": 2,
+        "evidence": [
+          "La cuenta se bloquea después de 5 intentos fallidos consecutivos.",
+          "la cuenta se bloquea durante 15 minutos de forma automática.",
+          "el equipo de soporte puede desbloquearla desde el portal de soporte."
+        ],
+        "reason": "La respuesta del asistente es incorrecta, ya que afirma que la cuenta se bloquea después de 3 intentos, cuando en realidad son 5."
+      }
+    },
+    {
+      "id": "C-17",
+      "split": "test",
+      "kind": "dato_cambiado",
+      "domain": "finance",
+      "status": "answered",
+      "question": "¿Qué interés cobran si un cliente paga una factura tarde?",
+      "answer": "Si una factura no se paga en su plazo, se aplica un interés por mora del 5 % mensual sobre el saldo vencido.",
+      "context_sections": [
+        "Intereses por mora"
+      ],
+      "human_score": 2,
+      "human_note": "El interés es 1,5 %.",
+      "judge_score": 2,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 1,
+        "score": 2,
+        "evidence": [
+          "interés por mora del 1,5 % mensual",
+          "sobre el saldo vencido",
+          "A los 15 días de mora se envía un recordatorio."
+        ],
+        "reason": "La respuesta del asistente contiene un dato central incorrecto sobre el interés por mora, que es del 1.5% y no del 5%."
+      }
+    },
+    {
+      "id": "C-18",
+      "split": "tune",
+      "kind": "dato_cambiado",
+      "domain": "tech",
+      "status": "answered",
+      "question": "¿Cada cuánto se renuevan las notebooks?",
+      "answer": "Las notebooks se renuevan cada 24 meses. Soporte técnico avisa con 60 días de anticipación.",
+      "context_sections": [
+        "Ciclo de renovación"
+      ],
+      "human_score": 2,
+      "human_note": "Son 36 meses.",
+      "judge_score": 2,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 1,
+        "score": 2,
+        "evidence": [
+          "Las notebooks se renuevan cada 36 meses.",
+          "Soporte técnico avisa con 60 días de anticipación.",
+          "una renovación anticipada solo se aprueba si el equipo tiene una falla irreparable"
+        ],
+        "reason": "La respuesta del asistente es incorrecta en cuanto al periodo de renovación de las notebooks, que es de 36 meses según los fragmentos."
+      }
+    },
+    {
+      "id": "C-19",
+      "split": "test",
+      "kind": "dato_cambiado",
+      "domain": "hr",
+      "status": "answered",
+      "question": "¿Cuánto es el bono por trabajar desde casa?",
+      "answer": "El bono de home office es de USD 40 por mes, pero solo para quienes trabajan cinco días a la semana de forma remota.",
+      "context_sections": [
+        "Bono de home office"
+      ],
+      "human_score": 3,
+      "human_note": "El monto es correcto pero la condición está invertida: el bono es para esquemas híbridos o remotos y excluye a quien está en la oficina cinco días.",
+      "judge_score": 6,
+      "judge": {
+        "relevance": 10,
+        "completeness": 8,
+        "accuracy": 6,
+        "score": 6,
+        "evidence": [
+          "Bono de home office es de USD 40 por mes",
+          "Se paga junto con el sueldo y no requiere comprobantes",
+          "Quedan excluidas las personas que trabajan en la oficina cinco días a la semana."
+        ],
+        "reason": "La respuesta es relevante y cubre la mayor parte de la consulta, pero la afirmación sobre la exclusión de quienes trabajan cinco días en la oficina es incorrecta."
+      }
+    },
+    {
+      "id": "C-20",
+      "split": "tune",
+      "kind": "incompleta",
+      "domain": "hr",
+      "status": "answered",
+      "question": "Quiero saber cuándo cobro el sueldo y cómo cambio mi cuenta bancaria",
+      "answer": "El sueldo se cobra el último día hábil de cada mes por transferencia bancaria.",
+      "context_sections": [
+        "HR-FAQ-09",
+        "HR-FAQ-12",
+        "Datos bancarios y cambios de cuenta",
+        "Fechas de pago de sueldos"
+      ],
+      "human_score": 5,
+      "human_note": "Responde solo la mitad de la pregunta.",
+      "judge_score": 8,
+      "judge": {
+        "relevance": 10,
+        "completeness": 7,
+        "accuracy": 10,
+        "score": 8,
+        "evidence": [
+          "El sueldo se cobra el último día hábil de cada mes",
+          "hay que cargar la nueva cuenta en Nimbus People antes del día 20 del mes",
+          "los cambios cargados después de esa fecha se aplican en la liquidación del mes siguiente."
+        ],
+        "reason": "La respuesta es precisa y respaldada, pero no cubre completamente el proceso para cambiar la cuenta bancaria."
+      }
+    },
+    {
+      "id": "C-21",
+      "split": "test",
+      "kind": "incompleta",
+      "domain": "hr",
+      "status": "answered",
+      "question": "Mi pareja va a tener un bebé, ¿cuánta licencia me dan?",
+      "answer": "Tenés derecho a una licencia paga por nacimiento.",
+      "context_sections": [
+        "HR-FAQ-06",
+        "Licencia por nacimiento o adopción"
+      ],
+      "human_score": 3,
+      "human_note": "Es verdad pero no da el dato pedido (8 semanas).",
+      "judge_score": 8,
+      "judge": {
+        "relevance": 10,
+        "completeness": 5,
+        "accuracy": 10,
+        "score": 8,
+        "evidence": [
+          "Tenés derecho a una licencia paga por nacimiento.",
+          "8 semanas para la otra persona progenitora o cuidadora.",
+          "16 semanas pagas para la persona gestante."
+        ],
+        "reason": "La respuesta es correcta y precisa en cuanto a la duración de la licencia, pero no proporciona detalles completos sobre las condiciones de inicio y continuidad."
+      }
+    },
+    {
+      "id": "C-22",
+      "split": "tune",
+      "kind": "incompleta",
+      "domain": "finance",
+      "status": "answered",
+      "question": "Quiero que me reintegren un curso de Python que pagué con mi plata",
+      "answer": "Tenés que presentar un informe de gastos.",
+      "context_sections": [
+        "Formación y desarrollo profesional"
+      ],
+      "human_score": 6,
+      "human_note": "Correcto pero escueto: omite Nimbus Expenses, la categoría Formación, el tope de USD 600 y la aprobación.",
+      "judge_score": 6,
+      "judge": {
+        "relevance": 8,
+        "completeness": 5,
+        "accuracy": 6,
+        "score": 6,
+        "evidence": [
+          "Tenés que presentar un informe de gastos.",
+          "se reembolsa en Nimbus Expenses con la categoría 'Formación'",
+          "El comprobante debe estar a nombre de la persona."
+        ],
+        "reason": "La respuesta es parcialmente correcta, pero no aborda completamente el proceso de reembolso ni menciona la necesidad de aprobación."
+      }
+    },
+    {
+      "id": "C-23",
+      "split": "test",
+      "kind": "irrelevante",
+      "domain": "hr",
+      "status": "answered",
+      "question": "¿Cuántos días de vacaciones me corresponden con 6 años de antigüedad?",
+      "answer": "El período de prueba dura 3 meses corridos desde el ingreso.",
+      "context_sections": [
+        "Período de prueba"
+      ],
+      "human_score": 1,
+      "human_note": "Fiel a su fuente pero no responde la pregunta.",
+      "judge_score": 1,
+      "judge": {
+        "relevance": 1,
+        "completeness": 1,
+        "accuracy": 1,
+        "score": 1,
+        "evidence": [
+          "El período de prueba dura 3 meses corridos desde el ingreso."
+        ],
+        "reason": "La respuesta no aborda la consulta sobre días de vacaciones y se centra en el período de prueba, lo que es irrelevante y erróneo."
+      }
+    },
+    {
+      "id": "C-24",
+      "split": "tune",
+      "kind": "irrelevante",
+      "domain": "finance",
+      "status": "answered",
+      "question": "¿Cuánto cuesta el plan Enterprise por agente?",
+      "answer": "Las facturas de suscripción se emiten el día 1 de cada mes, por adelantado, para los clientes con pago mensual.",
+      "context_sections": [
+        "Ciclo de facturación"
+      ],
+      "human_score": 1,
+      "human_note": "No responde la pregunta.",
+      "judge_score": 1,
+      "judge": {
+        "relevance": 2,
+        "completeness": 1,
+        "accuracy": 1,
+        "score": 1,
+        "evidence": [
+          "Las facturas de suscripción se emiten el día 1 de cada mes",
+          "para los clientes con pago mensual",
+          "Los clientes con pago anual reciben una única factura"
+        ],
+        "reason": "La respuesta no aborda la consulta sobre el costo del plan Enterprise, solo menciona información sobre la facturación."
+      }
+    },
+    {
+      "id": "C-25",
+      "split": "test",
+      "kind": "inventado",
+      "domain": "finance",
+      "status": "answered",
+      "question": "¿Qué interés cobran si un cliente paga una factura tarde?",
+      "answer": "Si una factura no se paga en su plazo, se aplica un interés por mora del 1,5 % mensual sobre el saldo vencido. Además, el cliente recibe una bonificación del 10 % si regulariza dentro de las 48 horas.",
+      "context_sections": [
+        "Intereses por mora"
+      ],
+      "human_score": 4,
+      "human_note": "El dato central es correcto pero agrega una bonificación inventada.",
+      "judge_score": 9,
+      "judge": {
+        "relevance": 10,
+        "completeness": 9,
+        "accuracy": 10,
+        "score": 9,
+        "evidence": [
+          "se aplica un interés por mora del 1,5 % mensual",
+          "bonificación del 10 % si regulariza dentro de las 48 horas",
+          "sobre el saldo vencido"
+        ],
+        "reason": "La respuesta es precisa y está completamente respaldada por los fragmentos, aunque omite detalles sobre las consecuencias de la mora."
+      }
+    },
+    {
+      "id": "C-26",
+      "split": "tune",
+      "kind": "inventado",
+      "domain": "tech",
+      "status": "answered",
+      "question": "¿A qué dirección reenvío un mail de phishing?",
+      "answer": "Debes reenviar el correo sospechoso como adjunto a phishing@nimbusdesk.example. Quien lo reporta recibe una recompensa de USD 100.",
+      "context_sections": [
+        "Reportar un correo sospechoso",
+        "SEC-001"
+      ],
+      "human_score": 3,
+      "human_note": "Dato central correcto, recompensa inventada.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "reenviándolo como adjunto a phishing@nimbusdesk.example",
+          "reportar un correo sospechoso",
+          "No abrir enlaces ni archivos adjuntos"
+        ],
+        "reason": "La respuesta es completamente precisa, relevante y respaldada por los fragmentos, cubriendo todos los aspectos de la consulta."
+      }
+    },
+    {
+      "id": "C-27",
+      "split": "tune",
+      "kind": "abstencion_correcta",
+      "domain": "tech",
+      "status": "abstained",
+      "question": "¿Cuál es la capital de Mongolia?",
+      "answer": "No encuentro esa información en la documentación de Soporte Técnico.",
+      "context_sections": [
+        "Cuentas compartidas y de servicio",
+        "Impresoras y escáneres"
+      ],
+      "human_score": 9,
+      "human_note": "El contexto no tiene nada relacionado: abstenerse es lo correcto.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [],
+        "reason": "El asistente se abstuvo correctamente de responder, ya que la información no está en los fragmentos."
+      }
+    },
+    {
+      "id": "C-28",
+      "split": "test",
+      "kind": "abstencion_correcta",
+      "domain": "finance",
+      "status": "abstained",
+      "question": "¿Cuánto cobra el CEO de la empresa?",
+      "answer": "No encuentro esa información en la documentación de Finanzas.",
+      "context_sections": [
+        "Presupuesto de personal"
+      ],
+      "human_score": 9,
+      "human_note": "La documentación no informa sueldos individuales.",
+      "judge_score": 10,
+      "judge": {
+        "relevance": 10,
+        "completeness": 10,
+        "accuracy": 10,
+        "score": 10,
+        "evidence": [
+          "No encuentro esa información en la documentación de Finanzas."
+        ],
+        "reason": "La respuesta es correcta y se abstuvo de dar información que no estaba disponible en los fragmentos."
+      }
+    },
+    {
+      "id": "C-29",
+      "split": "tune",
+      "kind": "abstencion_indebida",
+      "domain": "finance",
+      "status": "abstained",
+      "question": "¿Qué interés cobran si un cliente paga una factura tarde?",
+      "answer": "No encuentro esa información en la documentación de Finanzas.",
+      "context_sections": [
+        "Intereses por mora"
+      ],
+      "human_score": 1,
+      "human_note": "La respuesta estaba en el contexto.",
+      "judge_score": 1,
+      "judge": {
+        "relevance": 1,
+        "completeness": 1,
+        "accuracy": 1,
+        "score": 1,
+        "evidence": [],
+        "reason": "El asistente se abstuvo de responder, pero la información sobre el interés por mora está claramente disponible en los fragmentos."
+      }
+    },
+    {
+      "id": "C-30",
+      "split": "test",
+      "kind": "abstencion_indebida",
+      "domain": "tech",
+      "status": "abstained",
+      "question": "¿Cuántos intentos fallidos de contraseña hasta que se bloquea la cuenta?",
+      "answer": "No encuentro esa información en la documentación de Soporte Técnico.",
+      "context_sections": [
+        "Bloqueo de cuenta"
+      ],
+      "human_score": 1,
+      "human_note": "La respuesta estaba en el contexto.",
+      "judge_score": 1,
+      "judge": {
+        "relevance": 1,
+        "completeness": 1,
+        "accuracy": 1,
+        "score": 1,
+        "evidence": [],
+        "reason": "La respuesta del asistente es incorrecta ya que la información sobre el bloqueo de cuentas está claramente disponible en los fragmentos."
+      }
+    }
+  ]
+}
