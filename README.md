@@ -10,6 +10,7 @@ propios), documentada en su propio README.
 |---|---|---|
 | 1 | [`modulo-1/`](modulo-1/README.md) | Asistente de soporte al cliente: pregunta → JSON con respuesta, confianza y acciones, con métricas de costo/latencia por ejecución. |
 | 2 | [`modulo-2/`](modulo-2/README.md) | Chatbot de FAQs con RAG: chunking, embeddings, búsqueda vectorial y generación con contexto recuperado. Flujo obligatorio + bonus (agente evaluador) completos. |
+| 3 | [`modulo-3/`](modulo-3/README.md) | Sistema multi-agente: orquestador (LangGraph) que clasifica la intención y deriva a agentes RAG de HR, Tech y Finance sobre Chroma, trazado en Langfuse. Bonus (agente evaluador con Score API) completo. |
 
 ## Entorno compartido
 
