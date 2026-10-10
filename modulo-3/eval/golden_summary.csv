@@ -16,3 +16,4 @@ golden-run-v5-rep2,dev,2026-10-09T23:54:30.028298+00:00,repeticion de v5 para me
 holdout-run-v5-rep2,holdout,2026-10-09T23:55:09.962322+00:00,repeticion de v5 para medir estabilidad (misma configuracion),14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2343.1,2810.2,24770,1333,0.004515,,,,
 blind-run-v5-rep2,blind,2026-10-09T23:55:53.044331+00:00,repeticion de v5 para medir estabilidad (misma configuracion),14,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0,0,2432.1,4224.8,23626,1283,0.004314,,,,
 golden-run-v5-judge,dev,2026-10-10T00:13:55.521033+00:00,"v5 + evaluador (juez j3, gpt-4o) puntuando cada respuesta en Langfuse",39,1.0,0.897,1.0,1.0,1.0,1.0,1.0,0,0,2672.1,3306.8,67593,4121,0.012612,32,9.06,5,0.17514
+golden-run-v5-a03check,dev,2026-10-10T00:21:51.246596+00:00,v5 sin cambios; chequeo de A-03 agregado tras el hallazgo del evaluador: falla conocida,39,0.974,0.897,1.0,1.0,1.0,1.0,0.974,0,0,2575.7,4337.5,67593,4049,0.012568,0,,,
