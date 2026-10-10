@@ -31,6 +31,8 @@ seguridad; **Media** = limita la confianza en las métricas o la calidad; **Baja
 | P-19 | Costos | Sin presupuesto ni límite de gasto; el juez cuesta ~17× la respuesta | Baja | Abierto |
 | P-20 | Alcance | Un solo modelo y un solo embedding; no se comparó con otras opciones | Baja | Abierto |
 | P-21 | Proceso | Avisos CRLF/LF en git (falta `.gitattributes`) | Baja | Abierto |
+| P-22 | Evaluador | Consulta de acceso a Nimbus Expenses recibe 2/10 del juez: ¿juez estricto o respuesta fuera de foco? | Media | Abierto |
+| P-23 | Notebook | Dependencia de la latencia de Langfuse (timeouts SSL intermitentes al ejecutar) | Baja | Abierto |
 
 ---
 
@@ -197,3 +199,20 @@ seguridad; **Media** = limita la confianza en las métricas o la calidad; **Baja
 
 - **Qué pasa:** git avisa «LF will be replaced by CRLF» en cada commit (Windows). Falta un
   `.gitattributes` que fije la política.
+
+## P-22 · Puntaje bajo en una consulta de acceso (hallazgo del notebook)
+
+- **Qué pasa:** en la sección 7 del notebook, «No puedo entrar a Nimbus Expenses para cargar un
+  gasto» recibió 2/10 (relevancia 5, completitud 1, exactitud 4): el juez dice que la respuesta
+  explica cómo resolver el acceso pero no cómo cargar un gasto.
+- **Por qué importa:** puede ser un juez demasiado literal (la consulta pide dos cosas pero el
+  problema real es el acceso) o una respuesta que sí quedó corta. No se investigó.
+- **Idea:** revisar a mano la respuesta y las partes que detectó el juez; si es juez, sumar un caso a la
+  calibración (P-06).
+
+## P-23 · Latencia de Langfuse al ejecutar el notebook
+
+- **Qué pasa:** al ejecutar el notebook completo hubo `ConnectTimeout` (SSL handshake) hacia
+  Langfuse en 2 de 4 corridas; una medición directa tardó 8,6 s en responder.
+- **Impacto:** la ejecución «Run All» puede fallar por red, no por código.
+- **Idea:** reintentos con espera en las celdas que leen de Langfuse, o aumentar el timeout del cliente.
