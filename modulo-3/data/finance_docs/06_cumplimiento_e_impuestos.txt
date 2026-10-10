@@ -1,0 +1,32 @@
+Cumplimiento fiscal y control interno en Nimbus Desk
+Guía del área de Finanzas de la empresa ficticia Nimbus Desk. Contenido de práctica; no representa normativa real.
+
+Conservación de documentación
+Toda la documentación contable y fiscal, como facturas, comprobantes de gastos, órdenes de compra y contratos, se conserva durante 7 años. Los documentos se guardan en el repositorio corporativo y no pueden eliminarse antes de ese plazo. Las facturas de clientes se archivan junto con los comprobantes de pago.
+
+Impuestos sobre los servicios
+Los servicios de suscripción prestados a clientes locales tienen un impuesto indirecto del 21 %, en el marco ficticio de este escenario. Los servicios prestados a clientes del exterior se consideran exportaciones y no llevan ese impuesto. Finanzas presenta las declaraciones impositivas de forma mensual, antes del día 20 del mes siguiente.
+
+Retenciones a proveedores
+Algunos pagos a proveedores están sujetos a retenciones impositivas, según el tipo de servicio y la condición fiscal del proveedor. Finanzas calcula la retención y la informa en el comprobante de pago. Un proveedor que quiera acreditar una exención debe enviar su certificado vigente a finanzas@nimbusdesk.example antes del pago.
+
+Segregación de funciones
+Ninguna persona controla un proceso financiero de principio a fin. Quien solicita una compra no la aprueba, quien registra una factura no la paga, y quien prepara un pago no lo autoriza. Esta separación reduce el riesgo de errores y de fraude y es una de las bases del control interno.
+
+Firmantes autorizados
+Los cheques, las transferencias de gran valor y los contratos solo pueden ser firmados por las personas del registro de firmantes autorizados. Los límites de firma son USD 10.000 para la dirección de Finanzas y USD 50.000 para el CFO. Montos mayores requieren la firma conjunta del CFO y de la dirección general.
+
+Prevención de lavado de activos
+Finanzas verifica la identidad de los clientes Enterprise y de los proveedores nuevos antes de operar con ellos. Los pagos en efectivo no se aceptan. Cualquier operación inusual, como un pago de un tercero que no es el cliente, se informa al oficial de cumplimiento, que decide si corresponde reportarla a la autoridad.
+
+Fraude y denuncias
+Los intentos de fraude, como facturas falsas o cambios de datos bancarios solicitados por correo, se reportan a finanzas@nimbusdesk.example y al canal de ética. Nimbus Desk no tolera el fraude: una persona que cometa fraude será desvinculada y el caso puede denunciarse a la justicia.
+
+Auditorías y pedidos de información
+Las auditorías internas y externas pueden solicitar documentos y entrevistas. Las personas deben colaborar y entregar la información en 5 días hábiles. No se deben modificar ni eliminar registros relacionados con un pedido de auditoría. Las consultas de las autoridades fiscales se canalizan a través de Finanzas y del área legal.
+
+Contratos y área legal
+El área legal revisa los contratos de clientes Enterprise, los contratos con proveedores de más de USD 10.000 y los acuerdos de confidencialidad. Las consultas sobre cláusulas, firmas de contratos o términos y condiciones se dirigen a legal@nimbusdesk.example. Finanzas no da asesoramiento legal.
+
+Capacitación en cumplimiento
+Las personas del área de Finanzas y de Compras completan cada año una capacitación específica de 2 horas sobre prevención de fraude, conflictos de interés y control interno. El resultado se registra en el expediente de capacitación y se informa a la dirección general.

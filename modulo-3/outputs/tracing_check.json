@@ -1,0 +1,103 @@
+[
+  {
+    "expected_intent": "hr",
+    "routed_intent": "hr",
+    "question": "¿Cuántos días de vacaciones me tocan si llevo 4 años?",
+    "trace_id": "39815bb18d367329da44519cdb980166",
+    "trace_url": "https://us.cloud.langfuse.com/project/cmv1jsy7z045jad0eehulqbej/traces/39815bb18d367329da44519cdb980166",
+    "observations": 16,
+    "spans": [
+      "ChatOpenAI",
+      "ChatPromptTemplate",
+      "LangGraph",
+      "RunnableLambda",
+      "RunnableSequence",
+      "choose_branch",
+      "finalize",
+      "hr",
+      "hr-agent",
+      "orchestrator-routing",
+      "retriever_hr",
+      "route",
+      "support-request"
+    ],
+    "scores": {
+      "routing_correct": true,
+      "routed_intent": "hr"
+    },
+    "checks": {
+      "1_un_solo_trace_un_span_raiz": true,
+      "2_router_con_span_input_output": true,
+      "3_agente_con_span_input_output": true,
+      "4_generations_dentro_de_sus_spans": true,
+      "5_metadata_usuario_sesion": true,
+      "6_scores_en_el_trace_correcto": true
+    }
+  },
+  {
+    "expected_intent": "tech",
+    "routed_intent": "tech",
+    "question": "No puedo entrar a Nimbus Expenses para cargar un gasto",
+    "trace_id": "066dada635b3704b4bbdbeefecb98afc",
+    "trace_url": "https://us.cloud.langfuse.com/project/cmv1jsy7z045jad0eehulqbej/traces/066dada635b3704b4bbdbeefecb98afc",
+    "observations": 16,
+    "spans": [
+      "ChatOpenAI",
+      "ChatPromptTemplate",
+      "LangGraph",
+      "RunnableLambda",
+      "RunnableSequence",
+      "choose_branch",
+      "finalize",
+      "orchestrator-routing",
+      "retriever_tech",
+      "route",
+      "support-request",
+      "tech",
+      "tech-agent"
+    ],
+    "scores": {
+      "routed_intent": "tech",
+      "routing_correct": true
+    },
+    "checks": {
+      "1_un_solo_trace_un_span_raiz": true,
+      "2_router_con_span_input_output": true,
+      "3_agente_con_span_input_output": true,
+      "4_generations_dentro_de_sus_spans": true,
+      "5_metadata_usuario_sesion": true,
+      "6_scores_en_el_trace_correcto": true
+    }
+  },
+  {
+    "expected_intent": "out_of_scope",
+    "routed_intent": "out_of_scope",
+    "question": "¿Quién ganó el mundial de fútbol de 2014?",
+    "trace_id": "fec54b27276cd56db8336bebe93808f3",
+    "trace_url": "https://us.cloud.langfuse.com/project/cmv1jsy7z045jad0eehulqbej/traces/fec54b27276cd56db8336bebe93808f3",
+    "observations": 9,
+    "spans": [
+      "ChatOpenAI",
+      "ChatPromptTemplate",
+      "LangGraph",
+      "RunnableLambda",
+      "choose_branch",
+      "orchestrator-routing",
+      "out_of_scope",
+      "route",
+      "support-request"
+    ],
+    "scores": {
+      "routing_correct": true,
+      "routed_intent": "out_of_scope"
+    },
+    "checks": {
+      "1_un_solo_trace_un_span_raiz": true,
+      "2_router_con_span_input_output": true,
+      "3_agente_con_span_input_output": true,
+      "4_generations_dentro_de_sus_spans": true,
+      "5_metadata_usuario_sesion": true,
+      "6_scores_en_el_trace_correcto": true
+    }
+  }
+]
