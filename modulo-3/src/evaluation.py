@@ -26,7 +26,7 @@ HOLDOUT_PATH = MODULE_ROOT / "test_queries_holdout.json"
 BLIND_PATH = MODULE_ROOT / "test_queries_blind.json"
 INTENTS = ["hr", "tech", "finance", "out_of_scope"]
 # Precio de gpt-4o-mini en USD por millon de tokens (mismo que modulo-1/config/pricing.json).
-CHAT_PRICE_PER_M_TOKENS = {"gpt-4o-mini": (0.15, 0.60)}
+CHAT_PRICE_PER_M_TOKENS = {"gpt-4o-mini": (0.15, 0.60), "gpt-4o": (2.50, 10.00)}
 
 
 class CaseEval(BaseModel):
@@ -51,6 +51,10 @@ class CaseEval(BaseModel):
     input_tokens: int = 0
     output_tokens: int = 0
     trace_id: str | None = None
+    quality_score: int | None = None
+    quality_reason: str | None = None
+    judge_input_tokens: int = 0
+    judge_output_tokens: int = 0
 
 
 def load_golden(path: Path = GOLDEN_PATH) -> list[dict]:
@@ -196,6 +200,7 @@ def aggregate(evals: list[CaseEval]) -> dict:
         "input_tokens": in_tokens,
         "output_tokens": out_tokens,
         "estimated_cost_usd": estimate_cost_usd(in_tokens, out_tokens),
+        **quality_summary(evals),
     }
 
 
@@ -259,4 +264,24 @@ def judge_agreement(
         "false_bad": sum(
             j < good_threshold <= h for h, j in zip(human, judge, strict=True)
         ),
+    }
+
+
+def quality_summary(evals: list[CaseEval], judge_model: str = "gpt-4o") -> dict:
+    """Resumen de los puntajes del evaluador (vacio si no se uso el juez en la corrida)."""
+    scored = [e for e in evals if e.quality_score is not None]
+    if not scored:
+        return {
+            "scored": 0,
+            "mean_quality": None,
+            "low_quality_count": None,
+            "judge_cost_usd": None,
+        }
+    judge_in = sum(e.judge_input_tokens for e in evals)
+    judge_out = sum(e.judge_output_tokens for e in evals)
+    return {
+        "scored": len(scored),
+        "mean_quality": round(sum(e.quality_score for e in scored) / len(scored), 2),
+        "low_quality_count": sum(e.quality_score < 7 for e in scored),
+        "judge_cost_usd": estimate_cost_usd(judge_in, judge_out, judge_model),
     }

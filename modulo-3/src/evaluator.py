@@ -33,9 +33,9 @@ from openai import OpenAIError
 from pydantic import BaseModel, Field, ValidationError
 
 from src.agents.orchestrator import OrchestratorResult
-from src.config import CHAT_MODEL
 
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", CHAT_MODEL)
+# gpt-4o-mini dejaba pasar respuestas malas (3 "falsos buenos" en la calibracion): ver eval/README.md.
+JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gpt-4o")
 SCORABLE_STATUSES = ("answered", "abstained")
 
 JUDGE_PROMPT = """Sos un verificador estricto de las respuestas de un asistente de soporte interno de Nimbus Desk (empresa ficticia). Recibís una consulta, la respuesta del asistente y los fragmentos de documentación con los que contaba. NO das un puntaje: hacés una verificación estructurada, y el puntaje se calcula aparte.

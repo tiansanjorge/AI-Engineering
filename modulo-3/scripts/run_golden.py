@@ -29,6 +29,7 @@ from src.evaluation import (
     evaluate_case,
     load_golden,
 )
+from src.evaluator import evaluate_trace
 from src.observability import flush, traced_query
 
 RUNS_DIR = MODULE_ROOT / "eval" / "golden_runs"
@@ -37,7 +38,23 @@ SUMMARY_FIELDS = [
     "run_tag", "set", "timestamp", "note", "n", "pass_rate", "routing_strict", "routing_lenient",
     "status_ok", "facts_ok", "sources_ok", "forbidden_ok", "false_abstentions", "false_answers",
     "latency_ms_p50", "latency_ms_p95", "input_tokens", "output_tokens", "estimated_cost_usd",
+    "scored", "mean_quality", "low_quality_count", "judge_cost_usd",
 ]  # fmt: skip
+
+
+def append_summary(row: dict) -> None:
+    """Agrega una fila al historial; si el esquema de columnas crecio, migra las filas viejas."""
+    rows = []
+    if SUMMARY_CSV.exists():
+        with SUMMARY_CSV.open(newline="", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+    rows.append(row)
+    with SUMMARY_CSV.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f, fieldnames=SUMMARY_FIELDS, extrasaction="ignore", restval=""
+        )
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def main() -> None:
@@ -51,6 +68,11 @@ def main() -> None:
         help="dev = test_queries.json (se usa para ajustar); holdout = validacion; blind = ciego (se corre sin ajustar nada despues)",
     )  # fmt: skip
     parser.add_argument("--only", nargs="*", help="Ids de casos a correr (diagnostico)")
+    parser.add_argument(
+        "--judge",
+        action="store_true",
+        help="Puntuar cada respuesta con el evaluador (Langfuse Score API)",
+    )
     args = parser.parse_args()
 
     path = {"dev": GOLDEN_PATH, "holdout": HOLDOUT_PATH, "blind": BLIND_PATH}[args.set]
@@ -74,6 +96,17 @@ def main() -> None:
             u["output_tokens"] for u in usage.usage_metadata.values()
         )
         ev.trace_id = traced.trace_id
+        if args.judge:
+            with get_usage_metadata_callback() as judge_usage:
+                verdict = evaluate_trace(traced.trace_id, traced.result)
+            if verdict is not None:
+                ev.quality_score, ev.quality_reason = verdict.score, verdict.reason
+            ev.judge_input_tokens = sum(
+                u["input_tokens"] for u in judge_usage.usage_metadata.values()
+            )
+            ev.judge_output_tokens = sum(
+                u["output_tokens"] for u in judge_usage.usage_metadata.values()
+            )
         # Score por caso en el mismo trace: filtrable en Langfuse (casos fallidos de esta corrida).
         from langfuse import get_client
 
@@ -97,13 +130,10 @@ def main() -> None:
         ),
         encoding="utf-8",
     )  # fmt: skip
-    new_file = not SUMMARY_CSV.exists()
-    with SUMMARY_CSV.open("a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=SUMMARY_FIELDS, extrasaction="ignore")
-        if new_file:
-            writer.writeheader()
-        writer.writerow({"run_tag": args.run_tag, "set": args.set, "note": args.note,
-                         "timestamp": datetime.now(UTC).isoformat(), **summary})  # fmt: skip
+    append_summary(
+        {"run_tag": args.run_tag, "set": args.set, "note": args.note,
+         "timestamp": datetime.now(UTC).isoformat(), **summary}
+    )  # fmt: skip
 
     print(
         f"\n== {args.run_tag}: {summary['pass_rate']:.0%} de casos OK ({summary['n']} casos) =="
@@ -112,6 +142,9 @@ def main() -> None:
                 "forbidden_ok", "false_abstentions", "false_answers", "latency_ms_p50",
                 "latency_ms_p95", "estimated_cost_usd"):  # fmt: skip
         print(f"  {key:20} {summary[key]}")
+    if args.judge:
+        print(f"  calidad (juez)       media {summary['mean_quality']}  < 7: "
+              f"{summary['low_quality_count']}  costo del juez USD {summary['judge_cost_usd']}")  # fmt: skip
     print("  confusion_matrix    ", json.dumps(summary["confusion_matrix"]))
     for ev in evals:
         if not ev.passed:
