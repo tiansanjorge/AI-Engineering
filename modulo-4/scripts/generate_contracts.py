@@ -29,6 +29,9 @@ PAGE_W, PAGE_H = 1240, 1754  # A4 a 150 dpi
 MARGIN = 110
 FONT_DIR = Path("C:/Windows/Fonts")
 SEED = 42
+# Nivel de degradacion del par 3: el primero donde el parser comete errores reales
+# (ver outputs/parsing_stress.json, generado por scripts/stress_parsing.py).
+SCAN_SEVERITY = 3
 
 
 def load_font(name: str, size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
@@ -90,11 +93,61 @@ def render(blocks: list[specs.Block]) -> Image.Image:
     return img
 
 
-def degrade(img: Image.Image) -> Image.Image:
-    """Simula un escaneo malo: leve rotacion, fondo grisaceo, ruido de sensor y desenfoque."""
+# Escala de severidad de un escaneo. El nivel 1 es un escaneo "algo malo"; cada nivel siguiente
+# empeora todo a la vez. `jpeg_q` es la calidad de compresion; `scale` baja la resolucion
+# (simula una foto o un escaneo de baja definicion); `shadow` oscurece un lado (sombra de la mano
+# o de la tapa del escaner).
+SEVERITIES = {
+    1: {
+        "rotate": 2.2,
+        "blur": 1.1,
+        "noise": 22,
+        "jpeg_q": 62,
+        "scale": 1.0,
+        "shadow": 0,
+    },
+    2: {
+        "rotate": 4.0,
+        "blur": 1.8,
+        "noise": 35,
+        "jpeg_q": 40,
+        "scale": 0.8,
+        "shadow": 0,
+    },
+    3: {
+        "rotate": 6.0,
+        "blur": 2.6,
+        "noise": 50,
+        "jpeg_q": 25,
+        "scale": 0.6,
+        "shadow": 90,
+    },
+    4: {
+        "rotate": 8.0,
+        "blur": 3.4,
+        "noise": 65,
+        "jpeg_q": 15,
+        "scale": 0.45,
+        "shadow": 140,
+    },
+    5: {
+        "rotate": 10.0,
+        "blur": 4.2,
+        "noise": 80,
+        "jpeg_q": 10,
+        "scale": 0.35,
+        "shadow": 180,
+    },
+}
+
+
+def degrade(img: Image.Image, severity: int = 1) -> Image.Image:
+    """Simula un escaneo malo segun `SEVERITIES`: rotacion, fondo grisaceo, ruido de sensor,
+    baja resolucion, sombra y desenfoque."""
+    cfg = SEVERITIES[severity]
     rng = random.Random(SEED)
     rotated = img.rotate(
-        rng.choice([-1, 1]) * 2.2,
+        rng.choice([-1, 1]) * cfg["rotate"],
         resample=Image.BICUBIC,
         expand=True,
         fillcolor=(226, 226, 222),
@@ -102,24 +155,41 @@ def degrade(img: Image.Image) -> Image.Image:
     # Fondo ligeramente gris (papel viejo) y texto menos contrastado.
     gray = Image.new("RGB", rotated.size, (232, 230, 224))
     paper = ImageChops.multiply(rotated, gray)
+    # Baja resolucion: se reduce y se vuelve a agrandar (los detalles finos se pierden).
+    if cfg["scale"] < 1.0:
+        w, h = paper.size
+        small = paper.resize(
+            (int(w * cfg["scale"]), int(h * cfg["scale"])), Image.BILINEAR
+        )
+        paper = small.resize((w, h), Image.BILINEAR)
+    # Sombra: degradado horizontal que oscurece el lado derecho del papel.
+    if cfg["shadow"]:
+        ramp = Image.linear_gradient("L").rotate(90).resize(paper.size)
+        shade = ramp.point(lambda v: 255 - int(v * cfg["shadow"] / 255))
+        paper = ImageChops.multiply(paper, Image.merge("RGB", (shade, shade, shade)))
     # Ruido gaussiano de sensor mezclado con la imagen.
-    noise = Image.effect_noise(paper.size, 22).convert("RGB")
+    noise = Image.effect_noise(paper.size, cfg["noise"]).convert("RGB")
     noisy = Image.blend(paper, ImageChops.multiply(paper, noise), 0.35)
-    return noisy.filter(ImageFilter.GaussianBlur(1.1))
+    return noisy.filter(ImageFilter.GaussianBlur(cfg["blur"]))
+
+
+def save_scan(img: Image.Image, path: Path, severity: int) -> None:
+    """Guarda como JPEG con la compresion propia del nivel de severidad."""
+    img.save(path, quality=SEVERITIES[severity]["jpeg_q"])
 
 
 def write_pair(
-    folder: Path, original, amendment, expected: dict, ext: str, scan: bool
+    folder: Path, original, amendment, expected: dict, ext: str, scan: int = 0
 ) -> None:
     folder.mkdir(parents=True, exist_ok=True)
     texts = {}
     for name, blocks in (("original", original), ("adenda", amendment)):
         img = render(blocks)
-        if scan:
-            img = degrade(img)
         path = folder / f"{name}.{ext}"
-        # JPEG con calidad media: otro artefacto tipico de un escaneo real.
-        img.save(path, quality=62) if ext == "jpg" else img.save(path)
+        if scan:  # `scan` es el nivel de severidad (0 = documento digital limpio)
+            save_scan(degrade(img, scan), path, scan)
+        else:
+            img.save(path)
         texts[name] = "\n".join(text for _, text in blocks)
     ground_truth = {
         **expected,
@@ -140,7 +210,6 @@ def main() -> None:
         specs.SIMPLE_AMENDMENT,
         specs.SIMPLE_EXPECTED,
         "png",
-        scan=False,
     )
     write_pair(
         out / "par2_complejo",
@@ -148,7 +217,6 @@ def main() -> None:
         specs.COMPLEX_AMENDMENT,
         specs.COMPLEX_EXPECTED,
         "png",
-        scan=False,
     )
     # Par 3: mismo contenido y mismo ground truth que el par 1, pero con escaneo degradado.
     degraded = {
@@ -162,7 +230,7 @@ def main() -> None:
         specs.SIMPLE_AMENDMENT,
         degraded,
         "jpg",
-        scan=True,
+        scan=SCAN_SEVERITY,
     )
 
 

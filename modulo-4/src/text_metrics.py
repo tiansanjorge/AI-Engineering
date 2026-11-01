@@ -5,13 +5,15 @@ inserciones y borrados de palabras para convertir la hipotesis en la referencia,
 cantidad de palabras de la referencia. 0.0 = transcripcion perfecta.
 """
 
+import re
 from difflib import SequenceMatcher
 
 
 def _words(text: str) -> list[str]:
-    # Solo se normaliza el espacio en blanco: mayusculas, tildes y puntuacion CUENTAN, porque en
-    # un contrato "2.800" vs "2,800" es un error real.
-    return text.split()
+    # Se normalizan el espacio en blanco y el largo de las lineas de firma (____): que el modelo
+    # cuente 12 o 13 guiones no es un error de contenido. Mayusculas, tildes y puntuacion SI
+    # cuentan, porque en un contrato "2.800" vs "2,800" es un error real.
+    return re.sub(r"_+", "_", text).split()
 
 
 def word_error_rate(reference: str, hypothesis: str) -> float:
