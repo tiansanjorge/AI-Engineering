@@ -1,3 +1,7 @@
 # Misma clasificacion de imports sin importar desde donde se corra ruff.
 [lint.isort]
 known-first-party = ["src", "tests"]
+
+# Los textos de los contratos se parten en varias lineas con concatenacion implicita a proposito.
+[lint.per-file-ignores]
+"scripts/contract_specs.py" = ["ISC004", "E501"]

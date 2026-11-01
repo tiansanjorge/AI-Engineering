@@ -1,0 +1,45 @@
+{
+  "case_id": "par2_complejo",
+  "description": "Cambios complejos: una modificacion, una eliminacion y una adicion.",
+  "changes": [
+    {
+      "section": "Cláusula Tercera",
+      "change_type": "modificacion",
+      "topic": "Alcance territorial",
+      "detail": "Se suman Chile y Brasil a Argentina y Uruguay."
+    },
+    {
+      "section": "Cláusula Cuarta, inciso 4.3",
+      "change_type": "eliminacion",
+      "topic": "Restricciones de uso",
+      "detail": "Se elimina la prohibición de subcontratar el tratamiento de la información."
+    },
+    {
+      "section": "Cláusula Octava",
+      "change_type": "adicion",
+      "topic": "Protección de datos personales",
+      "detail": "Nueva cláusula: tratamiento de datos personales según la Ley 25.326."
+    }
+  ],
+  "key_facts_in_summary": [
+    "Chile",
+    "Brasil",
+    "4.3",
+    "25.326"
+  ],
+  "unchanged_sections": [
+    "Cláusula Primera",
+    "Cláusula Segunda",
+    "Cláusula Quinta",
+    "Cláusula Sexta",
+    "Cláusula Séptima"
+  ],
+  "images": {
+    "original": "original.png",
+    "amendment": "adenda.png"
+  },
+  "documents": {
+    "original": "ACUERDO DE CONFIDENCIALIDAD\nEn la Ciudad de Buenos Aires, a 3 de marzo de 2025, entre HELIX BIOTECH S.A. (en adelante, \"LA PARTE REVELADORA\") y ORIÓN CONSULTORES S.A. (en adelante, \"LA PARTE RECEPTORA\"), se celebra el presente acuerdo de confidencialidad:\nCLÁUSULA PRIMERA – INFORMACIÓN CONFIDENCIAL.\nSe considera Información Confidencial toda información técnica, científica, comercial o financiera revelada por LA PARTE REVELADORA, cualquiera sea su soporte.\nCLÁUSULA SEGUNDA – OBLIGACIONES.\nLA PARTE RECEPTORA se obliga a custodiar la Información Confidencial con el mismo cuidado que aplica a la propia y a limitar el acceso a quienes necesiten conocerla.\nCLÁUSULA TERCERA – ALCANCE TERRITORIAL.\nLas obligaciones de este acuerdo rigen en el territorio de la República Argentina y de la República Oriental del Uruguay.\nCLÁUSULA CUARTA – RESTRICCIONES DE USO.\nLA PARTE RECEPTORA no podrá:\n4.1. utilizar la Información Confidencial para fines distintos de la evaluación de una posible colaboración;\n4.2. realizar ingeniería inversa sobre las muestras o materiales recibidos;\n4.3. subcontratar a terceros el tratamiento de la Información Confidencial.\nCLÁUSULA QUINTA – PLAZO.\nLas obligaciones de confidencialidad durarán tres (3) años contados desde la fecha de firma.\nCLÁUSULA SEXTA – DEVOLUCIÓN.\nA requerimiento de LA PARTE REVELADORA, la Información Confidencial deberá devolverse o destruirse dentro de los quince (15) días.\nCLÁUSULA SÉPTIMA – LEY APLICABLE.\nEl acuerdo se rige por las leyes de la República Argentina; serán competentes los tribunales ordinarios de la Ciudad de Buenos Aires.\np. LA PARTE REVELADORA ____________        p. LA PARTE RECEPTORA ____________",
+    "amendment": "ADENDA N.º 1 AL ACUERDO DE CONFIDENCIALIDAD\nEn la Ciudad de Buenos Aires, a 12 de septiembre de 2025, HELIX BIOTECH S.A. y ORIÓN CONSULTORES S.A., partes del acuerdo de fecha 3 de marzo de 2025, acuerdan modificarlo del siguiente modo:\nPRIMERO.\nSe modifica la CLÁUSULA TERCERA – ALCANCE TERRITORIAL, que queda redactada así: \"Las obligaciones de este acuerdo rigen en el territorio de la República Argentina, la República Oriental del Uruguay, la República de Chile y la República Federativa del Brasil.\"\nSEGUNDO.\nSe elimina en su totalidad el inciso 4.3 de la CLÁUSULA CUARTA – RESTRICCIONES DE USO. Los incisos 4.1 y 4.2 se mantienen sin cambios.\nTERCERO.\nSe incorpora la CLÁUSULA OCTAVA – PROTECCIÓN DE DATOS PERSONALES, con el siguiente texto: \"Cuando la Información Confidencial incluya datos personales, LA PARTE RECEPTORA los tratará conforme a la Ley N.º 25.326 de Protección de los Datos Personales y adoptará las medidas de seguridad adecuadas para evitar su pérdida o acceso no autorizado.\"\nCUARTO.\nLas demás cláusulas del acuerdo permanecen vigentes sin modificaciones.\np. LA PARTE REVELADORA ____________        p. LA PARTE RECEPTORA ____________"
+  }
+}
