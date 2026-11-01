@@ -38,7 +38,12 @@ class FakeStructured:
         self.calls.append(list(messages))
         if self.error:
             raise self.error
-        return self.outputs.pop(0)
+        item = self.outputs.pop(0)
+        if isinstance(
+            item, Exception
+        ):  # simula una falla del modelo/API en ese intento
+            raise item
+        return item
 
 
 def _result():
@@ -161,3 +166,27 @@ def test_extraccion_no_arrastra_el_resultado_de_la_corrida_anterior():
     assert (
         agent.last_result is None
     )  # la segunda corrida fallo: no debe quedar la primera
+
+
+class _SalidaDesbocada(openai.LengthFinishReasonError):
+    """La API corta la respuesta por limite de longitud (se vio con 16.384 tokens de salida)."""
+
+    def __init__(self):
+        Exception.__init__(self, "length limit was reached")
+
+
+def test_extraccion_se_recupera_de_una_salida_desbocada():
+    fake = FakeStructured([_SalidaDesbocada(), _ok()])
+    out = ExtractionAgent(structured_llm=fake).run("m", "o", "a")
+    assert out.sections_changed == ["Cláusula Tercera"]
+    # El segundo intento le pide concision al modelo.
+    assert "limite de longitud" in fake.calls[1][-1].content
+
+
+def test_salida_desbocada_persistente_es_un_error_claro_y_no_de_api():
+    fake = FakeStructured([_SalidaDesbocada()] * 3)
+    with pytest.raises(OutputValidationError, match="limite de longitud"):
+        ExtractionAgent(structured_llm=fake, max_validation_retries=2).run(
+            "m", "o", "a"
+        )
+    assert len(fake.calls) == 3

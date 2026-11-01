@@ -1,5 +1,5 @@
 {
-  "trace_id": "b10de505a7a989ef3c3f54495a77e02f",
+  "trace_id": "d2e6de8cd34fd8bb2bdef28d050e341a",
   "checks": [
     {
       "check": "span raiz 'contract-analysis' existe",
@@ -146,15 +146,15 @@
       "ok": true
     },
     {
-      "check": "    generation 'ChatOpenAI' con modelo",
+      "check": "    generation 'changes_extraction' con modelo",
       "ok": true
     },
     {
-      "check": "    generation 'ChatOpenAI' con tokens",
+      "check": "    generation 'changes_extraction' con tokens",
       "ok": true
     },
     {
-      "check": "    generation 'ChatOpenAI' con costo",
+      "check": "    generation 'changes_extraction' con costo",
       "ok": true
     },
     {

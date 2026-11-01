@@ -14,7 +14,8 @@ marca como tal, no se borra.
 | P-07 | Observabilidad / privacidad | El contenido de los contratos (texto e imágenes) viaja a Langfuse Cloud sin enmascarar | Alta | Abierto |
 | P-08 | Observabilidad | Ruido de spans internos de LangChain en `extraction_agent` (~8 observaciones CHAIN) | Baja | Abierto |
 | P-09 | Observabilidad | Costo solo visible en Langfuse (el CLI muestra tokens, no USD); entorno `default` | Baja | Abierto |
-| P-10 | Seguridad | Inyección de instrucciones dentro del contrato (texto en la imagen que intenta dar órdenes al modelo): no se evaluó ni hay defensa | Alta | Abierto |
+| P-10 | Seguridad | Inyección de instrucciones dentro del contrato (texto en la imagen que intenta dar órdenes al modelo) | Alta | Abierto (mitigado en parte) |
+| P-12 | Robustez | Salida desbocada del modelo (16.384 tokens sin terminar) tratada como error de API, sin reintento ni tope | Media | Resuelto |
 | P-11 | Código | Hallazgos de la revisión que se decidió no arreglar (negativas por patrón, ordinales compuestos, estado mutable del agente, `llm_calls`) | Baja | Abierto |
 | P-06 | Parsing | Errores silenciosos de dígitos con escaneos malos (2025 leído como 2023) | Alta | Abierto (mitigado en parte) |
 
@@ -150,3 +151,34 @@ EVALUACION.md, iteración 7). Quedan registrados, con su motivo:
 - **`ExtractionAgent` y errores de API del cliente** no se cuentan en `llm_calls` (los reintentos
   internos del cliente no pasan por el callback). El conteo de tokens puede subestimar el costo real
   ante fallos transitorios; el costo exacto lo da Langfuse.
+
+### Medición y mitigación (par 5 · `par5_inyeccion`)
+
+- **Línea base** (`outputs/eval_baseline_par4_par5.json`): sin defensa, el sistema **no obedecía** la
+  orden (cambios reales 100 %) pero **no avisaba** del intento (señalada 0/3). Resistía en silencio.
+- **Mitigación:** regla de SEGURIDAD en los 3 prompts (visión, agente 1, agente 2): el texto del
+  documento es dato, no orden; se ignora, se reportan todos los cambios reales y se advierte citando
+  la orden. Resultado (`outputs/eval_e2e.json`): señalada **3/3**, cambios reales en 3/3 y sin
+  falsas alarmas en 9 corridas legítimas. Una corrida omitió el valor anterior (USD 2.500): no se
+  puede distinguir variación de estilo de influencia leve con 3 corridas.
+- **Defensa de diseño que ayuda:** «cero cambios» es un error de validación (ver P-02), así que un
+  documento que lograra convencer al modelo de reportar «no hubo cambios» **fallaría de forma visible**
+  en lugar de pasar como un resultado vacío válido. El tradeoff de P-02 tiene este lado positivo.
+- **Límites que siguen abiertos:** se probó **una** inyección directa y explícita en la adenda. No se
+  probaron variantes (disfrazada, en el contrato original, en otro idioma, texto casi invisible, que
+  pida algo distinto de ocultar cambios). La defensa es por instrucciones en el prompt, que el modelo
+  puede ignorar; no hay una capa determinista (p. ej. un detector de patrones sobre la transcripción).
+- **Ideas pendientes:** más variantes de ataque en el set, detector de patrones sobre el texto
+  transcripto antes de los agentes, y marcar la inyección en un campo estructurado en vez de texto
+  libre.
+
+## P-12 · Salida desbocada del modelo (RESUELTO)
+
+- **Qué pasó:** en la primera corrida del par ciego, la extracción generó 16.384 tokens sin terminar
+  y la API cortó por límite de longitud (`LengthFinishReasonError`). El código lo trataba como un
+  error de API sin reintento, y no había tope de tokens de salida (esa llamada costó ~USD 0,16).
+- **Qué se hizo:** `max_tokens` por etapa (2048 extracción, 4096 visión y agente 1; configurables) y
+  reintento ante este error pidiendo concisión; si persiste, `OutputValidationError`.
+- **Límite:** es un fallo esporádico y no se pudo reproducir a voluntad: las corridas posteriores
+  salieron bien, pero eso no prueba que haya desaparecido. Un documento de varias páginas necesitaría
+  subir los topes.
