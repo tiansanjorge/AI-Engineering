@@ -51,6 +51,7 @@ nivel 4 se salvó porque otros datos delataron el problema). Ver `PENDIENTES.md`
 | 3 | La evaluación de falsos positivos no detectaba un inciso espurio (4.1 junto al 4.3) | Test que lo reproduce | Todo lo reportado sin cambio esperado cuenta como extra | Métrica más estricta |
 | 4 | El resumen terminaba con una muletilla («No hay alertas en el mapa contextual») pese a la regla del prompt | Primera corrida real; luego 2/9 corridas lo mostraron tras un primer refuerzo (`outputs/eval_e2e_prompt_v2.json`: par 1 con 1/3 perfectas) | Regla 7: el resumen nunca habla del mapa ni de las alertas; métrica `has_filler` | 9/9 perfectas, 0 muletillas |
 | 5 | El verificador de trazas daba 4 fallas falsas (leía mal el campo `model`) | 36/40 → 40/40 | Pedir `fields=...,model` a la API | Auditoría de traza 40/40 |
+| 6 | Con credenciales de Langfuse ausentes/inválidas el análisis corría (gastando tokens) y se caía al final al pedir la URL de la traza, perdiendo el resultado | Corrida real con claves vacías: `UnauthorizedError` | `safe_trace_url` y `flush` que nunca lanzan (+ test) | Exit 0, JSON impreso, solo se omite el link |
 
 ## Limitaciones declaradas
 
