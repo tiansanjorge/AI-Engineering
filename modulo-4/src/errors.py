@@ -17,8 +17,8 @@ class InvalidImageError(ContractAnalysisError):
     """
 
 
-class VisionAPIError(ContractAnalysisError):
-    """La llamada al modelo de vision (o a un agente) fallo tras agotar los reintentos."""
+class ModelAPIError(ContractAnalysisError):
+    """La llamada a un modelo (vision o agente) fallo tras agotar los reintentos."""
 
 
 class EmptyParseError(ContractAnalysisError):
