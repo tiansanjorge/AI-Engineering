@@ -184,9 +184,9 @@ Consigna: `material/Lecciones/Modulo 4/Consignas del proyecto final.docx`. Vive 
 - **Dos modelos Pydantic a propósito:** `ExtractionResult` (interno, con tipo de cada cambio) del que se DERIVA `ContractChangeOutput` por código (no se le pide al LLM).
 
 ### Estado actual
-- **Fases 1-6 completadas** (ramas `feature/modulo-4-*` mergeadas a `develop`; la de la fase 6 es `feature/modulo-4-main-langfuse`). Pendiente: fase 7 (evaluación de punta a punta + iteración de prompts documentada), fase 8 (README con diagrama, guía, `/code-review`, merge).
+- **Fases 1-7 completadas** (ramas `feature/modulo-4-*`; la de la fase 7 es `feature/modulo-4-evaluacion`). Pendiente: fase 8 (README con diagrama, guía `guias/modulo-4-guia.md`, `/code-review`, merge a `develop`).
 - `src/`: `config.py`, `errors.py`, `models.py`, `llm.py`, `image_parser.py` (validación local → base64 → GPT-4o `detail=high`; guarda contra negativas), `agents/{contextualization,extraction}_agent.py` (structured output estricto + auto-reparación con el error de Pydantic), `observability.py` (spans por etapa, `TokenTracker`), `main.py` (CLI + `analyze_contracts` con dependencias inyectables), `text_metrics.py` (WER).
-- **Medido:** parsing WER 0,000 en pares limpios, 0,017-0,029 en el par 3; agentes 7/7 secciones, tipos correctos, 0 falsos positivos; traza real 40/40 chequeos (`scripts/verify_tracing.py`); ~13 s y ~7-8 mil tokens por análisis. 50 tests sin API.
+- **Medido (detalle en `modulo-4/EVALUACION.md`):** parsing WER 0,000 en pares limpios, 0,017-0,029 en el par 3; **camino completo 9/9 corridas perfectas** (3 pares × 3: recall, tipos y datos clave 100 %, 0 falsos positivos, estable); estrés nivel 4: advertencia 3/3 pero datos inventados presentados como reales (0/2 correctos); traza real 40/40 chequeos; ~11 s y ~7-8 mil tokens por análisis. 62 tests sin API. Iteración de prompt documentada (muletilla del resumen: 7/9 → 9/9).
 - **`modulo-4/PENDIENTES.md`** (mantener actualizado): P-04 y P-06 (alucinación y errores de dígitos con escaneos malos; mitigado en parte por el agente 1, que cruza fechas y avisa), P-07 (privacidad en Langfuse Cloud), P-02/03/08/09.
 
 ## Cómo trabajar conmigo en este proyecto

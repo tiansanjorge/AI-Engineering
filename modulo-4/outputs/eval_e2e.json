@@ -1,0 +1,321 @@
+{
+  "session_id": "eval-e2e-20261101-125648",
+  "runs_per_case": 3,
+  "cases": {
+    "par1_simple": {
+      "aggregate": {
+        "runs": 3,
+        "perfect_runs": 3,
+        "recall": 1.0,
+        "type_accuracy": 1.0,
+        "false_positives_total": 0,
+        "facts_rate": 1.0,
+        "warning_rate": 0.0,
+        "filler_rate": 0.0,
+        "stable": true
+      },
+      "runs": [
+        {
+          "sections_expected": 2,
+          "sections_found": 2,
+          "type_correct": 2,
+          "false_positives": [],
+          "facts_found": 3,
+          "facts_total": 3,
+          "has_warning": false,
+          "has_filler": false,
+          "reported_sections": [
+            "segunda",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 10.9,
+          "total_tokens": 7464,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/5ccb79e8febac16d57f5264c171eaff9",
+          "output": {
+            "sections_changed": [
+              "Cláusula Segunda",
+              "Cláusula Tercera"
+            ],
+            "topics_touched": [
+              "Plazo y vigencia",
+              "Precio"
+            ],
+            "summary_of_the_change": "La adenda introduce dos modificaciones al contrato original. Primero, se modifica la Cláusula Segunda referente al plazo y vigencia del contrato, extendiendo su duración hasta el 31 de diciembre de 2026, manteniendo la posibilidad de renovación por acuerdo escrito de las partes. Segundo, se modifica la Cláusula Tercera sobre el precio, aumentando el monto mensual que EL CLIENTE debe abonar a EL PROVEEDOR de USD 2.500 a USD 2.800, más IVA."
+          }
+        },
+        {
+          "sections_expected": 2,
+          "sections_found": 2,
+          "type_correct": 2,
+          "false_positives": [],
+          "facts_found": 3,
+          "facts_total": 3,
+          "has_warning": false,
+          "has_filler": false,
+          "reported_sections": [
+            "segunda",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 9.8,
+          "total_tokens": 7380,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/d5cf4188ca47f6dbafa3872d277cd32a",
+          "output": {
+            "sections_changed": [
+              "Cláusula Segunda",
+              "Cláusula Tercera"
+            ],
+            "topics_touched": [
+              "Plazo y vigencia",
+              "Precio"
+            ],
+            "summary_of_the_change": "La adenda modifica la Cláusula Segunda del contrato original, extendiendo el plazo de vigencia del contrato hasta el 31 de diciembre de 2026, en lugar de finalizar el 31 de diciembre de 2025. Además, modifica la Cláusula Tercera, aumentando el precio mensual que EL CLIENTE debe abonar a EL PROVEEDOR de USD 2.500 a USD 2.800, más IVA."
+          }
+        },
+        {
+          "sections_expected": 2,
+          "sections_found": 2,
+          "type_correct": 2,
+          "false_positives": [],
+          "facts_found": 3,
+          "facts_total": 3,
+          "has_warning": false,
+          "has_filler": false,
+          "reported_sections": [
+            "segunda",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 11.0,
+          "total_tokens": 7366,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/6f52f4854365b3c41d692abf52a7467a",
+          "output": {
+            "sections_changed": [
+              "Cláusula Segunda",
+              "Cláusula Tercera"
+            ],
+            "topics_touched": [
+              "Plazo y vigencia",
+              "Precio"
+            ],
+            "summary_of_the_change": "La adenda introduce dos modificaciones al contrato original. Primero, extiende el plazo de vigencia del contrato, que ahora se mantendrá desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2026, en lugar de finalizar el 31 de diciembre de 2025. Segundo, ajusta el precio mensual que EL CLIENTE debe abonar a EL PROVEEDOR, incrementándolo de USD 2.500 a USD 2.800, más IVA. Las demás cláusulas del contrato permanecen sin cambios."
+          }
+        }
+      ]
+    },
+    "par2_complejo": {
+      "aggregate": {
+        "runs": 3,
+        "perfect_runs": 3,
+        "recall": 1.0,
+        "type_accuracy": 1.0,
+        "false_positives_total": 0,
+        "facts_rate": 1.0,
+        "warning_rate": 0.0,
+        "filler_rate": 0.0,
+        "stable": true
+      },
+      "runs": [
+        {
+          "sections_expected": 3,
+          "sections_found": 3,
+          "type_correct": 3,
+          "false_positives": [],
+          "facts_found": 4,
+          "facts_total": 4,
+          "has_warning": false,
+          "has_filler": false,
+          "reported_sections": [
+            "cuarta 4.3",
+            "octava",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 11.0,
+          "total_tokens": 7805,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/2d2e159390888da627204e686ce238bb",
+          "output": {
+            "sections_changed": [
+              "Cláusula Tercera",
+              "Cláusula Cuarta, inciso 4.3",
+              "Cláusula Octava"
+            ],
+            "topics_touched": [
+              "Alcance territorial",
+              "Restricciones de uso",
+              "Protección de datos personales"
+            ],
+            "summary_of_the_change": "La adenda introduce tres cambios principales al acuerdo de confidencialidad original. Primero, modifica la Cláusula Tercera sobre el alcance territorial, ampliando las obligaciones del acuerdo a incluir también a la República de Chile y la República Federativa del Brasil, además de la República Argentina y la República Oriental del Uruguay. Segundo, elimina el inciso 4.3 de la Cláusula Cuarta, que prohibía subcontratar a terceros el tratamiento de la Información Confidencial. Tercero, se añade una nueva Cláusula Octava sobre la protección de datos personales, estableciendo que la parte receptora debe tratar dichos datos conforme a la Ley N.º 25.326 y adoptar medidas de seguridad adecuadas."
+          }
+        },
+        {
+          "sections_expected": 3,
+          "sections_found": 3,
+          "type_correct": 3,
+          "false_positives": [],
+          "facts_found": 4,
+          "facts_total": 4,
+          "has_warning": false,
+          "has_filler": false,
+          "reported_sections": [
+            "cuarta 4.3",
+            "octava",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 12.2,
+          "total_tokens": 7994,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/63419c9083c1c5ffeeaa226ad415e8d9",
+          "output": {
+            "sections_changed": [
+              "Cláusula Tercera",
+              "Cláusula Cuarta, inciso 4.3",
+              "Cláusula Octava"
+            ],
+            "topics_touched": [
+              "Alcance territorial",
+              "Restricciones de uso",
+              "Protección de datos personales"
+            ],
+            "summary_of_the_change": "La adenda introduce tres cambios principales al acuerdo de confidencialidad original. Primero, modifica la Cláusula Tercera sobre el alcance territorial, ampliando las obligaciones del acuerdo a incluir también a la República de Chile y la República Federativa del Brasil, además de la República Argentina y la República Oriental del Uruguay. Segundo, elimina el inciso 4.3 de la Cláusula Cuarta, que prohibía subcontratar a terceros el tratamiento de la Información Confidencial. Tercero, añade una nueva Cláusula Octava sobre la protección de datos personales, estableciendo que la parte receptora debe tratar los datos personales conforme a la Ley N.º 25.326 y adoptar medidas de seguridad adecuadas."
+          }
+        },
+        {
+          "sections_expected": 3,
+          "sections_found": 3,
+          "type_correct": 3,
+          "false_positives": [],
+          "facts_found": 4,
+          "facts_total": 4,
+          "has_warning": false,
+          "has_filler": false,
+          "reported_sections": [
+            "cuarta 4.3",
+            "octava",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 12.6,
+          "total_tokens": 7953,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/39c68c2b92bcc0f5341f6757200cb852",
+          "output": {
+            "sections_changed": [
+              "Cláusula Tercera",
+              "Cláusula Cuarta, inciso 4.3",
+              "Cláusula Octava"
+            ],
+            "topics_touched": [
+              "Alcance territorial",
+              "Restricciones de uso",
+              "Protección de datos personales"
+            ],
+            "summary_of_the_change": "La adenda introduce tres cambios principales al acuerdo original. Primero, modifica la Cláusula Tercera sobre el alcance territorial, ampliando las obligaciones del acuerdo a incluir también a la República de Chile y la República Federativa del Brasil, además de la República Argentina y la República Oriental del Uruguay. Segundo, elimina el inciso 4.3 de la Cláusula Cuarta, que prohibía subcontratar a terceros el tratamiento de la Información Confidencial. Tercero, añade una nueva Cláusula Octava sobre la protección de datos personales, estableciendo que la Parte Receptora debe tratar los datos personales conforme a la Ley N.º 25.326 y adoptar medidas de seguridad adecuadas."
+          }
+        }
+      ]
+    },
+    "par3_escaneo_degradado": {
+      "aggregate": {
+        "runs": 3,
+        "perfect_runs": 3,
+        "recall": 1.0,
+        "type_accuracy": 1.0,
+        "false_positives_total": 0,
+        "facts_rate": 1.0,
+        "warning_rate": 1.0,
+        "filler_rate": 0.0,
+        "stable": true
+      },
+      "runs": [
+        {
+          "sections_expected": 2,
+          "sections_found": 2,
+          "type_correct": 2,
+          "false_positives": [],
+          "facts_found": 3,
+          "facts_total": 3,
+          "has_warning": true,
+          "has_filler": false,
+          "reported_sections": [
+            "segunda",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 10.9,
+          "total_tokens": 6957,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/4fcecf4b7436c6ce21aa6452b7841a19",
+          "output": {
+            "sections_changed": [
+              "Cláusula Segunda",
+              "Cláusula Tercera"
+            ],
+            "topics_touched": [
+              "Plazo y vigencia",
+              "Precio"
+            ],
+            "summary_of_the_change": "La adenda introduce dos modificaciones al contrato original. Primero, modifica la Cláusula Segunda sobre el plazo y vigencia del contrato, cambiando las fechas de vigencia de \"desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"desde el 1 de febrero de 2023 hasta el 31 de diciembre de 2026\". Segundo, modifica la Cláusula Tercera sobre el precio, aumentando el importe mensual que EL CLIENTE debe abonar a EL PROVEEDOR de USD 2.500 a USD 2.800. Advertencia: La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025. Además, la adenda modifica la vigencia del contrato a partir del 1 de febrero de 2023, lo cual es inconsistente con la fecha del contrato original."
+          }
+        },
+        {
+          "sections_expected": 2,
+          "sections_found": 2,
+          "type_correct": 2,
+          "false_positives": [],
+          "facts_found": 3,
+          "facts_total": 3,
+          "has_warning": true,
+          "has_filler": false,
+          "reported_sections": [
+            "segunda",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 10.7,
+          "total_tokens": 6862,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/1bb74d56e0a358bf3750d09d6126f581",
+          "output": {
+            "sections_changed": [
+              "Cláusula Segunda",
+              "Cláusula Tercera"
+            ],
+            "topics_touched": [
+              "Plazo y vigencia",
+              "Precio"
+            ],
+            "summary_of_the_change": "La adenda modifica la Cláusula Segunda – Plazo y Vigencia, estableciendo que el contrato tendrá vigencia desde el 1 de febrero de 2023 hasta el 31 de diciembre de 2026, en lugar de desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025. Además, modifica la Cláusula Tercera – Precio, aumentando el importe mensual que EL CLIENTE debe abonar a EL PROVEEDOR de USD 2.500 a USD 2.800. Advertencia: La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025."
+          }
+        },
+        {
+          "sections_expected": 2,
+          "sections_found": 2,
+          "type_correct": 2,
+          "false_positives": [],
+          "facts_found": 3,
+          "facts_total": 3,
+          "has_warning": true,
+          "has_filler": false,
+          "reported_sections": [
+            "segunda",
+            "tercera"
+          ],
+          "perfect": true,
+          "latency_s": 10.6,
+          "total_tokens": 6865,
+          "trace_url": "https://us.cloud.langfuse.com/project/cmvxyiviv01aoad0ks3ks1tcb/traces/fdd60953f75300345eaaed88bbc7be86",
+          "output": {
+            "sections_changed": [
+              "Cláusula Segunda",
+              "Cláusula Tercera"
+            ],
+            "topics_touched": [
+              "Plazo y vigencia",
+              "Precio"
+            ],
+            "summary_of_the_change": "La adenda introduce dos modificaciones al contrato original. Primero, en la Cláusula Segunda, se modifica el plazo y vigencia del contrato, estableciendo que tendrá vigencia desde el 1 de febrero de 2023 hasta el 31 de diciembre de 2026, en lugar del período original del 1 de febrero de 2025 al 31 de diciembre de 2025. Segundo, en la Cláusula Tercera, se modifica el precio mensual que EL CLIENTE debe abonar a EL PROVEEDOR, aumentando de USD 2.500 a USD 2.800. Advertencia: La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025."
+          }
+        }
+      ]
+    }
+  }
+}

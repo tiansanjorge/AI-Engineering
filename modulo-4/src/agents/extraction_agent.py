@@ -39,7 +39,9 @@ SYSTEM_PROMPT = (
     "cambio es sobre un inciso, agregalo ('Cláusula Cuarta, inciso 4.3').\n"
     "6. En 'topic' usa una categoria legal o comercial breve (p. ej. 'Precio', 'Plazo y "
     "vigencia', 'Alcance territorial').\n"
-    "7. 'summary_of_the_change' es un parrafo en prosa, preciso y completo, para un abogado.\n"
+    "7. 'summary_of_the_change' es un parrafo en prosa, preciso y completo, para un abogado. "
+    "Describe unicamente los cambios de la adenda: el resumen NUNCA habla del mapa contextual, "
+    "de las alertas ni de que no las haya.\n"
     "8. No inventes cambios ni datos. Si el mapa contextual informa alertas (inconsistencias o "
     "pasajes [ilegible]), cerra el resumen con una frase que empiece con 'Advertencia:' "
     "indicandolas. Si NO hay alertas, no las menciones en absoluto: no escribas frases como "
@@ -76,6 +78,8 @@ class ExtractionAgent:
         # Cuantos intentos hicieron falta en la ultima corrida (1 = salio bien a la primera).
         # Se expone para dejarlo como metadata en la traza.
         self.last_attempts = 0
+        # Ultimo resultado detallado (con el tipo de cada cambio), para evaluarlo.
+        self.last_result: ExtractionResult | None = None
         self.max_validation_retries = (
             config.MAX_VALIDATION_RETRIES
             if max_validation_retries is None
@@ -127,6 +131,7 @@ class ExtractionAgent:
             parsed, parsing_error = out.get("parsed"), out.get("parsing_error")
             if parsing_error is None and parsed is not None:
                 # Ya paso la validacion de `ExtractionResult` (forma + reglas de contenido).
+                self.last_result = parsed
                 return parsed
 
             last_error = (

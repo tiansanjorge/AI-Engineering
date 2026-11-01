@@ -28,7 +28,7 @@ from src.agents.contextualization_agent import ContextualizationAgent
 from src.agents.extraction_agent import ExtractionAgent
 from src.errors import ContractAnalysisError
 from src.image_parser import image_size, parse_contract_image, validate_image
-from src.models import ContractChangeOutput
+from src.models import ContractChangeOutput, ExtractionResult
 from src.observability import StageStats, flush, stage
 
 TRACE_NAME = "contract-analysis"
@@ -42,6 +42,8 @@ class AnalysisResult:
     stages: list[StageStats]
     trace_id: str | None
     trace_url: str | None
+    # Detalle con el tipo de cada cambio (solo para evaluacion; no forma parte del contrato).
+    detail: ExtractionResult | None = None
 
 
 def _parse_stage(name: str, path: Path, parse_fn) -> tuple[str, StageStats]:
@@ -169,7 +171,8 @@ def analyze_contracts(
 
     # Con el tracing desactivado (o sin claves) no hay trace valido: se omite la URL.
     trace_url = langfuse.get_trace_url(trace_id=trace_id) if trace_id else None
-    return AnalysisResult(output, stats, trace_id, trace_url)
+    detail = getattr(extractor, "last_result", None)
+    return AnalysisResult(output, stats, trace_id, trace_url, detail)
 
 
 def _print_summary(result: AnalysisResult) -> None:

@@ -55,13 +55,16 @@ menciona un contrato de fecha 15 de enero de 2023, pero el original está fechad
 2025» y el resumen terminó con esa advertencia. Evidencia: `outputs/agents_eval.json`
 (`scripts/eval_agents.py --parsed`).
 
-- **Límites:** (1) **detecta pero no corrige**: el resumen igual reprodujo «1 de febrero de 2023»
-  como si fuera dato válido; (2) solo se verificó con el nivel 3: no se probó contra el nivel 4
-  (datos inventados) ni se midió cuántas veces el modelo avisa y cuántas no; (3) depende de que el
-  documento tenga datos cruzables (fecha/partes) y de que el modelo los cruce.
-- **Pendiente para cerrar de verdad:** alerta estructurada en el contrato de salida (no solo texto
-  libre), medir la tasa de detección en varias repeticiones y niveles, y un camino de «revisión
-  humana» cuando hay alertas.
+- **Medido en la fase 7** (camino completo, 3 corridas por nivel, `outputs/stress_e2e.json`): nivel 3 →
+  advertencia 3/3 y datos clave correctos; nivel 4 → advertencia 3/3 pero **datos clave 0/2** (el
+  resumen presenta los valores inventados como reales y cierra avisando inconsistencias).
+- **Límites que siguen abiertos:** (1) **detecta pero no corrige**; (2) la detección depende de que
+  haya datos cruzables (fechas, partes): un monto inventado no tiene contra qué compararse; (3) la
+  alerta es texto libre dentro del resumen, no un campo estructurado ni una señal de «revisión
+  humana obligatoria»; (4) 3 corridas por nivel son pocas.
+- **Pendiente para cerrar de verdad:** campo estructurado de alertas en el contrato de salida, camino
+  de revisión humana ante alertas, doble lectura del parser y comparación, y un chequeo de calidad de
+  imagen previo que rechace entradas inservibles.
 
 ## P-05 · Una negativa se acepta como transcripción (RESUELTO)
 
