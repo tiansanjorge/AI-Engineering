@@ -42,7 +42,8 @@ SYSTEM_PROMPT = (
     "7. 'summary_of_the_change' es un parrafo en prosa, preciso y completo, para un abogado.\n"
     "8. No inventes cambios ni datos. Si el mapa contextual informa alertas (inconsistencias o "
     "pasajes [ilegible]), cerra el resumen con una frase que empiece con 'Advertencia:' "
-    "indicandolas; si no hay alertas, no agregues nada."
+    "indicandolas. Si NO hay alertas, no las menciones en absoluto: no escribas frases como "
+    "'no hay alertas' ni hagas referencia al mapa contextual en el resumen."
 )
 
 USER_TEMPLATE = (
@@ -65,11 +66,16 @@ class ExtractionAgent:
         # include_raw=True devuelve {"raw", "parsed", "parsing_error"}: en vez de explotar ante
         # una salida invalida, podemos leer el error y reintentar con feedback.
         # `structured_llm` es inyectable para testear sin llamar a la API.
+        # El nombre del modelo base es el de la `generation` en Langfuse (si no, aparece con el
+        # nombre generico "ChatOpenAI").
         self.structured_llm = structured_llm or build_chat_model(
-            config.AGENT_MODEL
+            config.AGENT_MODEL, name="changes_extraction"
         ).with_structured_output(
             ExtractionResult, method="json_schema", include_raw=True
         )
+        # Cuantos intentos hicieron falta en la ultima corrida (1 = salio bien a la primera).
+        # Se expone para dejarlo como metadata en la traza.
+        self.last_attempts = 0
         self.max_validation_retries = (
             config.MAX_VALIDATION_RETRIES
             if max_validation_retries is None
@@ -108,7 +114,8 @@ class ExtractionAgent:
         ]
         last_error = "sin detalle"
         raw = None
-        for _attempt in range(self.max_validation_retries + 1):
+        for attempt in range(self.max_validation_retries + 1):
+            self.last_attempts = attempt + 1
             try:
                 out = self.structured_llm.invoke(messages, config=run_config)
             except openai.OpenAIError as exc:

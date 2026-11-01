@@ -11,6 +11,9 @@ marca como tal, no se borra.
 | P-03 | Corpus | Contratos sintéticos y digitales, de una sola página, un solo idioma | Media | Abierto |
 | P-04 | Parsing / seguridad | Con escaneos muy malos el modelo INVENTA datos plausibles en vez de marcar `[ilegible]` | Alta | Abierto (mitigado en parte) |
 | P-05 | Parsing | Una negativa del modelo («no puedo ayudar…») se acepta como transcripción válida | Alta | Resuelto |
+| P-07 | Observabilidad / privacidad | El contenido de los contratos (texto e imágenes) viaja a Langfuse Cloud sin enmascarar | Alta | Abierto |
+| P-08 | Observabilidad | Ruido de spans internos de LangChain en `extraction_agent` (~8 observaciones CHAIN) | Baja | Abierto |
+| P-09 | Observabilidad | Costo solo visible en Langfuse (el CLI muestra tokens, no USD); entorno `default` | Baja | Abierto |
 | P-06 | Parsing | Errores silenciosos de dígitos con escaneos malos (2025 leído como 2023) | Alta | Abierto (mitigado en parte) |
 
 ---
@@ -87,3 +90,27 @@ menciona un contrato de fecha 15 de enero de 2023, pero el original está fechad
 
 - **Qué pasa:** 3 pares sintéticos, una página, español. No cubre tablas, firmas manuscritas,
   sellos, varias páginas ni otros idiomas.
+
+## P-07 · El contenido de los contratos viaja a Langfuse Cloud (ALTA)
+
+- **Qué pasa:** la traza guarda el texto completo de ambos contratos, el mapa y el resultado, y las
+  imágenes se suben como media. En LegalMove los contratos son confidenciales y pueden traer datos
+  personales: quedan alojados en un tercero (región EE.UU.), sin enmascarado ni política de retención.
+- **Evidencia:** `outputs/tracing_check.json`; input de las etapas en el dashboard.
+- **Ideas:** `mask` del cliente de Langfuse para ocultar cifras/identificadores, no mandar el payload
+  completo a los spans (solo longitudes y hashes), auto-hospedar Langfuse, o desactivar la subida de
+  media (`LANGFUSE_MEDIA_UPLOAD_ENABLED=false`) y trazar solo metadata.
+
+## P-08 · Ruido de spans de LangChain
+
+- **Qué pasa:** `with_structured_output(include_raw=True)` genera ~8 observaciones CHAIN
+  (`RunnableParallel`, `RunnableLambda`...) bajo `extraction_agent`. No afectan la jerarquía pedida
+  (la generation `changes_extraction` está bien ubicada) pero ensucian el árbol.
+- **Ideas:** hacer la llamada con `bind(response_format=...)` y validar con `model_validate_json`
+  a mano (también elimina la dependencia del parser de LangChain), o filtrar por tipo en la UI.
+
+## P-09 · Costo en CLI y entorno
+
+- **Qué pasa:** Langfuse calcula el costo por generation (p. ej. USD 0,0076 la extracción del par 1);
+  el CLI solo muestra tokens porque una tabla de precios propia quedaría desactualizada. El entorno
+  de las trazas es `default`: se puede fijar con `LANGFUSE_TRACING_ENVIRONMENT`.
