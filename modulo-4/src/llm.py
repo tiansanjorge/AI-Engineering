@@ -9,7 +9,9 @@ from langchain_openai import ChatOpenAI
 from src import config
 
 
-def build_chat_model(model: str, name: str | None = None) -> ChatOpenAI:
+def build_chat_model(
+    model: str, name: str | None = None, max_tokens: int | None = None
+) -> ChatOpenAI:
     # temperature=0: tareas de transcripcion y analisis legal piden el comportamiento mas
     # determinista posible (misma entrada, misma salida en lo posible).
     # max_retries: el cliente reintenta solo ante rate limit o errores 5xx, con espera creciente.
@@ -18,6 +20,8 @@ def build_chat_model(model: str, name: str | None = None) -> ChatOpenAI:
     return ChatOpenAI(
         name=name,
         model=model,
+        # Tope de tokens de salida: evita que una generacion desbocada cueste de mas.
+        max_tokens=max_tokens,
         temperature=0,
         timeout=config.REQUEST_TIMEOUT_S,
         max_retries=config.MAX_API_RETRIES,

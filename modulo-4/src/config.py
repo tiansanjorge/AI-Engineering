@@ -43,3 +43,12 @@ def require_openai_key() -> None:
             "Falta OPENAI_API_KEY. Copia .env.example a .env y completalo (o definila como "
             "variable de entorno)."
         )
+
+
+# Tope de tokens de SALIDA por etapa. Acota el costo y el tiempo ante una salida desbocada (el
+# modelo que no termina de generar). Una transcripcion o un mapa de una pagina rondan los
+# 450-650 tokens y una extraccion los 250-400; los topes dejan un margen amplio. Un documento de
+# varias paginas necesitaria subirlos (hoy una imagen por documento).
+VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "4096"))
+CONTEXT_MAX_TOKENS = int(os.getenv("CONTEXT_MAX_TOKENS", "4096"))
+EXTRACTION_MAX_TOKENS = int(os.getenv("EXTRACTION_MAX_TOKENS", "2048"))

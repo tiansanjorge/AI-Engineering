@@ -7,7 +7,7 @@ prueba nada; "9 de 9" si es una afirmacion defendible.
 Todas las corridas comparten un `session_id`, por lo que en Langfuse se ven agrupadas en la
 vista de Sesiones. Evidencia en outputs/eval_e2e.json.
 
-Uso (desde modulo-4/):  python scripts/run_eval.py [--runs 3] [--only par1_simple]
+Uso (desde modulo-4/):  python scripts/run_eval.py [--runs 3] [--only par4_ciego par5_inyeccion] [--output ruta.json]
 """
 
 import argparse
@@ -30,8 +30,14 @@ OUTPUT = config.MODULE_ROOT / "outputs" / "eval_e2e.json"
 def main() -> None:
     cli = argparse.ArgumentParser()
     cli.add_argument("--runs", type=int, default=3, help="repeticiones por par")
-    cli.add_argument("--only", help="un solo par (nombre de carpeta)")
+    cli.add_argument("--only", nargs="+", help="uno o mas pares (nombres de carpeta)")
+    cli.add_argument(
+        "--output",
+        help="archivo de evidencia (default: outputs/eval_e2e.json); permite no pisar "
+        "la evidencia de otra version del prompt",
+    )
     args = cli.parse_args()
+    output = Path(args.output) if args.output else OUTPUT
 
     config.require_openai_key()
     session_id = f"eval-e2e-{datetime.now():%Y%m%d-%H%M%S}"
@@ -39,9 +45,10 @@ def main() -> None:
 
     cases = sorted(p for p in config.TEST_CONTRACTS_DIR.iterdir() if p.is_dir())
     if args.only:
-        cases = [c for c in cases if c.name == args.only]
-        if not cases:
-            sys.exit(f"--only: no existe el par '{args.only}' en data/test_contracts/")
+        unknown = set(args.only) - {c.name for c in cases}
+        if unknown:
+            sys.exit(f"--only: no existe(n) {sorted(unknown)} en data/test_contracts/")
+        cases = [c for c in cases if c.name in args.only]
 
     report = {"session_id": session_id, "runs_per_case": args.runs, "cases": {}}
     try:
@@ -50,11 +57,11 @@ def main() -> None:
         # La evidencia se guarda SIEMPRE, tambien ante un fallo a mitad de camino: cada corrida
         # cuesta dinero y no debe perderse por un error en la siguiente.
         flush()
-        OUTPUT.parent.mkdir(exist_ok=True)
-        OUTPUT.write_text(
+        output.parent.mkdir(exist_ok=True)
+        output.write_text(
             json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
         )
-        print(f"Evidencia en {OUTPUT.relative_to(config.MODULE_ROOT)}")
+        print(f"Evidencia en {output}")
 
 
 def run_cases(cases, args, session_id: str, report: dict) -> None:
@@ -105,7 +112,13 @@ def run_cases(cases, args, session_id: str, report: dict) -> None:
             f"({agg['failed_runs']} con error) | recall {agg['recall']:.0%} | tipos "
             f"{agg['type_accuracy']:.0%} | falsos+ {agg['false_positives_total']} | hechos "
             f"{agg['facts_rate']:.0%} | muletilla {agg['filler_rate']:.0%} | "
-            f"estable={agg['stable']}\n"
+            f"estable={agg['stable']}"
+            + (
+                f" | inyeccion senalada {agg['injection_flag_rate']:.0%}"
+                if "injection_flag_rate" in agg
+                else ""
+            )
+            + "\n"
         )
 
 

@@ -232,6 +232,21 @@ def main() -> None:
         "jpg",
         scan=SCAN_SEVERITY,
     )
+    # Par 4 (ciego) y par 5 (adversarial): ver contract_specs.py.
+    write_pair(
+        out / "par4_ciego",
+        specs.BLIND_ORIGINAL,
+        specs.BLIND_AMENDMENT,
+        specs.BLIND_EXPECTED,
+        "png",
+    )
+    write_pair(
+        out / "par5_inyeccion",
+        specs.SIMPLE_ORIGINAL,
+        specs.INJECTION_AMENDMENT,
+        specs.INJECTION_EXPECTED,
+        "png",
+    )
 
 
 if __name__ == "__main__":
