@@ -19,6 +19,7 @@ Principio: la observabilidad NO debe romper la aplicacion. El SDK envia en segun
 lanza errores de red; si falta la configuracion, el pipeline igual corre.
 """
 
+import contextlib
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -62,11 +63,13 @@ class TokenTracker(BaseCallbackHandler):
         self.stats = stats
 
     def on_llm_end(self, response: LLMResult, **kwargs) -> None:
+        # Una llamada al modelo = un conteo, aunque devuelva varias generaciones; los tokens
+        # se suman sobre todas ellas.
+        self.stats.llm_calls += 1
         for generations in response.generations:
             for generation in generations:
                 message = getattr(generation, "message", None)
                 usage = getattr(message, "usage_metadata", None) or {}
-                self.stats.llm_calls += 1
                 self.stats.input_tokens += usage.get("input_tokens", 0)
                 self.stats.output_tokens += usage.get("output_tokens", 0)
 
@@ -118,7 +121,24 @@ def stage(
             span.update(metadata={**(metadata or {}), **current.stats.as_metadata()})
 
 
+def safe_trace_url(trace_id: str | None) -> str | None:
+    """URL de la traza, o None si no se puede obtener.
+
+    Obtenerla requiere una llamada de red a Langfuse (para conocer el id del proyecto) que falla
+    con credenciales ausentes o invalidas. Como el analisis YA se hizo (y se pagaron los tokens),
+    un fallo de observabilidad no puede costar el resultado: se degrada a "sin link".
+    """
+    if not trace_id:
+        return None
+    try:
+        return get_client().get_trace_url(trace_id=trace_id)
+    except Exception:  # noqa: BLE001 - la observabilidad nunca debe romper el analisis
+        return None
+
+
 def flush() -> None:
     """Envia los eventos pendientes. Imprescindible en scripts de vida corta: el SDK manda en
-    segundo plano y, si el proceso termina antes, las trazas se pierden."""
-    get_client().flush()
+    segundo plano y, si el proceso termina antes, las trazas se pierden. Nunca lanza: perder una
+    traza es preferible a perder el resultado del analisis."""
+    with contextlib.suppress(Exception):
+        get_client().flush()

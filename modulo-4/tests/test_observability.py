@@ -4,6 +4,7 @@ import pytest
 from langchain_core.messages import AIMessage
 from langchain_core.outputs import ChatGeneration, LLMResult
 
+from src import observability
 from src.observability import StageStats, TokenTracker, stage
 
 
@@ -55,3 +56,35 @@ def test_stage_relanza_la_excepcion_sin_esconderla():
         stage("demo", as_type="agent", input={}, run_name="r"),
     ):
         raise ValueError("boom")
+
+
+class _BrokenClient:
+    """Cliente de Langfuse cuya red falla (credenciales invalidas, caida del servicio...)."""
+
+    def get_trace_url(self, trace_id):
+        raise RuntimeError("401 Unauthorized")
+
+    def flush(self):
+        raise RuntimeError("sin red")
+
+
+def test_fallos_de_langfuse_no_rompen_el_resultado(monkeypatch):
+    monkeypatch.setattr(observability, "get_client", lambda: _BrokenClient())
+    assert observability.safe_trace_url("abc") is None  # sin link, pero sin excepcion
+    observability.flush()  # tampoco lanza
+    assert observability.safe_trace_url(None) is None
+
+
+def test_una_llamada_con_varias_generaciones_cuenta_una_vez():
+    stats = StageStats("x")
+    message = lambda n: AIMessage(
+        content="x",
+        usage_metadata={"input_tokens": n, "output_tokens": 1, "total_tokens": n + 1},
+    )
+    result = LLMResult(
+        generations=[
+            [ChatGeneration(message=message(10)), ChatGeneration(message=message(20))]
+        ]
+    )
+    TokenTracker(stats).on_llm_end(result)
+    assert stats.llm_calls == 1 and stats.input_tokens == 30

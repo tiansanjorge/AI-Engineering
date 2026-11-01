@@ -56,11 +56,20 @@ def test_validate_imagen_muy_pesada(png, monkeypatch):
         validate_image(png)
 
 
-def test_encode_rechaza_archivo_corrupto_con_extension_falsa(tmp_path):
+def test_validate_rechaza_archivo_corrupto_con_extension_falsa(tmp_path):
+    # Antes esto pasaba la validacion inicial y explotaba despues con un traceback de Pillow.
     fake = tmp_path / "doc.png"
     fake.write_text("esto no es una imagen")
     with pytest.raises(InvalidImageError, match="no es una imagen valida"):
-        encode_image(validate_image(fake))
+        validate_image(fake)
+
+
+def test_validate_rechaza_bomba_de_descompresion(png, monkeypatch):
+    from PIL import Image as PILImage
+
+    monkeypatch.setattr(PILImage, "MAX_IMAGE_PIXELS", 10)  # 40x40 supera el limite
+    with pytest.raises(InvalidImageError):
+        validate_image(png)
 
 
 def test_encode_usa_el_formato_real_no_la_extension(tmp_path):

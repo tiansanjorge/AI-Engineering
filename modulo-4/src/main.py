@@ -29,7 +29,7 @@ from src.agents.extraction_agent import ExtractionAgent
 from src.errors import ContractAnalysisError
 from src.image_parser import image_size, parse_contract_image, validate_image
 from src.models import ContractChangeOutput, ExtractionResult
-from src.observability import StageStats, flush, stage
+from src.observability import StageStats, flush, safe_trace_url, stage
 
 TRACE_NAME = "contract-analysis"
 TRACE_TAGS = ["modulo-4", "contract-comparison"]
@@ -169,8 +169,8 @@ def analyze_contracts(
         )
         trace_id = root.trace_id
 
-    # Con el tracing desactivado (o sin claves) no hay trace valido: se omite la URL.
-    trace_url = langfuse.get_trace_url(trace_id=trace_id) if trace_id else None
+    # Sin tracing (o sin claves validas) no hay URL: se degrada a None en vez de fallar.
+    trace_url = safe_trace_url(trace_id)
     detail = getattr(extractor, "last_result", None)
     return AnalysisResult(output, stats, trace_id, trace_url, detail)
 

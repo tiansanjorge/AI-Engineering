@@ -135,3 +135,18 @@ def test_require_openai_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     with pytest.raises(ConfigError, match="OPENAI_API_KEY"):
         config.require_openai_key()
+
+
+def test_imagen_corrupta_se_rechaza_antes_de_transcribir(images, tmp_path):
+    corrupta = tmp_path / "corrupta.png"
+    corrupta.write_text("no es una imagen")
+    log = []
+    with pytest.raises(InvalidImageError, match="no es una imagen valida"):
+        main.analyze_contracts(
+            images[0],
+            corrupta,
+            parse_fn=_fake_parse(log),
+            contextualizer=FakeContextualizer(log),
+            extractor=FakeExtractor(log),
+        )
+    assert log == []  # ni siquiera se transcribio el original (que si era valido)

@@ -14,18 +14,16 @@ import unicodedata
 
 from src.models import ContractChangeOutput, ExtractionResult
 
+# Ordinales simples hasta la vigesima. Los compuestos escritos en dos palabras ("décima primera")
+# NO estan soportados: no aparecen en el corpus de prueba (ver PENDIENTES).
 ORDINALS = [
-    "primera",
-    "segunda",
-    "tercera",
-    "cuarta",
-    "quinta",
-    "sexta",
-    "septima",
-    "octava",
-    "novena",
-    "decima",
-]
+    "primera", "segunda", "tercera", "cuarta", "quinta", "sexta", "septima", "octava",
+    "novena", "decima", "undecima", "duodecima", "decimotercera", "decimocuarta",
+    "decimoquinta", "decimosexta", "decimoseptima", "decimoctava", "decimonovena", "vigesima",
+]  # fmt: skip
+_ORDINAL_RE = re.compile(
+    r"\b(" + "|".join(sorted(ORDINALS, key=len, reverse=True)) + r")\b"
+)
 
 SectionKey = tuple[str, str]  # (ordinal, inciso)
 
@@ -39,15 +37,22 @@ def section_key(text: str) -> SectionKey:
     plain = (
         unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode().lower()
     )
-    ordinal = next((o for o in ORDINALS if o in plain), "")
-    inciso = re.search(r"\d+\.\d+", plain)
-    return ordinal, inciso.group(0) if inciso else ""
+    # Palabra completa y la mas larga primero: "decimoquinta" no debe leerse como "quinta".
+    match = _ORDINAL_RE.search(plain)
+    inciso = re.search(r"\b\d{1,2}\.\d{1,2}\b", plain)
+    return (match.group(1) if match else ""), inciso.group(0) if inciso else ""
 
 
 def _same_section(a: SectionKey, b: SectionKey) -> bool:
     # Mismo ordinal; el inciso solo desempata si ambos lo traen (reportar 'Cláusula Cuarta' a
     # secas cubre al inciso 4.3, pero 'inciso 4.1' NO cubre al 4.3).
     return a[0] == b[0] and (a[1] == b[1] or not a[1] or not b[1])
+
+
+def contains_fact(text: str, fact: str) -> bool:
+    """El dato aparece como token propio: '4.3' no cuenta dentro de '24.3', ni '2.800' dentro
+    de '12.800' (una subcadena a secas daria por correcto un valor inventado)."""
+    return bool(re.search(rf"(?<![\w.,]){re.escape(fact)}(?!\d)", text))
 
 
 def evaluate(
@@ -72,7 +77,7 @@ def evaluate(
 
     facts = expected["key_facts_in_summary"]
     summary = output.summary_of_the_change
-    facts_found = sum(f in summary for f in facts)
+    facts_found = sum(contains_fact(summary, f) for f in facts)
 
     row = {
         "sections_expected": len(exp),

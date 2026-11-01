@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src import config
 from src.errors import ContractAnalysisError
+from src.evaluation import contains_fact
 from src.main import analyze_contracts
 from src.observability import flush
 
@@ -35,6 +36,18 @@ def main() -> None:
     config.require_openai_key()
 
     report = {}
+    try:
+        run_levels(args, report)
+    finally:
+        # La evidencia se guarda SIEMPRE: cada corrida cuesta dinero y no debe perderse.
+        flush()
+        OUTPUT.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        print(f"\nEvidencia en {OUTPUT.relative_to(config.MODULE_ROOT)}")
+
+
+def run_levels(args, report: dict) -> None:
     for level in (3, 4):
         amendment = (
             config.MODULE_ROOT
@@ -55,7 +68,7 @@ def main() -> None:
                 row.update(
                     outcome="resultado",
                     has_warning="advertencia:" in summary.lower(),
-                    correct_facts=sum(f in summary for f in CORRECT),
+                    correct_facts=sum(contains_fact(summary, f) for f in CORRECT),
                     summary=summary,
                 )
             except ContractAnalysisError as exc:
@@ -72,12 +85,6 @@ def main() -> None:
                 )
             )
         report[f"nivel{level}"] = rows
-
-    flush()
-    OUTPUT.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    print(f"\nEvidencia en {OUTPUT.relative_to(config.MODULE_ROOT)}")
 
 
 if __name__ == "__main__":
