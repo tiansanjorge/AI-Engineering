@@ -9,16 +9,17 @@ formato, peso, imagen no corrupta) se chequea sin llamar a la API.
 """
 
 import base64
+import re
 from pathlib import Path
 
 import openai
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
-from langchain_openai import ChatOpenAI
 from PIL import Image, UnidentifiedImageError
 
 from src import config
 from src.errors import EmptyParseError, InvalidImageError, VisionAPIError
+from src.llm import build_chat_model
 
 # El prompt es una pieza de ingenieria: pide FIDELIDAD, no interpretacion. Un parser que
 # "mejora" o resume el texto es peor que uno literal, porque los agentes siguientes comparan
@@ -88,16 +89,22 @@ def encode_image(path: Path) -> str:
     return f"data:{mime};base64,{data}"
 
 
-def _build_llm() -> ChatOpenAI:
-    # temperature=0: una transcripcion debe ser lo mas determinista posible.
-    # max_retries / timeout: el cliente reintenta solo ante rate limit o errores 5xx y no se
-    # cuelga indefinidamente si la API no responde.
-    return ChatOpenAI(
-        model=config.VISION_MODEL,
-        temperature=0,
-        timeout=config.REQUEST_TIMEOUT_S,
-        max_retries=config.MAX_API_RETRIES,
-    )
+# Una negativa del modelo ("no puedo ayudar...") NO es una transcripcion. Se detecta para no
+# pasarsela a los agentes como si fuera el contrato: seria un fallo silencioso.
+_REFUSAL_PATTERN = re.compile(
+    r"^\W*(lo siento|disculp|perd[oó]n|no puedo|no me es posible|i'?m sorry|i am sorry|"
+    r"sorry|i can(?:'|no)t|i cannot|i'm unable|unable to)",
+    re.IGNORECASE,
+)
+# Un contrato real tiene cientos de palabras; una negativa es una frase corta.
+_REFUSAL_MAX_CHARS = 300
+
+
+def _is_refusal(response, text: str) -> bool:
+    # La API tiene un campo dedicado para negativas; se mira primero.
+    if getattr(response, "additional_kwargs", {}).get("refusal"):
+        return True
+    return len(text) <= _REFUSAL_MAX_CHARS and bool(_REFUSAL_PATTERN.match(text))
 
 
 def parse_contract_image(
@@ -113,7 +120,7 @@ def parse_contract_image(
     """
     path = validate_image(image_path)
     data_url = encode_image(path)
-    llm = llm or _build_llm()
+    llm = llm or build_chat_model(config.VISION_MODEL)
 
     messages = [
         SystemMessage(content=VISION_SYSTEM_PROMPT),
@@ -139,6 +146,11 @@ def parse_contract_image(
     text = text.strip()
     if not text:
         raise EmptyParseError(f"El modelo no devolvio texto para {path.name}")
+    if _is_refusal(response, text):
+        raise EmptyParseError(
+            f"El modelo se nego a transcribir {path.name} (imagen ilegible o no es un "
+            f"documento): {text[:120]!r}"
+        )
     return text
 
 

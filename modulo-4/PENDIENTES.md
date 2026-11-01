@@ -10,7 +10,7 @@ marca como tal, no se borra.
 | P-02 | Modelo de datos | «Cero cambios» se trata como error: una adenda solo administrativa falla la validación | Baja | Abierto |
 | P-03 | Corpus | Contratos sintéticos y digitales, de una sola página, un solo idioma | Media | Abierto |
 | P-04 | Parsing / seguridad | Con escaneos muy malos el modelo INVENTA datos plausibles en vez de marcar `[ilegible]` | Alta | Abierto |
-| P-05 | Parsing | Una negativa del modelo («no puedo ayudar…») se acepta como transcripción válida | Alta | Abierto |
+| P-05 | Parsing | Una negativa del modelo («no puedo ayudar…») se acepta como transcripción válida | Alta | Resuelto |
 | P-06 | Parsing | Errores silenciosos de dígitos con escaneos malos (2025 leído como 2023) | Alta | Abierto |
 
 ---
@@ -43,12 +43,14 @@ marca como tal, no se borra.
   (4) preprocesar la imagen (enderezar, aumentar contraste) antes de enviarla; (5) un chequeo de
   calidad de imagen previo (nitidez, resolución) que rechace entradas inservibles.
 
-## P-05 · Una negativa se acepta como transcripción
+## P-05 · Una negativa se acepta como transcripción (RESUELTO)
 
 - **Qué pasa:** en el nivel 5 el modelo respondió «Lo siento, no puedo ayudar con el contenido de la
   imagen» y `parse_contract_image` lo devolvió como texto válido, que pasaría al agente 1.
-- **Ideas:** detectar negativas (patrones, o un campo estructurado `legible: bool` en la respuesta
-  del parser) y lanzar `EmptyParseError`.
+- **Qué se hizo:** `_is_refusal()` en `image_parser.py` mira el campo `refusal` de la API y, como
+  respaldo, un patrón de frases de negativa en respuestas cortas (≤ 300 caracteres, para no confundir
+  un contrato real). Lanza `EmptyParseError`. Verificado con la imagen real del nivel 5.
+- **Límite:** el patrón cubre español e inglés; una negativa con otra redacción podría colarse.
 
 ## P-06 · Errores silenciosos de dígitos
 

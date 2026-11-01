@@ -85,6 +85,34 @@ def test_parse_respuesta_vacia(png):
         parse_contract_image(png, llm=FakeLLM("   "))
 
 
+@pytest.mark.parametrize(
+    "negativa",
+    [
+        "Lo siento, no puedo ayudar con el contenido de la imagen.",
+        "I'm sorry, I can't assist with that.",
+        "No puedo transcribir este documento.",
+    ],
+)
+def test_parse_rechaza_negativas_del_modelo(png, negativa):
+    with pytest.raises(EmptyParseError, match="se nego"):
+        parse_contract_image(png, llm=FakeLLM(negativa))
+
+
+def test_parse_rechaza_negativa_del_campo_refusal(png):
+    llm = FakeLLM("texto cualquiera")
+    resp = type(
+        "Resp", (), {"content": "x" * 10, "additional_kwargs": {"refusal": "no"}}
+    )()
+    llm.invoke = lambda messages, config=None: resp
+    with pytest.raises(EmptyParseError):
+        parse_contract_image(png, llm=llm)
+
+
+def test_parse_no_confunde_un_contrato_largo_con_una_negativa(png):
+    contrato = "No puedo dejar de mencionar que " + "cláusula " * 80
+    assert parse_contract_image(png, llm=FakeLLM(contrato)) == contrato.strip()
+
+
 def test_parse_traduce_error_de_api(png):
     request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
     error = openai.APIConnectionError(request=request)
