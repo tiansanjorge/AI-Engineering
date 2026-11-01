@@ -9,6 +9,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from src.errors import ConfigError
+
 # Busca el .env subiendo por los directorios padres (el .env compartido vive en la raiz del repo).
 load_dotenv()
 
@@ -32,3 +34,12 @@ MAX_IMAGE_MB = 20
 # Cuantas veces se le devuelve al agente extractor su propio error de validacion para que lo
 # corrija (self-healing). Con 0 el primer fallo de formato ya seria definitivo.
 MAX_VALIDATION_RETRIES = int(os.getenv("MAX_VALIDATION_RETRIES", "2"))
+
+
+def require_openai_key() -> None:
+    """Falla temprano y con un mensaje claro si falta la clave, en vez de un error opaco de la API."""
+    if not os.getenv("OPENAI_API_KEY"):
+        raise ConfigError(
+            "Falta OPENAI_API_KEY. Copia .env.example a .env y completalo (o definila como "
+            "variable de entorno)."
+        )

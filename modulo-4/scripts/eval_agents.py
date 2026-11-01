@@ -25,9 +25,18 @@ from src.agents.extraction_agent import ExtractionAgent
 from src.models import ExtractionResult
 
 OUTPUT = config.MODULE_ROOT / "outputs" / "agents_eval.json"
-ORDINALS = (
-    ["primera", "segunda", "tercera", "cuarta", "quinta", "sexta", "septima", "octava", "novena", "decima"]
-)
+ORDINALS = [
+    "primera",
+    "segunda",
+    "tercera",
+    "cuarta",
+    "quinta",
+    "sexta",
+    "septima",
+    "octava",
+    "novena",
+    "decima",
+]
 
 
 def section_key(text: str) -> tuple[str, str]:

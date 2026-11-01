@@ -1,0 +1,165 @@
+{
+  "trace_id": "b10de505a7a989ef3c3f54495a77e02f",
+  "checks": [
+    {
+      "check": "span raiz 'contract-analysis' existe",
+      "ok": true
+    },
+    {
+      "check": "raiz sin padre",
+      "ok": true
+    },
+    {
+      "check": "raiz con input y output",
+      "ok": true
+    },
+    {
+      "check": "etapa 'parse_original_contract' existe",
+      "ok": true
+    },
+    {
+      "check": "  'parse_original_contract' es hija de la raiz",
+      "ok": true
+    },
+    {
+      "check": "  'parse_original_contract' tipo span",
+      "ok": true
+    },
+    {
+      "check": "  'parse_original_contract' con input y output",
+      "ok": true
+    },
+    {
+      "check": "  'parse_original_contract' con latencia",
+      "ok": true
+    },
+    {
+      "check": "  'parse_original_contract' tiene generation anidada",
+      "ok": true
+    },
+    {
+      "check": "    generation 'vision_transcription' con modelo",
+      "ok": true
+    },
+    {
+      "check": "    generation 'vision_transcription' con tokens",
+      "ok": true
+    },
+    {
+      "check": "    generation 'vision_transcription' con costo",
+      "ok": true
+    },
+    {
+      "check": "etapa 'parse_amendment_contract' existe",
+      "ok": true
+    },
+    {
+      "check": "  'parse_amendment_contract' es hija de la raiz",
+      "ok": true
+    },
+    {
+      "check": "  'parse_amendment_contract' tipo span",
+      "ok": true
+    },
+    {
+      "check": "  'parse_amendment_contract' con input y output",
+      "ok": true
+    },
+    {
+      "check": "  'parse_amendment_contract' con latencia",
+      "ok": true
+    },
+    {
+      "check": "  'parse_amendment_contract' tiene generation anidada",
+      "ok": true
+    },
+    {
+      "check": "    generation 'vision_transcription' con modelo",
+      "ok": true
+    },
+    {
+      "check": "    generation 'vision_transcription' con tokens",
+      "ok": true
+    },
+    {
+      "check": "    generation 'vision_transcription' con costo",
+      "ok": true
+    },
+    {
+      "check": "etapa 'contextualization_agent' existe",
+      "ok": true
+    },
+    {
+      "check": "  'contextualization_agent' es hija de la raiz",
+      "ok": true
+    },
+    {
+      "check": "  'contextualization_agent' tipo agent",
+      "ok": true
+    },
+    {
+      "check": "  'contextualization_agent' con input y output",
+      "ok": true
+    },
+    {
+      "check": "  'contextualization_agent' con latencia",
+      "ok": true
+    },
+    {
+      "check": "  'contextualization_agent' tiene generation anidada",
+      "ok": true
+    },
+    {
+      "check": "    generation 'context_map_generation' con modelo",
+      "ok": true
+    },
+    {
+      "check": "    generation 'context_map_generation' con tokens",
+      "ok": true
+    },
+    {
+      "check": "    generation 'context_map_generation' con costo",
+      "ok": true
+    },
+    {
+      "check": "etapa 'extraction_agent' existe",
+      "ok": true
+    },
+    {
+      "check": "  'extraction_agent' es hija de la raiz",
+      "ok": true
+    },
+    {
+      "check": "  'extraction_agent' tipo agent",
+      "ok": true
+    },
+    {
+      "check": "  'extraction_agent' con input y output",
+      "ok": true
+    },
+    {
+      "check": "  'extraction_agent' con latencia",
+      "ok": true
+    },
+    {
+      "check": "  'extraction_agent' tiene generation anidada",
+      "ok": true
+    },
+    {
+      "check": "    generation 'ChatOpenAI' con modelo",
+      "ok": true
+    },
+    {
+      "check": "    generation 'ChatOpenAI' con tokens",
+      "ok": true
+    },
+    {
+      "check": "    generation 'ChatOpenAI' con costo",
+      "ok": true
+    },
+    {
+      "check": "ninguna observacion en ERROR",
+      "ok": true
+    }
+  ]
+}

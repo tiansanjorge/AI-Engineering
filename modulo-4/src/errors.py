@@ -10,6 +10,10 @@ class ContractAnalysisError(Exception):
     """Base de todas las fallas controladas del pipeline."""
 
 
+class ConfigError(ContractAnalysisError):
+    """Falta configuracion obligatoria (p. ej. OPENAI_API_KEY). Se detecta antes de empezar."""
+
+
 class InvalidImageError(ContractAnalysisError):
     """La imagen de entrada no sirve: no existe, formato no soportado, vacia o muy pesada.
 
