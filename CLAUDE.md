@@ -171,6 +171,24 @@ Consigna extraída de `material/Lecciones/modulo 3/Consignas y guía proyecto in
 - **Fase 1 completada:** corpus original de Nimbus Desk (SaaS de help desk ficticia) en `modulo-3/data/{hr,tech,finance}_docs/`: 6 documentos por dominio (4 `.md` por secciones, 1 `.csv`, 1 `.txt`), ~95 unidades c/u (28-126 tokens). Fronteras entre dominios documentadas en `data/README.md` (casos difíciles para el golden set). `scripts/corpus_stats.py` valida unidades/tokens y la forma de los CSV. **Nota para la Fase 2:** las unidades son cortas (~80 tokens), por lo que el chunking por estructura debe ser 1 sección = 1 chunk (agrupar secciones bajaría de 50 chunks por dominio).
 - **Fase 0 completada:** estructura `modulo-3/`, `requirements.txt` pinneado, `.env.example`, `scripts/smoke_test.py` (Langfuse auth, Chroma + filtro, LangGraph, traza LLM leída de vuelta) pasando contra servicios reales.
 
+## Módulo 4: agente de comparación de contratos (visión + 2 agentes + Langfuse)
+
+Consigna: `material/Lecciones/Modulo 4/Consignas del proyecto final.docx`. Vive en `modulo-4/`. **Es el proyecto final y se evalúa con defensa oral en vivo (30 min, 1 a 1)**: por eso el código lleva comentarios conceptuales breves y se mantiene `guias/modulo-4-guia.md` (gitignorada; parte A = cómo funciona, parte B = decisiones técnicas + preguntas probables del corrector; es un solo documento).
+
+**Negocio:** LegalMove (ficticia); Compliance tarda 40+ h/semana comparando contratos con sus adendas. Entrada: 2 imágenes (original + adenda) → JSON `ContractChangeOutput` {sections_changed, topics_touched, summary_of_the_change}, validado con Pydantic y trazado en Langfuse.
+
+### Decisiones (2026-11-01)
+- **Modelos:** `gpt-4o` para visión y agentes (la consigna lo pide), configurable (`VISION_MODEL`, `AGENT_MODEL`). Idioma: español.
+- **Langfuse:** proyecto NUEVO y separado del M3 (claves en el `.env` compartido de la raíz; los scripts del M3 ahora apuntarían al proyecto del M4). Skill `langfuse` instalado globalmente (se usó en la fase 6; docs primero).
+- **Contratos de prueba:** generados por script (`scripts/generate_contracts.py`, Pillow) con ground truth (`expected.json`): par1 simple, par2 complejo, par3 = par1 como escaneo degradado nivel 3/5. Empresas ficticias.
+- **Dos modelos Pydantic a propósito:** `ExtractionResult` (interno, con tipo de cada cambio) del que se DERIVA `ContractChangeOutput` por código (no se le pide al LLM).
+
+### Estado actual
+- **Fases 1-8 completadas** (ramas `feature/modulo-4-*`; la última es `feature/modulo-4-entrega`, mergeada a `develop`). `modulo-4/README.md` (diagrama de arquitectura, setup, decisiones, declaración de uso de IA), fila en el README raíz, `guias/modulo-4-guia.md` (gitignorada: parte A cómo funciona, parte B decisiones + ~18 preguntas del corrector + guion de demo de 30 min + puntos débiles) y `/code-review` hecho (10 hallazgos: 1 falso positivo, 7 arreglados, el resto en P-11). Falta solo la defensa oral y, si Henry lo pide, el merge a `main`.
+- `src/`: `config.py`, `errors.py`, `models.py`, `llm.py`, `image_parser.py` (validación local → base64 → GPT-4o `detail=high`; guarda contra negativas), `agents/{contextualization,extraction}_agent.py` (structured output estricto + auto-reparación con el error de Pydantic), `observability.py` (spans por etapa, `TokenTracker`), `main.py` (CLI + `analyze_contracts` con dependencias inyectables), `text_metrics.py` (WER).
+- **Medido (detalle en `modulo-4/EVALUACION.md`):** parsing WER 0,000 en pares limpios, 0,017-0,029 en el par 3; **camino completo 9/9 corridas perfectas** (3 pares × 3: recall, tipos y datos clave 100 %, 0 falsos positivos, estable); estrés nivel 4: advertencia 3/3 pero datos inventados presentados como reales (0/2 correctos); traza real 40/40 chequeos; ~11 s y ~7-8 mil tokens por análisis. 77 tests sin API. Iteración de prompt documentada (muletilla del resumen: 7/9 → 9/9).
+- **`modulo-4/PENDIENTES.md`** (mantener actualizado): P-04 y P-06 (alucinación y errores de dígitos con escaneos malos; mitigado en parte por el agente 1, que cruza fechas y avisa), P-07 (privacidad en Langfuse Cloud), P-10 (prompt injection en el documento: no evaluado), P-02/03/08/09/11.
+
 ## Cómo trabajar conmigo en este proyecto
 
 - Priorizar el flujo principal (una llamada que devuelva JSON útil) antes de pulir, iterar el prompt como si fuera código, y armar la estructura de carpetas esperada desde el principio para no migrar después.

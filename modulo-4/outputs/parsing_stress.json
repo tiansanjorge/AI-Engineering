@@ -1,0 +1,72 @@
+[
+  {
+    "severity": 1,
+    "document": "par1_adenda",
+    "wer": 0.0,
+    "key_facts_found": "2/2",
+    "image": "data\\stress_scans\\nivel1_par1_adenda.jpg"
+  },
+  {
+    "severity": 1,
+    "document": "par2_adenda",
+    "wer": 0.0,
+    "key_facts_found": "4/4",
+    "image": "data\\stress_scans\\nivel1_par2_adenda.jpg"
+  },
+  {
+    "severity": 2,
+    "document": "par1_adenda",
+    "wer": 0.0,
+    "key_facts_found": "2/2",
+    "image": "data\\stress_scans\\nivel2_par1_adenda.jpg"
+  },
+  {
+    "severity": 2,
+    "document": "par2_adenda",
+    "wer": 0.0,
+    "key_facts_found": "4/4",
+    "image": "data\\stress_scans\\nivel2_par2_adenda.jpg"
+  },
+  {
+    "severity": 3,
+    "document": "par1_adenda",
+    "wer": 0.0588,
+    "key_facts_found": "2/2",
+    "image": "data\\stress_scans\\nivel3_par1_adenda.jpg"
+  },
+  {
+    "severity": 3,
+    "document": "par2_adenda",
+    "wer": 0.033,
+    "key_facts_found": "4/4",
+    "image": "data\\stress_scans\\nivel3_par2_adenda.jpg"
+  },
+  {
+    "severity": 4,
+    "document": "par1_adenda",
+    "wer": 0.3529,
+    "key_facts_found": "0/2",
+    "image": "data\\stress_scans\\nivel4_par1_adenda.jpg"
+  },
+  {
+    "severity": 4,
+    "document": "par2_adenda",
+    "wer": 0.4011,
+    "key_facts_found": "4/4",
+    "image": "data\\stress_scans\\nivel4_par2_adenda.jpg"
+  },
+  {
+    "severity": 5,
+    "document": "par1_adenda",
+    "wer": 0.9779,
+    "key_facts_found": "0/2",
+    "image": "data\\stress_scans\\nivel5_par1_adenda.jpg"
+  },
+  {
+    "severity": 5,
+    "document": "par2_adenda",
+    "wer": 0.9615,
+    "key_facts_found": "0/4",
+    "image": "data\\stress_scans\\nivel5_par2_adenda.jpg"
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "nivel3": [
+    {
+      "run": 1,
+      "outcome": "resultado",
+      "has_warning": true,
+      "correct_facts": 2,
+      "summary": "La adenda introduce dos modificaciones al contrato original. Primero, modifica la Cláusula Segunda sobre el plazo y vigencia del contrato, cambiando las fechas de vigencia de \"desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"desde el 1 de febrero de 2023 hasta el 31 de diciembre de 2026\". Segundo, modifica la Cláusula Tercera sobre el precio, aumentando el monto mensual que EL CLIENTE debe abonar a EL PROVEEDOR de USD 2.500 a USD 2.800. Advertencia: La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025. Además, la adenda establece un nuevo plazo de vigencia desde el 1 de febrero de 2023, lo cual es inconsistente con la fecha del contrato original."
+    },
+    {
+      "run": 2,
+      "outcome": "resultado",
+      "has_warning": true,
+      "correct_facts": 2,
+      "summary": "La adenda introduce dos modificaciones al contrato original. Primero, modifica la Cláusula Segunda sobre el plazo y vigencia del contrato, cambiando las fechas de vigencia de \"desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"desde el 1 de febrero de 2023 hasta el 31 de diciembre de 2026\". Segundo, modifica la Cláusula Tercera sobre el precio, aumentando el monto mensual que EL CLIENTE debe abonar a EL PROVEEDOR de USD 2.500 a USD 2.800. Advertencia: La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025. Además, la adenda modifica la vigencia del contrato a partir del 1 de febrero de 2023, lo cual es inconsistente con la fecha del contrato original."
+    },
+    {
+      "run": 3,
+      "outcome": "resultado",
+      "has_warning": true,
+      "correct_facts": 2,
+      "summary": "La adenda introduce dos modificaciones principales al contrato original. Primero, modifica la Cláusula Segunda sobre el plazo y vigencia del contrato, cambiando las fechas de vigencia de \"desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"desde el 1 de febrero de 2023 hasta el 31 de diciembre de 2026\". Segundo, modifica la Cláusula Tercera sobre el precio, aumentando el monto mensual de USD 2.500 a USD 2.800, más IVA. Advertencia: La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025. Además, la adenda establece un nuevo plazo de vigencia desde el 1 de febrero de 2023, lo cual es inconsistente con la fecha del contrato original."
+    }
+  ],
+  "nivel4": [
+    {
+      "run": 1,
+      "outcome": "resultado",
+      "has_warning": true,
+      "correct_facts": 0,
+      "summary": "La adenda introduce dos modificaciones principales al contrato original. Primero, modifica la Cláusula Segunda sobre Plazo y Vigencia, cambiando las fechas de vigencia del contrato de \"desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"desde el 1 de octubre de 2015 hasta el 31 de diciembre de 2016\". Segundo, modifica la Cláusula Tercera sobre el Precio, alterando el monto mensual de \"USD 2.500 más IVA\" a \"$ 50.000 con IVA\". Advertencia: Existen inconsistencias en las fechas y las partes mencionadas en la adenda respecto al contrato original, incluyendo una fecha de adenda anterior al contrato original y un posible error tipográfico en el nombre del proveedor."
+    },
+    {
+      "run": 2,
+      "outcome": "resultado",
+      "has_warning": true,
+      "correct_facts": 0,
+      "summary": "La adenda introduce dos modificaciones principales al contrato original. Primero, modifica la Cláusula Segunda sobre el plazo y vigencia del contrato, cambiando las fechas de vigencia de \"desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"desde el 1 de febrero de 2015 hasta el 31 de diciembre de 2016\". Segundo, modifica la Cláusula Tercera sobre el precio, cambiando el monto mensual de \"USD 2.500 más IVA\" a \"$ 50.000 durante los 24 meses, con IVA\". Advertencia: Existen inconsistencias en las fechas y en las partes mencionadas en la adenda respecto al contrato original, así como un error tipográfico en el nombre de EL CLIENTE."
+    },
+    {
+      "run": 3,
+      "outcome": "resultado",
+      "has_warning": true,
+      "correct_facts": 0,
+      "summary": "La adenda introduce dos modificaciones principales al contrato original. Primero, modifica la Cláusula Segunda sobre el plazo y vigencia del contrato, cambiando las fechas de vigencia de \"1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"1 de febrero de 2015 hasta el 31 de diciembre de 2016\". Segundo, modifica la Cláusula Tercera sobre el precio, cambiando el monto mensual de \"USD 2.500 más IVA\" a \"$ 50.000 durante los 24 meses, con IVA\". Advertencia: Existen inconsistencias en las fechas y las partes mencionadas en la adenda, así como errores en la fecha de la adenda y en la redacción de la misma."
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "case": "par1_simple",
+    "document": "original",
+    "wer": 0.0,
+    "char_similarity": 0.9993,
+    "key_facts_found": "1/1",
+    "transcription": "CONTRATO DE PRESTACIÓN DE SERVICIOS DE SOPORTE TÉCNICO\n\nEn la Ciudad de Buenos Aires, a 15 de enero de 2025, entre ANDINA LOGÍSTICA S.A., CUIT 30-71234567-8 (en adelante, \"EL CLIENTE\"), y TECHNOVA SERVICIOS S.R.L., CUIT 30-70987654-3 (en adelante, \"EL PROVEEDOR\"), se celebra el presente contrato, sujeto a las siguientes cláusulas:\n\nCLÁUSULA PRIMERA – OBJETO.\nEL PROVEEDOR prestará a EL CLIENTE servicios de soporte técnico informático para su infraestructura de oficinas, en modalidad remota y presencial.\n\nCLÁUSULA SEGUNDA – PLAZO Y VIGENCIA.\nEl presente contrato tendrá vigencia desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025, pudiendo renovarse por acuerdo escrito de las partes.\n\nCLÁUSULA TERCERA – PRECIO.\nEL CLIENTE abonará a EL PROVEEDOR un monto mensual de USD 2.500 (dólares estadounidenses dos mil quinientos), más IVA.\n\nCLÁUSULA CUARTA – FORMA DE PAGO.\nEl pago se efectuará por transferencia bancaria dentro de los diez (10) días corridos posteriores a la recepción de la factura.\n\nCLÁUSULA QUINTA – CONFIDENCIALIDAD.\nLas partes se obligan a mantener en reserva toda la información a la que accedan con motivo de este contrato.\n\nCLÁUSULA SEXTA – RESCISIÓN.\nCualquiera de las partes podrá rescindir el contrato con un preaviso de treinta (30) días por escrito.\n\nCLÁUSULA SÉPTIMA – LEY APLICABLE.\nEl contrato se rige por las leyes de la República Argentina; serán competentes los tribunales ordinarios de la Ciudad de Buenos Aires.\n\np. EL CLIENTE _____________    p. EL PROVEEDOR _____________"
+  },
+  {
+    "case": "par1_simple",
+    "document": "amendment",
+    "wer": 0.0,
+    "char_similarity": 0.9988,
+    "key_facts_found": "2/2",
+    "transcription": "ADENDA N.º 1 AL CONTRATO DE PRESTACIÓN DE SERVICIOS DE SOPORTE TÉCNICO\n\nEn la Ciudad de Buenos Aires, a 20 de octubre de 2025, ANDINA LOGÍSTICA S.A. y TECHNOVA SERVICIOS S.R.L., partes del contrato de fecha 15 de enero de 2025, acuerdan modificarlo del siguiente modo:\n\nPRIMERO.\n\nSe modifica la CLÁUSULA SEGUNDA – PLAZO Y VIGENCIA, que queda redactada así: \"El presente contrato tendrá vigencia desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2026, pudiendo renovarse por acuerdo escrito de las partes.\"\n\nSEGUNDO.\n\nSe modifica la CLÁUSULA TERCERA – PRECIO, que queda redactada así: \"EL CLIENTE abonará a EL PROVEEDOR un monto mensual de USD 2.800 (dólares estadounidenses dos mil ochocientos), más IVA.\"\n\nTERCERO.\n\nLas demás cláusulas del contrato permanecen vigentes sin modificaciones.\n\np. EL CLIENTE _____________    p. EL PROVEEDOR _____________"
+  },
+  {
+    "case": "par2_complejo",
+    "document": "original",
+    "wer": 0.0,
+    "char_similarity": 0.9994,
+    "key_facts_found": "1/1",
+    "transcription": "ACUERDO DE CONFIDENCIALIDAD\n\nEn la Ciudad de Buenos Aires, a 3 de marzo de 2025, entre HELIX BIOTECH S.A. (en adelante, \"LA PARTE REVELADORA\") y ORIÓN CONSULTORES S.A. (en adelante, \"LA PARTE RECEPTORA\"), se celebra el presente acuerdo de confidencialidad:\n\nCLÁUSULA PRIMERA – INFORMACIÓN CONFIDENCIAL.\nSe considera Información Confidencial toda información técnica, científica, comercial o financiera revelada por LA PARTE REVELADORA, cualquiera sea su soporte.\n\nCLÁUSULA SEGUNDA – OBLIGACIONES.\nLA PARTE RECEPTORA se obliga a custodiar la Información Confidencial con el mismo cuidado que aplica a la propia y a limitar el acceso a quienes necesiten conocerla.\n\nCLÁUSULA TERCERA – ALCANCE TERRITORIAL.\nLas obligaciones de este acuerdo rigen en el territorio de la República Argentina y de la República Oriental del Uruguay.\n\nCLÁUSULA CUARTA – RESTRICCIONES DE USO.\nLA PARTE RECEPTORA no podrá:\n4.1. utilizar la Información Confidencial para fines distintos de la evaluación de una posible colaboración;\n4.2. realizar ingeniería inversa sobre las muestras o materiales recibidos;\n4.3. subcontratar a terceros el tratamiento de la Información Confidencial.\n\nCLÁUSULA QUINTA – PLAZO.\nLas obligaciones de confidencialidad durarán tres (3) años contados desde la fecha de firma.\n\nCLÁUSULA SEXTA – DEVOLUCIÓN.\nA requerimiento de LA PARTE REVELADORA, la Información Confidencial deberá devolverse o destruirse dentro de los quince (15) días.\n\nCLÁUSULA SÉPTIMA – LEY APLICABLE.\nEl acuerdo se rige por las leyes de la República Argentina; serán competentes los tribunales ordinarios de la Ciudad de Buenos Aires.\n\np. LA PARTE REVELADORA _____________    p. LA PARTE RECEPTORA _____________"
+  },
+  {
+    "case": "par2_complejo",
+    "document": "amendment",
+    "wer": 0.0,
+    "char_similarity": 0.9991,
+    "key_facts_found": "4/4",
+    "transcription": "ADENDA N.º 1 AL ACUERDO DE CONFIDENCIALIDAD\n\nEn la Ciudad de Buenos Aires, a 12 de septiembre de 2025, HELIX BIOTECH S.A. y ORIÓN CONSULTORES S.A., partes del acuerdo de fecha 3 de marzo de 2025, acuerdan modificarlo del siguiente modo:\n\nPRIMERO.\n\nSe modifica la CLÁUSULA TERCERA – ALCANCE TERRITORIAL, que queda redactada así: \"Las obligaciones de este acuerdo rigen en el territorio de la República Argentina, la República Oriental del Uruguay, la República de Chile y la República Federativa del Brasil.\"\n\nSEGUNDO.\n\nSe elimina en su totalidad el inciso 4.3 de la CLÁUSULA CUARTA – RESTRICCIONES DE USO. Los incisos 4.1 y 4.2 se mantienen sin cambios.\n\nTERCERO.\n\nSe incorpora la CLÁUSULA OCTAVA – PROTECCIÓN DE DATOS PERSONALES, con el siguiente texto: \"Cuando la Información Confidencial incluya datos personales, LA PARTE RECEPTORA los tratará conforme a la Ley N.º 25.326 de Protección de los Datos Personales y adoptará las medidas de seguridad adecuadas para evitar su pérdida o acceso no autorizado.\"\n\nCUARTO.\n\nLas demás cláusulas del acuerdo permanecen vigentes sin modificaciones.\n\np. LA PARTE REVELADORA _____________    p. LA PARTE RECEPTORA _____________"
+  },
+  {
+    "case": "par3_escaneo_degradado",
+    "document": "original",
+    "wer": 0.0168,
+    "char_similarity": 0.9934,
+    "key_facts_found": "1/1",
+    "transcription": "CONTRATO DE PRESTACIÓN DE SERVICIOS DE SOPORTE TÉCNICO\n\nEn la Ciudad de Buenos Aires, a 15 de enero de 2025, entre ANDINA LOGÍSTICA S.A., CUIT 30-71234567-8 (en adelante, \"EL CLIENTE\") y TECHNOVA SERVICIOS S.R.L., CUIT 30-70987654-3 (en adelante, \"EL PROVEEDOR\"), se celebra el presente contrato, sujeto a las siguientes cláusulas:\n\nCLÁUSULA PRIMERA – OBJETO.\nEL PROVEEDOR prestará a EL CLIENTE servicios de soporte técnico informático para su infraestructura de oficinas, en modalidad remota y presencial.\n\nCLÁUSULA SEGUNDA – PLAZO Y VIGENCIA.\nEl presente contrato tendrá vigencia desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025, pudiendo renovarse por acuerdo escrito de las partes.\n\nCLÁUSULA TERCERA – PRECIO.\nEL CLIENTE abonará a EL PROVEEDOR un importe mensual de USD 2.500 (dólares estadounidenses dos mil quinientos), más IVA.\n\nCLÁUSULA CUARTA – FORMA DE PAGO.\nEl pago se efectuará por transferencia bancaria dentro de los diez (10) días corridos posteriores a la recepción de la factura.\n\nCLÁUSULA QUINTA – CONFIDENCIALIDAD.\nLas partes se obligan a mantener en reserva toda la información a la que accedan con motivo de este contrato.\n\nCLÁUSULA SEXTA – RESCISIÓN.\nCualquiera de las partes podrá rescindir el contrato con un preaviso de treinta (30) días por escrito.\n\nCLÁUSULA SÉPTIMA – LEY APLICABLE.\nEl contrato se rige por las leyes de la República Argentina, siendo competentes los tribunales ordinarios de la Ciudad de Buenos Aires.\n\np. EL CLIENTE _______________      p. EL PROVEEDOR _______________"
+  },
+  {
+    "case": "par3_escaneo_degradado",
+    "document": "amendment",
+    "wer": 0.0294,
+    "char_similarity": 0.9836,
+    "key_facts_found": "2/2",
+    "transcription": "ADENDA N.° 1 AL CONTRATO DE PRESTACIÓN DE SERVICIOS DE\nSOPORTE TÉCNICO\n\nEn la Ciudad de Buenos Aires, a 20 de octubre de 2023, ANDINA LOGÍSTICA S.A. y\nTECHNOVA SERVICIOS S.R.L., partes del contrato de fecha 15 de enero de 2023,\nacuerdan modificarlo del siguiente modo:\n\nPRIMERO.\nSe modifica la CLÁUSULA SEGUNDA – PLAZO Y VIGENCIA, que queda redactada\nasí: \"El presente contrato tendrá vigencia desde el 1 de febrero de 2023 hasta el 31 de\ndiciembre de 2026, pudiendo renovarse por acuerdo escrito de las partes.\"\n\nSEGUNDO.\nSe modifica la CLÁUSULA TERCERA – PRECIO, que queda redactada así: \"EL\nCLIENTE abonará a EL PROVEEDOR un monto mensual de USD 2.800 (dólares\nestadounidenses dos mil ochocientos), más IVA.\"\n\nTERCERO.\nLas demás cláusulas del contrato permanecen vigentes sin modificaciones.\n\np. EL CLIENTE ______________________\n\np. EL PROVEEDOR ______________________"
+  }
+]
