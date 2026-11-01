@@ -19,6 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src import config
+from src.errors import ContractAnalysisError
 from src.evaluation import aggregate, evaluate
 from src.main import analyze_contracts
 from src.observability import flush
@@ -36,18 +37,47 @@ def main() -> None:
     session_id = f"eval-e2e-{datetime.now():%Y%m%d-%H%M%S}"
     print(f"Sesion de Langfuse: {session_id}\n")
 
+    cases = sorted(p for p in config.TEST_CONTRACTS_DIR.iterdir() if p.is_dir())
+    if args.only:
+        cases = [c for c in cases if c.name == args.only]
+        if not cases:
+            sys.exit(f"--only: no existe el par '{args.only}' en data/test_contracts/")
+
     report = {"session_id": session_id, "runs_per_case": args.runs, "cases": {}}
-    for case in sorted(p for p in config.TEST_CONTRACTS_DIR.iterdir() if p.is_dir()):
-        if args.only and case.name != args.only:
-            continue
+    try:
+        run_cases(cases, args, session_id, report)
+    finally:
+        # La evidencia se guarda SIEMPRE, tambien ante un fallo a mitad de camino: cada corrida
+        # cuesta dinero y no debe perderse por un error en la siguiente.
+        flush()
+        OUTPUT.parent.mkdir(exist_ok=True)
+        OUTPUT.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        print(f"Evidencia en {OUTPUT.relative_to(config.MODULE_ROOT)}")
+
+
+def run_cases(cases, args, session_id: str, report: dict) -> None:
+    for case in cases:
         expected = json.loads((case / "expected.json").read_text(encoding="utf-8"))
         rows = []
+        report["cases"][case.name] = {
+            "runs": rows
+        }  # visible desde el inicio (evidencia parcial)
         for i in range(args.runs):
-            result = analyze_contracts(
-                case / expected["images"]["original"],
-                case / expected["images"]["amendment"],
-                session_id=session_id,
-            )
+            try:
+                result = analyze_contracts(
+                    case / expected["images"]["original"],
+                    case / expected["images"]["amendment"],
+                    session_id=session_id,
+                )
+            except ContractAnalysisError as exc:
+                # Una corrida fallida se registra y se sigue: tambien es un dato de la evaluacion.
+                rows.append({"error": f"{type(exc).__name__}: {exc}"})
+                print(
+                    f"{case.name:26} corrida {i + 1}: ERROR {type(exc).__name__}: {exc}"
+                )
+                continue
             row = evaluate(expected, result.output, result.detail)
             row.update(
                 latency_s=round(sum(s.latency_s for s in result.stages), 1),
@@ -63,21 +93,20 @@ def main() -> None:
                 f"{row['facts_total']}  advertencia={'si' if row['has_warning'] else 'no'}  "
                 f"{row['latency_s']}s  {row['total_tokens']} tok"
             )
-        agg = aggregate(rows)
-        report["cases"][case.name] = {"aggregate": agg, "runs": rows}
+        ok_rows = [r for r in rows if "error" not in r]
+        if not ok_rows:
+            print(f"  -> {case.name}: ninguna corrida termino bien\n")
+            continue
+        agg = aggregate(ok_rows)
+        agg["failed_runs"] = len(rows) - len(ok_rows)
+        report["cases"][case.name]["aggregate"] = agg
         print(
-            f"  -> {agg['perfect_runs']}/{agg['runs']} corridas perfectas | recall "
-            f"{agg['recall']:.0%} | tipos {agg['type_accuracy']:.0%} | falsos+ "
-            f"{agg['false_positives_total']} | hechos {agg['facts_rate']:.0%} | "
+            f"  -> {agg['perfect_runs']}/{args.runs} corridas perfectas "
+            f"({agg['failed_runs']} con error) | recall {agg['recall']:.0%} | tipos "
+            f"{agg['type_accuracy']:.0%} | falsos+ {agg['false_positives_total']} | hechos "
+            f"{agg['facts_rate']:.0%} | muletilla {agg['filler_rate']:.0%} | "
             f"estable={agg['stable']}\n"
         )
-
-    flush()
-    OUTPUT.parent.mkdir(exist_ok=True)
-    OUTPUT.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    print(f"Evidencia en {OUTPUT.relative_to(config.MODULE_ROOT)}")
 
 
 if __name__ == "__main__":

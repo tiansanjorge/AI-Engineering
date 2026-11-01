@@ -63,11 +63,13 @@ class TokenTracker(BaseCallbackHandler):
         self.stats = stats
 
     def on_llm_end(self, response: LLMResult, **kwargs) -> None:
+        # Una llamada al modelo = un conteo, aunque devuelva varias generaciones; los tokens
+        # se suman sobre todas ellas.
+        self.stats.llm_calls += 1
         for generations in response.generations:
             for generation in generations:
                 message = getattr(generation, "message", None)
                 usage = getattr(message, "usage_metadata", None) or {}
-                self.stats.llm_calls += 1
                 self.stats.input_tokens += usage.get("input_tokens", 0)
                 self.stats.output_tokens += usage.get("output_tokens", 0)
 

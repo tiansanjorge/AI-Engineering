@@ -44,8 +44,45 @@ VISION_USER_PROMPT = "Transcribi el documento de la imagen."
 _MIME_BY_FORMAT = {"PNG": "image/png", "JPEG": "image/jpeg"}
 
 
+# Errores que Pillow puede lanzar con un archivo malformado, truncado o "bomba de descompresion"
+# (imagen diminuta en disco que declara dimensiones gigantes). No todos heredan de OSError.
+_IMAGE_ERRORS = (
+    UnidentifiedImageError,
+    OSError,
+    Image.DecompressionBombError,
+    SyntaxError,
+    ValueError,
+)
+
+
+def _detect_mime(path: Path) -> str:
+    """Abre la imagen con Pillow y devuelve su MIME segun el formato REAL (no la extension).
+
+    Detecta archivos corruptos o con extension falsa (p. ej. un .txt renombrado a .png) sin
+    llamar a la API.
+    """
+    try:
+        with Image.open(path) as img:
+            img.verify()  # chequea integridad sin decodificar todo
+            fmt = img.format
+    except _IMAGE_ERRORS as exc:
+        raise InvalidImageError(
+            f"El archivo no es una imagen valida: {path.name} ({exc})"
+        ) from exc
+    mime = _MIME_BY_FORMAT.get(fmt or "")
+    if mime is None:
+        raise InvalidImageError(
+            f"Formato real '{fmt}' no soportado (solo PNG/JPEG): {path.name}"
+        )
+    return mime
+
+
 def validate_image(image_path: str | Path) -> Path:
-    """Chequea el archivo en local y devuelve su Path; lanza InvalidImageError si no sirve."""
+    """Chequea el archivo en local y devuelve su Path; lanza InvalidImageError si no sirve.
+
+    Incluye la integridad de la imagen: asi `main` puede validar AMBAS antes de gastar tokens
+    (si la adenda estuviera corrupta, no tiene sentido haber transcripto ya el original).
+    """
     path = Path(image_path)
     if not path.is_file():
         raise InvalidImageError(f"No existe el archivo de imagen: {path}")
@@ -62,6 +99,7 @@ def validate_image(image_path: str | Path) -> Path:
             f"La imagen pesa {size / 1024 / 1024:.1f} MB y el maximo es {config.MAX_IMAGE_MB} MB: "
             f"{path.name}"
         )
+    _detect_mime(path)
     return path
 
 
@@ -69,22 +107,8 @@ def encode_image(path: Path) -> str:
     """Devuelve la imagen como data URL base64 (`data:image/png;base64,...`).
 
     base64 permite mandar la imagen dentro del mismo request, sin hostearla en una URL publica.
-    Se abre con Pillow para detectar archivos corruptos o con extension falsa (p. ej. un .txt
-    renombrado a .png) antes de pagar una llamada a la API.
     """
-    try:
-        with Image.open(path) as img:
-            img.verify()  # chequea integridad sin decodificar todo
-            fmt = img.format
-    except (UnidentifiedImageError, OSError) as exc:
-        raise InvalidImageError(
-            f"El archivo no es una imagen valida: {path.name} ({exc})"
-        ) from exc
-    mime = _MIME_BY_FORMAT.get(fmt or "")
-    if mime is None:
-        raise InvalidImageError(
-            f"Formato real '{fmt}' no soportado (solo PNG/JPEG): {path.name}"
-        )
+    mime = _detect_mime(path)
     data = base64.b64encode(path.read_bytes()).decode("ascii")
     return f"data:{mime};base64,{data}"
 

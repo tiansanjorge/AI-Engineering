@@ -77,7 +77,7 @@ modulo-4/
 ├── data/test_contracts/         # 3 pares (6 imágenes) + expected.json + README
 ├── data/stress_scans/           # escaneos degradados en 5 niveles
 ├── scripts/                     # generar contratos, evaluar, verificar trazas
-├── tests/                       # 63 tests, ninguno llama a la API
+├── tests/                       # 77 tests, ninguno llama a la API
 ├── outputs/                     # evidencia: corridas, evaluación, trazas verificadas
 ├── EVALUACION.md · PENDIENTES.md
 ├── requirements.txt · .env.example
@@ -127,7 +127,7 @@ Casos de prueba (ver [`data/test_contracts/README.md`](data/test_contracts/READM
 ## Tests y verificación
 
 ```bash
-python -m pytest                          # 63 tests, sin llamar a la API ni a Langfuse
+python -m pytest                          # 77 tests, sin llamar a la API ni a Langfuse
 python scripts/run_eval.py --runs 3       # evaluación real de punta a punta (cuesta centavos)
 python scripts/verify_tracing.py          # audita una traza real contra Langfuse (40 chequeos)
 python scripts/generate_contracts.py      # regenera los contratos de prueba

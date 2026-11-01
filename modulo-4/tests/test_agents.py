@@ -148,3 +148,16 @@ def test_extraccion_traduce_error_de_api():
         ExtractionAgent(structured_llm=FakeStructured(error=_api_error())).run(
             "m", "o", "a"
         )
+
+
+def test_extraccion_no_arrastra_el_resultado_de_la_corrida_anterior():
+    agent = ExtractionAgent(
+        structured_llm=FakeStructured([_ok(), _bad(), _bad(), _bad()])
+    )
+    agent.run("m", "o", "a")
+    assert agent.last_result is not None and agent.last_attempts == 1
+    with pytest.raises(OutputValidationError):
+        agent.run("m", "o", "a")
+    assert (
+        agent.last_result is None
+    )  # la segunda corrida fallo: no debe quedar la primera

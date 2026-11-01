@@ -15,6 +15,7 @@ marca como tal, no se borra.
 | P-08 | Observabilidad | Ruido de spans internos de LangChain en `extraction_agent` (~8 observaciones CHAIN) | Baja | Abierto |
 | P-09 | Observabilidad | Costo solo visible en Langfuse (el CLI muestra tokens, no USD); entorno `default` | Baja | Abierto |
 | P-10 | Seguridad | Inyección de instrucciones dentro del contrato (texto en la imagen que intenta dar órdenes al modelo): no se evaluó ni hay defensa | Alta | Abierto |
+| P-11 | Código | Hallazgos de la revisión que se decidió no arreglar (negativas por patrón, ordinales compuestos, estado mutable del agente, `llm_calls`) | Baja | Abierto |
 | P-06 | Parsing | Errores silenciosos de dígitos con escaneos malos (2025 leído como 2023) | Alta | Abierto (mitigado en parte) |
 
 ---
@@ -129,3 +130,23 @@ menciona un contrato de fecha 15 de enero de 2023, pero el original está fechad
 - **Ideas:** delimitar el documento como dato no confiable en el prompt, instruir explícitamente a
   ignorar órdenes dentro de los textos, un chequeo de patrones sobre la transcripción (como `safety.py`
   del módulo 1), y un test adversarial con un par que contenga la inyección. Referencia: M3, P-11.
+
+## P-11 · Hallazgos de la revisión de código que no se arreglaron
+
+La revisión (`/code-review`, nivel medio) devolvió 10 hallazgos. Se corrigieron los reales (ver
+EVALUACION.md, iteración 7). Quedan registrados, con su motivo:
+
+- **Falso positivo del revisor:** se afirmó que `validation_attempts` se perdía de la metadata de la
+  traza. Se verificó contra Langfuse real: está presente (`validation_attempts: 1`); la API solo
+  devuelve la metadata si se pide `fields=...,metadata`.
+- **Detección de negativas por patrón** (`image_parser._is_refusal`): una transcripción legítima muy
+  corta que empezara con «No puedo…» o «Perdón…» se rechazaría. Riesgo bajo porque un contrato
+  empieza por su título, y el umbral (300 caracteres) es arbitrario. Idea: exigir además que la
+  respuesta no contenga ninguna cláusula numerada.
+- **Ordinales compuestos** en la evaluación («décima primera» en dos palabras): no soportados, no
+  aparecen en el corpus. La lista llega a «vigésima» en palabras simples.
+- **Estado mutable del agente** (`last_result`, `last_attempts`): ahora se reinicia por corrida, pero
+  el agente no es seguro para usar desde varios hilos a la vez. Hoy no se usa así.
+- **`ExtractionAgent` y errores de API del cliente** no se cuentan en `llm_calls` (los reintentos
+  internos del cliente no pasan por el callback). El conteo de tokens puede subestimar el costo real
+  ante fallos transitorios; el costo exacto lo da Langfuse.

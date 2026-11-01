@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.evaluation import aggregate, evaluate, section_key
+from src.evaluation import aggregate, contains_fact, evaluate, section_key
 from src.models import ContractChangeOutput, ExtractedChange, ExtractionResult
 
 EXPECTED = {
@@ -136,3 +136,38 @@ def test_una_advertencia_real_no_es_muletilla():
     summary = RESUMEN + " Advertencia: alerta de fechas."
     row = _eval(_detail(("Cláusula Tercera", "modificacion"), summary=summary))
     assert row["has_warning"] and not row["has_filler"]
+
+
+@pytest.mark.parametrize(
+    "texto,esperado",
+    [
+        ("Cláusula Decimoquinta", "decimoquinta"),  # no debe leerse como "quinta"
+        ("Cláusula Undécima", "undecima"),
+        ("CLÁUSULA QUINTA", "quinta"),
+    ],
+)
+def test_section_key_usa_palabra_completa_y_el_ordinal_mas_largo(texto, esperado):
+    assert section_key(texto) == (esperado, "")
+
+
+def test_section_key_no_toma_un_monto_como_inciso():
+    assert section_key("Cláusula Tercera (USD 2.800)") == ("tercera", "")
+
+
+@pytest.mark.parametrize(
+    "texto,dato,ok",
+    [
+        ("el inciso 4.3 se elimina", "4.3", True),
+        ("el inciso 24.3 se elimina", "4.3", False),  # no es el mismo dato
+        (
+            "monto de USD 12.800",
+            "2.800",
+            False,
+        ),  # valor inventado que contiene al correcto
+        ("monto de USD 2.800,00 mensuales", "2.800", True),
+        ("hasta 2026.", "2026", True),
+        ("hasta 20261", "2026", False),
+    ],
+)
+def test_contains_fact_respeta_limites_del_dato(texto, dato, ok):
+    assert contains_fact(texto, dato) is ok

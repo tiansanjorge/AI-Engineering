@@ -106,6 +106,9 @@ class ExtractionAgent:
         run_config: RunnableConfig | None = None,
     ) -> ExtractionResult:
         """Resultado detallado (con tipo de cada cambio), validado y con auto-reparacion."""
+        # Estado limpio por corrida: un agente reutilizado no debe arrastrar el resultado anterior.
+        self.last_result = None
+        self.last_attempts = 0
         messages: list[BaseMessage] = [
             SystemMessage(content=SYSTEM_PROMPT),
             HumanMessage(
