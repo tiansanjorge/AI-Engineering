@@ -6,7 +6,7 @@ import pytest
 from PIL import Image
 
 from src import config
-from src.errors import EmptyParseError, InvalidImageError, VisionAPIError
+from src.errors import EmptyParseError, InvalidImageError, ModelAPIError
 from src.image_parser import encode_image, parse_contract_image, validate_image
 from src.text_metrics import char_similarity, word_error_rate
 
@@ -116,7 +116,7 @@ def test_parse_no_confunde_un_contrato_largo_con_una_negativa(png):
 def test_parse_traduce_error_de_api(png):
     request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
     error = openai.APIConnectionError(request=request)
-    with pytest.raises(VisionAPIError, match="APIConnectionError"):
+    with pytest.raises(ModelAPIError, match="APIConnectionError"):
         parse_contract_image(png, llm=FakeLLM(error=error))
 
 

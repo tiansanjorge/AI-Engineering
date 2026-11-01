@@ -18,7 +18,7 @@ from langchain_core.runnables import RunnableConfig
 from PIL import Image, UnidentifiedImageError
 
 from src import config
-from src.errors import EmptyParseError, InvalidImageError, VisionAPIError
+from src.errors import EmptyParseError, InvalidImageError, ModelAPIError
 from src.llm import build_chat_model
 
 # El prompt es una pieza de ingenieria: pide FIDELIDAD, no interpretacion. Un parser que
@@ -137,7 +137,7 @@ def parse_contract_image(
         response = llm.invoke(messages, config=run_config)
     except openai.OpenAIError as exc:
         # Ya se agotaron los reintentos del cliente: se traduce a un error del dominio.
-        raise VisionAPIError(
+        raise ModelAPIError(
             f"Fallo la llamada a la API de vision para {path.name}: {type(exc).__name__}: {exc}"
         ) from exc
 

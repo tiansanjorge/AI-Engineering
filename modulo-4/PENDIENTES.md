@@ -9,9 +9,9 @@ marca como tal, no se borra.
 | P-01 | Evaluación | El par 3 (escaneo degradado) se lee igual de bien que el limpio: no discrimina | Media | Resuelto |
 | P-02 | Modelo de datos | «Cero cambios» se trata como error: una adenda solo administrativa falla la validación | Baja | Abierto |
 | P-03 | Corpus | Contratos sintéticos y digitales, de una sola página, un solo idioma | Media | Abierto |
-| P-04 | Parsing / seguridad | Con escaneos muy malos el modelo INVENTA datos plausibles en vez de marcar `[ilegible]` | Alta | Abierto |
+| P-04 | Parsing / seguridad | Con escaneos muy malos el modelo INVENTA datos plausibles en vez de marcar `[ilegible]` | Alta | Abierto (mitigado en parte) |
 | P-05 | Parsing | Una negativa del modelo («no puedo ayudar…») se acepta como transcripción válida | Alta | Resuelto |
-| P-06 | Parsing | Errores silenciosos de dígitos con escaneos malos (2025 leído como 2023) | Alta | Abierto |
+| P-06 | Parsing | Errores silenciosos de dígitos con escaneos malos (2025 leído como 2023) | Alta | Abierto (mitigado en parte) |
 
 ---
 
@@ -42,6 +42,23 @@ marca como tal, no se borra.
   modelo una autoevaluación de legibilidad y rechazar bajo un umbral; (3) doble lectura y comparar;
   (4) preprocesar la imagen (enderezar, aumentar contraste) antes de enviarla; (5) un chequeo de
   calidad de imagen previo (nitidez, resolución) que rechace entradas inservibles.
+
+## Mitigación parcial verificada de P-04 y P-06 (fase 5)
+
+El `ContextualizationAgent` cruza partes y fechas de ambos documentos y lista inconsistencias en la
+sección ALERTAS del mapa; el `ExtractionAgent` las vuelca al cierre del resumen como «Advertencia:».
+Verificado con el par 3 (transcripción real, con «2025» leído como «2023»): el mapa avisó «la adenda
+menciona un contrato de fecha 15 de enero de 2023, pero el original está fechado el 15 de enero de
+2025» y el resumen terminó con esa advertencia. Evidencia: `outputs/agents_eval.json`
+(`scripts/eval_agents.py --parsed`).
+
+- **Límites:** (1) **detecta pero no corrige**: el resumen igual reprodujo «1 de febrero de 2023»
+  como si fuera dato válido; (2) solo se verificó con el nivel 3: no se probó contra el nivel 4
+  (datos inventados) ni se midió cuántas veces el modelo avisa y cuántas no; (3) depende de que el
+  documento tenga datos cruzables (fecha/partes) y de que el modelo los cruce.
+- **Pendiente para cerrar de verdad:** alerta estructurada en el contrato de salida (no solo texto
+  libre), medir la tasa de detección en varias repeticiones y niveles, y un camino de «revisión
+  humana» cuando hay alertas.
 
 ## P-05 · Una negativa se acepta como transcripción (RESUELTO)
 

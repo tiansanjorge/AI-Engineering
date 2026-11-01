@@ -28,3 +28,7 @@ MAX_API_RETRIES = int(os.getenv("MAX_API_RETRIES", "3"))
 # Validacion de entrada: solo estos formatos y este tamano maximo se mandan al modelo.
 ALLOWED_IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg"}
 MAX_IMAGE_MB = 20
+
+# Cuantas veces se le devuelve al agente extractor su propio error de validacion para que lo
+# corrija (self-healing). Con 0 el primer fallo de formato ya seria definitivo.
+MAX_VALIDATION_RETRIES = int(os.getenv("MAX_VALIDATION_RETRIES", "2"))

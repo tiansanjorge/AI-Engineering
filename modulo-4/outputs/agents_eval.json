@@ -1,0 +1,22 @@
+[
+  {
+    "case": "par3_escaneo_degradado",
+    "sections_expected": 2,
+    "sections_found": 2,
+    "change_type_correct": 2,
+    "false_positives": [],
+    "key_facts_in_summary": "3/3",
+    "output": {
+      "sections_changed": [
+        "Cláusula Segunda",
+        "Cláusula Tercera"
+      ],
+      "topics_touched": [
+        "Plazo y vigencia",
+        "Precio"
+      ],
+      "summary_of_the_change": "La adenda introduce dos modificaciones principales al contrato original. Primero, modifica la Cláusula Segunda referente al plazo y vigencia del contrato, cambiando las fechas de vigencia de \"desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025\" a \"desde el 1 de febrero de 2023 hasta el 31 de diciembre de 2026\". Segundo, modifica la Cláusula Tercera sobre el precio, aumentando el importe mensual que EL CLIENTE debe abonar a EL PROVEEDOR de USD 2.500 a USD 2.800. Advertencia: La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025."
+    },
+    "context_map": "1. IDENTIFICACION:\n   - Tipo de contrato: Contrato de Prestación de Servicios de Soporte Técnico.\n   - Partes del original: ANDINA LOGÍSTICA S.A. (EL CLIENTE) y TECHNOVA SERVICIOS S.R.L. (EL PROVEEDOR).\n   - Fecha del original: 15 de enero de 2025.\n   - Partes que la adenda dice modificar: ANDINA LOGÍSTICA S.A. y TECHNOVA SERVICIOS S.R.L.\n   - Fecha que la adenda dice modificar: 15 de enero de 2023.\n\n2. ESTRUCTURA DEL ORIGINAL:\n   - Cláusula Primera – Objeto: EL PROVEEDOR prestará servicios de soporte técnico informático para la infraestructura de oficinas de EL CLIENTE, en modalidad remota y presencial.\n   - Cláusula Segunda – Plazo y Vigencia: El contrato tendrá vigencia desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025, con posibilidad de renovación por acuerdo escrito.\n   - Cláusula Tercera – Precio: EL CLIENTE abonará un importe mensual de USD 2.500, más IVA.\n   - Cláusula Cuarta – Forma de Pago: El pago se efectuará por transferencia bancaria dentro de los diez días corridos posteriores a la recepción de la factura.\n   - Cláusula Quinta – Confidencialidad: Las partes se obligan a mantener en reserva toda la información a la que accedan con motivo del contrato.\n   - Cláusula Sexta – Rescisión: Cualquiera de las partes podrá rescindir el contrato con un preaviso de treinta días por escrito.\n   - Cláusula Séptima – Ley Aplicable: El contrato se rige por las leyes de la República Argentina, siendo competentes los tribunales ordinarios de la Ciudad de Buenos Aires.\n\n3. ESTRUCTURA DE LA ADENDA:\n   - Primero: Se refiere a la Cláusula Segunda – Plazo y Vigencia; declara que modifica.\n   - Segundo: Se refiere a la Cláusula Tercera – Precio; declara que modifica.\n   - Tercero: No se refiere a ninguna cláusula específica; declara que las demás cláusulas permanecen vigentes sin modificaciones.\n\n4. CLAUSULAS NO MENCIONADAS:\n   - Cláusula Primera – Objeto.\n   - Cláusula Cuarta – Forma de Pago.\n   - Cláusula Quinta – Confidencialidad.\n   - Cláusula Sexta – Rescisión.\n   - Cláusula Séptima – Ley Aplicable.\n\n5. ALERTAS:\n   - La adenda menciona modificar un contrato de fecha 15 de enero de 2023, pero el contrato original está fechado el 15 de enero de 2025.\n   - Sin otras alertas."
+  }
+]
