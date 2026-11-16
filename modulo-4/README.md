@@ -120,17 +120,24 @@ python -m src.main data/test_contracts/par1_simple/original.png data/test_contra
 ### Ejemplo real (`par1_simple`)
 
 Entrada: el contrato original y su adenda (dos imágenes). Salida real, tal como quedó en
-[`outputs/runs/`](outputs/runs/20261101_124239_par1_simple.json):
+[`outputs/runs/`](outputs/runs/20261116_111910_par1_simple.json):
 
 ```json
 {
   "sections_changed": ["Cláusula Segunda", "Cláusula Tercera"],
   "topics_touched": ["Plazo y vigencia", "Precio"],
-  "summary_of_the_change": "La adenda introduce dos modificaciones al contrato original. Primero, extiende el plazo de vigencia del contrato, que originalmente era desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025, para que ahora sea hasta el 31 de diciembre de 2026. Segundo, ajusta el precio mensual que EL CLIENTE debe abonar a EL PROVEEDOR, incrementándolo de USD 2.500 a USD 2.800. No hay alertas en el mapa contextual."
+  "summary_of_the_change": "La adenda introduce dos modificaciones al contrato original. Primero, extiende el plazo de vigencia del contrato, que ahora finalizará el 31 de diciembre de 2026 en lugar del 31 de diciembre de 2025. Segundo, incrementa el precio mensual que EL CLIENTE debe abonar a EL PROVEEDOR, pasando de USD 2.500 a USD 2.800, más IVA."
 }
 ```
 
-Un análisis tarda ~11 s y consume ~7-8 mil tokens (cuatro llamadas a GPT-4o).
+Un análisis tarda ~11-18 s, consume ~8 mil tokens y cuesta ~USD 0,03 (cuatro llamadas a GPT-4o).
+
+### Traza en Langfuse
+
+La misma corrida, vista en Langfuse: un trace `contract-analysis` con un span por etapa, y dentro de
+cada uno la llamada al modelo con su latencia y costo. A la derecha, el input y el JSON validado.
+
+![Traza de contract-analysis en Langfuse](docs/M4.png)
 
 ### Casos de prueba
 
