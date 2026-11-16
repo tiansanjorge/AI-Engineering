@@ -106,6 +106,8 @@ menciona un contrato de fecha 15 de enero de 2023, pero el original está fechad
 - **Ideas:** `mask` del cliente de Langfuse para ocultar cifras/identificadores, no mandar el payload
   completo a los spans (solo longitudes y hashes), auto-hospedar Langfuse, o desactivar la subida de
   media (`LANGFUSE_MEDIA_UPLOAD_ENABLED=false`) y trazar solo metadata.
+- **Mitigación parcial (2026-11-16):** Langfuse es opcional. Sin las claves el tracing se apaga y
+  nada sale de la máquina (`observability.configure_tracing`).
 
 ## P-08 · Ruido de spans de LangChain
 

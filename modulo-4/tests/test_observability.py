@@ -1,5 +1,7 @@
 """Observabilidad: conteo de tokens por etapa y manejo de errores en los spans. Sin red."""
 
+import os
+
 import pytest
 from langchain_core.messages import AIMessage
 from langchain_core.outputs import ChatGeneration, LLMResult
@@ -88,3 +90,32 @@ def test_una_llamada_con_varias_generaciones_cuenta_una_vez():
     )
     TokenTracker(stats).on_llm_end(result)
     assert stats.llm_calls == 1 and stats.input_tokens == 30
+
+
+def test_sin_claves_de_langfuse_el_tracing_se_apaga(monkeypatch):
+    monkeypatch.delenv("LANGFUSE_PUBLIC_KEY", raising=False)
+    monkeypatch.delenv("LANGFUSE_SECRET_KEY", raising=False)
+    monkeypatch.setenv("LANGFUSE_TRACING_ENABLED", "")  # monkeypatch lo restaura al salir
+    assert observability.configure_tracing() is False
+    assert os.environ["LANGFUSE_TRACING_ENABLED"] == "false"
+
+
+def test_con_las_dos_claves_el_tracing_queda_activo(monkeypatch):
+    monkeypatch.setenv("LANGFUSE_PUBLIC_KEY", "pk-lf-x")
+    monkeypatch.setenv("LANGFUSE_SECRET_KEY", "sk-lf-x")
+    monkeypatch.delenv("LANGFUSE_TRACING_ENABLED", raising=False)
+    assert observability.configure_tracing() is True
+    assert "LANGFUSE_TRACING_ENABLED" not in os.environ
+
+
+def test_con_una_sola_clave_tambien_se_apaga(monkeypatch):
+    monkeypatch.setenv("LANGFUSE_PUBLIC_KEY", "pk-lf-x")
+    monkeypatch.delenv("LANGFUSE_SECRET_KEY", raising=False)
+    monkeypatch.setenv("LANGFUSE_TRACING_ENABLED", "")  # monkeypatch lo restaura al salir
+    assert observability.configure_tracing() is False
+
+
+def test_trace_id_de_ceros_no_genera_link(monkeypatch):
+    # Con el tracing apagado el SDK entrega un id de ceros: no se pide URL a ninguna red.
+    monkeypatch.setattr(observability, "get_client", lambda: _BrokenClient())
+    assert observability.safe_trace_url("0" * 32) is None
