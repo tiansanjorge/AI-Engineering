@@ -77,7 +77,7 @@ modulo-4/
 ├── data/test_contracts/         # 5 pares (10 imágenes) + expected.json + README
 ├── data/stress_scans/           # escaneos degradados en 5 niveles
 ├── scripts/                     # generar contratos, evaluar, verificar trazas
-├── tests/                       # 83 tests, ninguno llama a la API
+├── tests/                       # 87 tests, ninguno llama a la API
 ├── outputs/                     # evidencia: corridas, evaluación, trazas verificadas
 ├── EVALUACION.md · PENDIENTES.md
 ├── requirements.txt · .env.example
@@ -102,7 +102,8 @@ busca el `.env` subiendo por los directorios padres, así que sirve el de la ra�
 | `LANGFUSE_HOST` | para trazar | `https://cloud.langfuse.com` (UE) o `https://us.cloud.langfuse.com` (EE.UU.): debe coincidir con la región del proyecto |
 | `VISION_MODEL` / `AGENT_MODEL` | no | Default `gpt-4o` |
 
-Sin claves de Langfuse el análisis funciona igual (solo se pierde la traza).
+**Langfuse es opcional.** Sin sus claves el análisis corre igual: el tracing se apaga, se imprime un
+único aviso en stderr y solo se pierde la traza. Para probar el sistema alcanza con `OPENAI_API_KEY`.
 
 ## Uso
 
@@ -116,7 +117,24 @@ python -m src.main data/test_contracts/par1_simple/original.png data/test_contra
 - Ante un error controlado (imagen inexistente o corrupta, falta la clave, la API falla, la salida no
   valida) muestra un mensaje claro y termina con código 1, sin traceback.
 
-Casos de prueba (ver [`data/test_contracts/README.md`](data/test_contracts/README.md)):
+### Ejemplo real (`par1_simple`)
+
+Entrada: el contrato original y su adenda (dos imágenes). Salida real, tal como quedó en
+[`outputs/runs/`](outputs/runs/20261101_124239_par1_simple.json):
+
+```json
+{
+  "sections_changed": ["Cláusula Segunda", "Cláusula Tercera"],
+  "topics_touched": ["Plazo y vigencia", "Precio"],
+  "summary_of_the_change": "La adenda introduce dos modificaciones al contrato original. Primero, extiende el plazo de vigencia del contrato, que originalmente era desde el 1 de febrero de 2025 hasta el 31 de diciembre de 2025, para que ahora sea hasta el 31 de diciembre de 2026. Segundo, ajusta el precio mensual que EL CLIENTE debe abonar a EL PROVEEDOR, incrementándolo de USD 2.500 a USD 2.800. No hay alertas en el mapa contextual."
+}
+```
+
+Un análisis tarda ~11 s y consume ~7-8 mil tokens (cuatro llamadas a GPT-4o).
+
+### Casos de prueba
+
+Ver [`data/test_contracts/README.md`](data/test_contracts/README.md):
 
 | Par | Escenario |
 |---|---|
@@ -129,7 +147,7 @@ Casos de prueba (ver [`data/test_contracts/README.md`](data/test_contracts/READM
 ## Tests y verificación
 
 ```bash
-python -m pytest                          # 83 tests, sin llamar a la API ni a Langfuse
+python -m pytest                          # 87 tests, sin llamar a la API ni a Langfuse
 python scripts/run_eval.py --runs 3       # evaluación real de punta a punta (cuesta centavos)
 python scripts/verify_tracing.py          # audita una traza real contra Langfuse (40 chequeos)
 python scripts/generate_contracts.py      # regenera los contratos de prueba
