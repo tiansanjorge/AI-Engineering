@@ -43,6 +43,21 @@ Imprime por stdout el JSON con `user_question`, `system_answer` y
 `chunks_related`. Ejemplos reales corridos de punta a punta están en
 `outputs/sample_queries.json`.
 
+Ejemplo real (con `chunks_related` abreviado: en el archivo viene el texto completo de los 3
+fragmentos recuperados):
+
+```json
+{
+  "user_question": "Cuantos dias de PTO acumulo por mes trabajado?",
+  "system_answer": "Los empleados acumulan 1.5 días de PTO (paid time off) por cada mes trabajado. Esto equivale a 18 días por año calendario completo.",
+  "chunks_related": [
+    "...acumulan 1.5 días de PTO (paid time off) por cada mes trabajado, lo que equivale a 18 días por año calendario completo. [...]",
+    "[fragmento 2]",
+    "[fragmento 3]"
+  ]
+}
+```
+
 ## Variables de entorno
 
 | Variable          | Descripción                                          |
