@@ -20,6 +20,7 @@ lanza errores de red; si falta la configuracion, el pipeline igual corre.
 """
 
 import contextlib
+import os
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -30,6 +31,20 @@ from langchain_core.outputs import LLMResult
 from langchain_core.runnables import RunnableConfig
 from langfuse import get_client
 from langfuse.langchain import CallbackHandler
+
+
+def configure_tracing() -> bool:
+    """Decide si hay tracing: Langfuse es OPCIONAL.
+
+    Sin las dos claves se apaga el tracing del SDK (`LANGFUSE_TRACING_ENABLED=false`): los spans
+    pasan a ser no-ops y el pipeline corre igual. Sin esto el SDK sigue funcionando, pero imprime
+    un "Authentication error" por cada llamada, que parece una falla y no lo es.
+    Debe llamarse ANTES del primer `get_client()`. Devuelve True si el tracing queda activo.
+    """
+    if os.getenv("LANGFUSE_PUBLIC_KEY") and os.getenv("LANGFUSE_SECRET_KEY"):
+        return True
+    os.environ["LANGFUSE_TRACING_ENABLED"] = "false"
+    return False
 
 
 @dataclass
@@ -128,7 +143,8 @@ def safe_trace_url(trace_id: str | None) -> str | None:
     con credenciales ausentes o invalidas. Como el analisis YA se hizo (y se pagaron los tokens),
     un fallo de observabilidad no puede costar el resultado: se degrada a "sin link".
     """
-    if not trace_id:
+    # Con el tracing apagado el SDK entrega un id de ceros: no hay traza a la que linkear.
+    if not trace_id or set(trace_id) == {"0"}:
         return None
     try:
         return get_client().get_trace_url(trace_id=trace_id)

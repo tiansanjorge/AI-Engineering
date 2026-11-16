@@ -29,7 +29,13 @@ from src.agents.extraction_agent import ExtractionAgent
 from src.errors import ContractAnalysisError
 from src.image_parser import image_size, parse_contract_image, validate_image
 from src.models import ContractChangeOutput, ExtractionResult
-from src.observability import StageStats, flush, safe_trace_url, stage
+from src.observability import (
+    StageStats,
+    configure_tracing,
+    flush,
+    safe_trace_url,
+    stage,
+)
 
 TRACE_NAME = "contract-analysis"
 TRACE_TAGS = ["modulo-4", "contract-comparison"]
@@ -84,6 +90,7 @@ def analyze_contracts(
     contextualizer = contextualizer or ContextualizationAgent()
     extractor = extractor or ExtractionAgent()
 
+    configure_tracing()  # sin claves de Langfuse el tracing se apaga; el analisis corre igual
     langfuse = get_client()
     stats: list[StageStats] = []
 
@@ -214,6 +221,12 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         config.require_openai_key()
+        if not configure_tracing():
+            print(
+                "Langfuse desactivado (faltan LANGFUSE_PUBLIC_KEY/LANGFUSE_SECRET_KEY): "
+                "el analisis corre igual, solo que sin traza.",
+                file=sys.stderr,
+            )
         result = analyze_contracts(
             args.original, args.amendment, session_id=args.session_id
         )

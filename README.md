@@ -13,6 +13,17 @@ propios), documentada en su propio README.
 | 3 | [`modulo-3/`](modulo-3/README.md) | Sistema multi-agente: orquestador (LangGraph) que clasifica la intención y deriva a agentes RAG de HR, Tech y Finance sobre Chroma, trazado en Langfuse. Bonus (agente evaluador con Score API) completo. |
 | 4 | [`modulo-4/`](modulo-4/README.md) | Agente de comparación de contratos: 2 imágenes (contrato y adenda) → visión (GPT-4o) → 2 agentes (contextualización y extracción) → JSON validado con Pydantic, trazado en Langfuse. Proyecto final, con defensa en vivo. |
 
+### Resultados medidos y qué hace falta para correrlos
+
+| Módulo | Resultado medido (detalle en el README de cada uno) | Claves necesarias |
+|---|---|---|
+| 1 | Chain-of-thought elegido por experimento en 3 rondas (100 % de precisión en el set final); bloqueo de inyecciones antes de llamar al modelo. | `OPENAI_API_KEY` |
+| 2 | RAG con trazabilidad por `chunks_related`; el evaluador bonus detectó un error de lectura de su propio juez, corregido exigiendo citas textuales. | `OPENAI_API_KEY` |
+| 3 | Ruteo 100 % en los sets dev, validación y ciego; juez calibrado contra 30 puntajes humanos (Spearman 0,88). | `OPENAI_API_KEY` (Langfuse opcional) |
+| 4 | 14 de 15 corridas perfectas en 5 pares de contratos, incluido uno con una inyección incrustada que el sistema señala sin obedecer. | `OPENAI_API_KEY` (Langfuse opcional) |
+
+Todos los módulos incluyen tests que no llaman a ninguna API, así que se pueden correr sin claves.
+
 ## Entorno compartido
 
 Un solo `.venv` en la raíz sirve para todos los módulos — cada uno declara
